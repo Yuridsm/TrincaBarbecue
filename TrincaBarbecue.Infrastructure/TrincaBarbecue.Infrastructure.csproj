@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TrincaBarbecue.Application\TrincaBarbecue.Application.csproj" />
     <ProjectReference Include="..\TrincaBarbecue.Core\TrincaBarbecue.Core.csproj" />
   </ItemGroup>
 
