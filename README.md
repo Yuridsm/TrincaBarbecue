@@ -34,4 +34,4 @@ Sinta-se à vontade para contribuir com o projeto TrincaBarbecue. Você pode:
 # Contato
 Caso tenha alguma dúvida ou queira obter mais informações sobre o TrincaBarbecue, entre em contato através do seguinte endereço de e-mail: yurifullstack@gmail.com.
 
-Esperamos que o TrincaBarbecue facilite a organização de churrascos entre amigos e torne esses momentos ainda mais especiais. Divirta-se! <3
+Esperamos que o TrincaBarbecue facilite a organização de churrascos entre amigos e torne esses momentos ainda mais especiais. Divirta-se! ❤️
