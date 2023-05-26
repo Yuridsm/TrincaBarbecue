@@ -25,6 +25,13 @@ O TrincaBarbecue oferece recursos para visualizar os detalhes de cada churrasco,
 
 Clone o repositório do TrincaBarbecue do GitHub.
 
+Execute os seguintes comandos:
+```powershell
+git clone git@github.com:Yuridsm/TrincaBarbecue.git
+cd TrincaBarbecue
+dotnet run
+```
+
 ## Contribuição
 Sinta-se à vontade para contribuir com o projeto TrincaBarbecue. Você pode:
 
