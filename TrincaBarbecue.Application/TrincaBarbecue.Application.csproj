@@ -10,8 +10,4 @@
     <ProjectReference Include="..\TrincaBarbecue.Core\TrincaBarbecue.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCase\" />
-  </ItemGroup>
-
 </Project>

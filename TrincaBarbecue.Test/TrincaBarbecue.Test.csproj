@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TrincaBarbecue.Application\TrincaBarbecue.Application.csproj" />
     <ProjectReference Include="..\TrincaBarbecue.Core\TrincaBarbecue.Core.csproj" />
+    <ProjectReference Include="..\TrincaBarbecue.Infrastructure\TrincaBarbecue.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
