@@ -121,7 +121,7 @@ namespace TrincaBarbecue.Test.Unit
                 .AddParticipant("Maria Silva")
                 .Build();
 
-            var contributionValue = barbecue.CalculateContributionValue();
+            var contributionValue = barbecue.CalculateMinimumContributionValue();
             double contributionTotal = barbecue.Participants.Sum(o => o.ContributionValue.Value) / barbecue.ParticipantsQuantity();
 
             // Assert
