@@ -1,5 +1,5 @@
 ﻿using TrincaBarbecue.Application.Repository;
-using TrincaBarbecue.Core.Entity;
+using TrincaBarbecue.Core.Aggregate;
 
 namespace TrincaBarbecue.Infrastructure.Repository
 {
