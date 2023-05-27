@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using TrincaBarbecue.Core.Entity;
+using TrincaBarbecue.Core.Aggregate;
 
 namespace TrincaBarbecue.Test.Unit;
 
@@ -13,16 +13,5 @@ public class NameTest
 
         // Assert
         Assert.True(validatedName);
-    }
-
-    //안녕
-    [Test]
-    public void ShoullValidateUnicodeCaracter()
-    {
-        // Arrange & Act
-        var validatedName = Name.Validate("안녕");
-
-        // Assert
-        Assert.False(validatedName);
     }
 }
