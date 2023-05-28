@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TrincaBarbecue.Application\TrincaBarbecue.Application.csproj" />
     <ProjectReference Include="..\TrincaBarbecue.Core\TrincaBarbecue.Core.csproj" />
   </ItemGroup>

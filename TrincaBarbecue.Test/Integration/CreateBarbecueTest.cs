@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
-using TrincaBarbecue.Application.Input;
-using TrincaBarbecue.Application.UseCase;
+using TrincaBarbecue.Application.UseCase.CreateBarbecue;
 using TrincaBarbecue.Core.DomainException;
 using TrincaBarbecue.Infrastructure.Repository;
 
@@ -21,14 +20,15 @@ namespace TrincaBarbecue.Test.Integration
                 "Description 003",
             };
             
-            var input = BarbecueInput.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
+            var input = InputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
 
             // Act
-            var identifier = barbecue.Execute(input);
-            var instance = barbecueRepository.Get(identifier);
+            var output = barbecue.Execute(input);
+            var sanitizedData = Guid.Parse(output.GetIdentifier());
+            var instance = barbecueRepository.Get(sanitizedData);
 
             // Assert
-            Assert.That(identifier, Is.EqualTo(instance.Identifier));
+            Assert.That(output.GetIdentifier(), Is.EqualTo(instance?.Identifier.ToString()));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace TrincaBarbecue.Test.Integration
                 "Description 003",
             };
 
-            var input = BarbecueInput.FactoryMethod("Trinca Churras", additional, DateTime.Parse("26/05/2025 05:42:00 -3:00"), DateTime.Parse("26/05/2023 05:42:00 -3:00"));
+            var input = InputBoundary.FactoryMethod("Trinca Churras", additional, DateTime.Parse("26/05/2025 05:42:00 -3:00"), DateTime.Parse("26/05/2023 05:42:00 -3:00"));
 
             // Act & Assert
             Assert.Throws<DateTimeDoesNotMatchException>(() =>

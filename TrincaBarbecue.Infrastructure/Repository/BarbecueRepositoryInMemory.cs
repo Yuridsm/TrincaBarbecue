@@ -3,7 +3,7 @@ using TrincaBarbecue.Core.Aggregate;
 
 namespace TrincaBarbecue.Infrastructure.Repository
 {
-    public class BarbecueRepositoryInMemory : IBarbecueRepository<Barbecue>
+    public class BarbecueRepositoryInMemory : IBarbecueRepository
     {
         private List<Barbecue> _barbecues = new List<Barbecue>();
 
