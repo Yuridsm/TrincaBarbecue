@@ -2,39 +2,52 @@
 
 namespace TrincaBarbecue.Web.Endpoints
 {
-    #region Endpoint Contracts
-    public interface WithReq<Request> { }
-
-    public abstract class EndpointWithResult<Request, Response> : EndpointBase, WithReq<Request>
+    public static class EndpointBaseSynchronous
     {
-        public abstract Response Handle(Request req);
-    }
-
-    public abstract class EndpointWithoutResult<Request> : EndpointBase, WithReq<Request>
-    {
-        public abstract void Handle(Request req);
-    }
-
-    public abstract class EndpointActionResult<Request, Response> : EndpointBase, WithReq<Request>
-    {
-        public abstract ActionResult<Response> Handle(Request req);
-    }
-
-    public abstract class EndpointActionResult<Request> : EndpointBase, WithReq<Request>
-    {
-        public abstract ActionResult Handle(Request req);
-    }
-    #endregion
-
-    public class Get : EndpointWithResult<InputBoundary, ActionResult>
-    {
-        public override ActionResult Handle(InputBoundary req)
+        public static class WithRequest<TRequest>
         {
-            throw new NotImplementedException();
+            public abstract class WithResult<TResponse> : EndpointBase
+            {
+                public abstract TResponse Handle(TRequest request);
+            }
+
+            public abstract class WithoutResult : EndpointBase
+            {
+                public abstract void Handle(TRequest request);
+            }
+
+            public abstract class WithActionResult<TResponse> : EndpointBase
+            {
+                public abstract TResponse Handle(TRequest request);
+            }
+
+            public abstract class WithActionResult : EndpointBase
+            {
+                public abstract ActionResult Handle(TRequest request);
+            }
+        }
+
+        public static class WithoutRequest
+        {
+            public abstract class WithResult<TResponse> : EndpointBase
+            {
+                public abstract TResponse Handle();
+            }
+            
+            public abstract class WithoutResult : EndpointBase
+            {
+                public abstract void Handle();
+            }
+
+            public abstract class WithActionResult<TResponse> : EndpointBase
+            {
+                public abstract ActionResult<TResponse> Handle();
+            }
+
+            public abstract class WithActionResult : EndpointBase
+            {
+                public abstract ActionResult Handle();
+            }
         }
     }
-
-    // Models
-    public class InputBoundary { }
-    public class OutputBoundary { }
 }
