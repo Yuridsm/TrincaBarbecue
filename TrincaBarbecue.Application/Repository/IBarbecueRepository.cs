@@ -1,4 +1,4 @@
-﻿using TrincaBarbecue.Core.Aggregate;
+﻿using TrincaBarbecue.Core.Aggregate.Barbecue;
 
 namespace TrincaBarbecue.Application.Repository
 {
