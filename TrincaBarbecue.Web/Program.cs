@@ -1,6 +1,6 @@
 using TrincaBarbecue.Application.Repository;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
-using TrincaBarbecue.Infrastructure.Http.Controllers;
+using TrincaBarbecue.Web.Controllers;
 using TrincaBarbecue.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IBarbecueRepository, BarbecueRepositoryInMemory>();
 builder.Services.AddScoped<CreateBarbecueUseCase>();
-builder.Services.AddScoped<CreateBarbecue>();
+builder.Services.AddScoped<CreateBarbecueController>();
 
 var app = builder.Build();
 
