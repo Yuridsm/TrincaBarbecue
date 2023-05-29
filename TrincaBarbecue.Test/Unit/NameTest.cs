@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using TrincaBarbecue.Core.Aggregate;
+using TrincaBarbecue.Core.Aggregate.Participant;
 
 namespace TrincaBarbecue.Test.Unit;
 
