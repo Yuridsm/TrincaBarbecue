@@ -1,6 +1,8 @@
-﻿namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
+﻿using TrincaBarbecue.Core;
+
+namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
 {
-    public class OutputBoundary
+    public class OutputBoundary : IOutputBoundary
     {
         private Guid Identifier;
 
