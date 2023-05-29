@@ -52,5 +52,35 @@ namespace TrincaBarbecue.Test.Integration
                 var identifier = barbecue.Execute(input);
             });
         }
+
+        //public double CalculateMinimumContributionValue()
+        //{
+        //    int participantsQuantity = Participants.Count;
+        //    double total = Participants.Sum(o => o.ContributionValue.Value) / participantsQuantity;
+
+        //    return total;
+        //}
+
+        [Test]
+        public void ShouldCalculate()
+        {
+            // Arrange
+            var barbecueRepository = new BarbecueRepositoryInMemory();
+            var barbecue = new CreateBarbecueUseCase(barbecueRepository);
+            var additional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
+
+            var input = InputBoundary.FactoryMethod("Trinca Churras", additional, DateTime.Parse("26/05/2025 05:42:00 -3:00"), DateTime.Parse("26/05/2023 05:42:00 -3:00"));
+
+            // Act & Assert
+            Assert.Throws<DateTimeDoesNotMatchException>(() =>
+            {
+                var identifier = barbecue.Execute(input);
+            });
+        }
     }
 }
