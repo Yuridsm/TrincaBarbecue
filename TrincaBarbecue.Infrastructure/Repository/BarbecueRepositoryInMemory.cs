@@ -1,5 +1,5 @@
 ﻿using TrincaBarbecue.Application.Repository;
-using TrincaBarbecue.Core.Aggregate;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
 
 namespace TrincaBarbecue.Infrastructure.Repository
 {
@@ -10,6 +10,11 @@ namespace TrincaBarbecue.Infrastructure.Repository
         public void Add(Barbecue entity)
         {
             _barbecues.Add(entity);
+        }
+
+        public Barbecue Find(Action<Barbecue> action)
+        {
+            throw new NotImplementedException();
         }
 
         public Barbecue? Get(Guid identifier)
