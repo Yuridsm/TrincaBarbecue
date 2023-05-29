@@ -3,5 +3,5 @@
     /// <summary>
     /// Interface de Marcação
     /// </summary>
-    public interface IAggregateRoot {}
+    public interface IAggregateRoot { }
 }
