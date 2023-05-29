@@ -1,9 +1,10 @@
 ﻿using TrincaBarbecue.Application.Repository;
-using TrincaBarbecue.Core.Aggregate;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
+using TrincaBarbecue.Core.UseCaseContract;
 
 namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
 {
-    public class CreateBarbecueUseCase
+    public class CreateBarbecueUseCase : IUseCase<InputBoundary, OutputBoundary>
     {
         private readonly IBarbecueRepository _barbecueRepository;
 
