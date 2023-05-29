@@ -6,5 +6,6 @@ namespace TrincaBarbecue.Application.Repository
     {
         TEntity? Get(Guid identifier);
         void Add(TEntity entity);
+        TEntity Find(Action<TEntity> action);
     }
 }
