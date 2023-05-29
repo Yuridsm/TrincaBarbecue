@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
-using TrincaBarbecue.Core.Aggregate;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
+using TrincaBarbecue.Core.Aggregate.Participant;
 
 namespace TrincaBarbecue.Test.Unit
 {
@@ -11,31 +12,28 @@ namespace TrincaBarbecue.Test.Unit
             // Arrange
             var add = new List<string>
             {
-                "bla bla bla 01",
-                "bla bla bla 02",
-                "bla bla bla 03",
-                "bla bla bla 04",
-                "bla bla bla 05"
+                "Chegue no horário",
+                "Beba conciente",
+                "Pode dançar a vontade, viu?!"
             };
 
-            var barbecue = Barbecue.FactoryMethod("Frinds from Work!", add, DateTime.Parse("23/12/2023 13:00:00 -3:00"), DateTime.Parse("23/12/2023 17:30:00 -3:00"));
+            var barbecue = Barbecue.FactoryMethod("Friends from Work!", add, DateTime.Parse("23/12/2023 13:00:00 -3:00"), DateTime.Parse("23/12/2023 17:30:00 -3:00"));
+
+            var participant01 = Participant.FactoryMethod("Yuri Melo", "@yuridsm", 100.50f);
+            var participant02 = Participant.FactoryMethod("Júlio Miguel", "@ojuliomiguel", 110.50f);
+            var participant03 = Participant.FactoryMethod("Beatriz Nunes", "@beatriz", 120.50f);
 
             // Act
             barbecue
-                .AddParticipant("Yuri Melo", 100.50f)
-                .AddParticipant("Júlio Miguel", 110.50f)
-                .AddParticipant("Beatriz Nunes", 120.50f)
-                .AddParticipant("Fran Alves", 150.50f)
-                .AddParticipant("Leonardo Gonçalves", 140.50f)
-                .AddParticipant("Djavan Viana", 130.50f)
-                .AddParticipant("Maria Betânia", 120.50f)
-                .AddParticipant("Larissa Gome", 100.50f)
-                .AddParticipant("Rosângela Gomes", 110.50f)
-                .AddParticipant("José Ildo", 120.50f)
+                .AddParticipant(participant01.Identifier)
+                .AddParticipant(participant02.Identifier)
+                .AddParticipant(participant03.Identifier)
+                .AddAdditionalRemark("Mais uma informação importante para o evento.")
+                .AddDescription("Atualização da descrição do Churras da Trinca!! Não perca!!!")
                 .Build();
 
             // Assert
-            Assert.That(barbecue.ParticipantsQuantity() == 10);
+            Assert.That(barbecue.ParticipantsQuantity() == 3);
         }
 
         [Test]
@@ -50,10 +48,37 @@ namespace TrincaBarbecue.Test.Unit
 
             var barbecue = Barbecue.FactoryMethod("Frinds from Work!", add, DateTime.Parse("23/12/2023 13:00:00 -3:00"), DateTime.Parse("23/12/2023 17:30:00 -3:00"));
 
+            var participant = Participant.FactoryMethod("Yuri Melo", "@yuridsm", 100.50f);
+
             // Act
             barbecue
-                .AddParticipant("Yuri Melo")
+                .AddParticipant(participant.Identifier)
                 .Build();
+
+            // Assert
+            Assert.That(barbecue.ParticipantsQuantity() == 1);
+        }
+
+        [Test]
+        public void ShouldRescheduleBarbecue()
+        {
+            // Arrange
+            var add = new List<string>
+            {
+                "bla bla bla 01",
+                "bla bla bla 02"
+            };
+
+            var participant = Participant.FactoryMethod("Yuri Melo", "@yuridsm", 100.50f);
+
+            var barbecue = Barbecue.FactoryMethod("Frinds from Work!", add, DateTime.Parse("23/12/2023 13:00:00 -3:00"), DateTime.Parse("23/12/2023 17:30:00 -3:00"));
+
+            barbecue
+                .AddParticipant(participant.Identifier)
+                .Build();
+
+            // Act
+            barbecue.Reschedule(DateTime.Parse("27/12/2023 13:00:00 -3:00"), DateTime.Parse("27/12/2023 13:00:00 -3:00"));
 
             // Assert
             Assert.That(barbecue.ParticipantsQuantity() == 1);
@@ -74,58 +99,31 @@ namespace TrincaBarbecue.Test.Unit
 
             var barbecue = Barbecue.FactoryMethod("Frinds from Work!", add, DateTime.Parse("23/12/2023 13:00:00 -3:00"), DateTime.Parse("23/12/2023 17:30:00 -3:00"));
 
+            var participant01 = Participant.FactoryMethod("Yuri Melo", "@yuridsm", 100.50f);
+            var participant02 = Participant.FactoryMethod("Júlio Miguel", "@ojuliomiguel", 110.50f);
+            var participant03 = Participant.FactoryMethod("Beatriz Nunes", "@beatriz", 120.50f);
+
             // Act
             barbecue
-                .AddParticipant("Júlio Miguel", 110.50f)
-                .AddParticipant("Yuri Melo", 100.50f)
-                .AddParticipant("Beatriz Nunes", 120.50f)
-                .AddParticipant("Fran Alves", 150.50f)
-                .AddParticipant("Leonardo Gonçalves", 140.50f)
-                .AddParticipant("Djavan Viana", 130.50f)
-                .AddParticipant("Maria Betânia", 120.50f)
-                .AddParticipant("Larissa Gome", 100.50f)
-                .AddParticipant("Rosângela Gomes", 110.50f)
-                .AddParticipant("José Ildo", 120.50f)
+                .AddParticipant(participant01.Identifier)
+                .AddParticipant(participant02.Identifier)
+                .AddParticipant(participant03.Identifier)
                 .Build();
 
-            var participant = barbecue.Participants.FirstOrDefault();
-            var allIdentifier = barbecue.Participants.Select(o => o.Identifier);
-            var participantExists = allIdentifier.Contains(participant.Identifier);
-            barbecue.RemoveParticipant(participant.Identifier);
+            var allIdentifiers = barbecue
+                .Participants
+                .Select(o => o);
 
-            var participantNotExist = allIdentifier.Contains(participant.Identifier);
+            var participantIdentifier = participant01.Identifier;
+            var participantExists = allIdentifiers.Contains(participantIdentifier);
+
+            barbecue.RemoveParticipant(participantIdentifier);
+
+            var participantNotExist = allIdentifiers.Contains(participantIdentifier);
 
             // Assert
             Assert.IsTrue(participantExists);
             Assert.IsFalse(participantNotExist);
-        }
-
-        [Test]
-        public void ShouldCalculateTheContributionValue()
-        {
-            // Arrange
-            var add = new List<string>
-            {
-                "Vai ter dança, viu?!",
-                "Você está intimado a ir haha",
-                "Ah para, você não vai querer perder, né?!"
-            };
-
-            var barbecue = Barbecue.FactoryMethod("Frinds from Work!", add, DateTime.Parse("23/12/2023 13:00:00 -3:00"), DateTime.Parse("23/12/2023 17:30:00 -3:00"));
-
-            // Act
-            barbecue
-                .AddParticipant("Júlio Miguel", 100.0f)
-                .AddParticipant("Yuri Melo")
-                .AddParticipant("Beatriz Nunes", 100.00f)
-                .AddParticipant("Maria Silva")
-                .Build();
-
-            var contributionValue = barbecue.CalculateMinimumContributionValue();
-            double contributionTotal = barbecue.Participants.Sum(o => o.ContributionValue.Value) / barbecue.ParticipantsQuantity();
-
-            // Assert
-            Assert.That(contributionValue, Is.EqualTo(contributionTotal));
         }
     }
 }
