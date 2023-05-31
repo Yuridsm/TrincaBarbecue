@@ -37,12 +37,15 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory.Models
                 .ForMember(destination => destination.Items, map =>
                 {
                     map.MapFrom(src => src.Items.ToList());
-                })
-                .ReverseMap();
+                });
 
-
-            CreateMap<IEnumerable<Participant>, List<ParticipantModel>>()
-                .ReverseMap();
+            CreateMap<ParticipantModel, Participant>()
+                .ConstructUsing(src => Participant.FactoryMethod(
+                    src.Name,
+                    src.Username,
+                    src.ContributionValue,
+                    src.BringDrink == "True" ? true : false)
+                .AddItems(src.Items));
         }
     }
 }

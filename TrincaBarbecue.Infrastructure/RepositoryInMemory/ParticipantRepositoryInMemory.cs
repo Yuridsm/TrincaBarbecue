@@ -47,17 +47,18 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
             return _mapper.Map<Participant>(model);
         }
 
-
         public IEnumerable<Participant> GetByIdentifiers(IEnumerable<Guid> identifier)
         {
-            var models = _participants.FindAll(o => identifier.Contains(o.Identifier));
+            List<ParticipantModel> models = _participants.FindAll(o => identifier.Contains(o.Identifier));
+            var result = new List<Participant>();
 
-            foreach (var model in models)
+            foreach (ParticipantModel model in models)
+            {
                 PreAssemblyItems(model);
+                result.Add(_mapper.Map<Participant>(model));
+            }
 
-            var output = _mapper.Map<List<Participant>>(models);
-
-            return output;
+            return result.AsEnumerable();
         }
 
         public void Update(Participant entity)
