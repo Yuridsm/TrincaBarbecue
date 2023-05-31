@@ -29,8 +29,15 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory.Models
                 .ForMember(destination => destination.Participants, map =>
                 {
                     map.MapFrom(src => src.Participants.ConvertAll(item => item.ToString()));
-                })
-                .ReverseMap();
+                });
+
+            CreateMap<BarbecueModel, Barbecue>()
+                .ConstructUsing(src => Barbecue.FactoryMethod(
+                        src.Description,
+                        src.AdditionalRemarks,
+                        DateTime.Parse(src.BeginDate),
+                        DateTime.Parse(src.EndDate)
+                    ));
         }
     }
 }

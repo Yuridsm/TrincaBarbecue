@@ -29,7 +29,7 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
         {
             ParticipantModel model = _participants.FirstOrDefault(m => action(_mapper.Map<Participant>(m)));
 
-            if (model != null) return null;
+            if (model == null) return null;
 
             PreAssemblyItems(model);
 
@@ -40,7 +40,7 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
         {
             var model = _participants.Find(o => o.Identifier == identifier);
 
-            if (model != null) return null;
+            if (model == null) return null;
 
             PreAssemblyItems(model);
 

@@ -6,7 +6,7 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
 {
     public class AddParticipantUseCase : IUseCaseSinchronous
         .WithInputBoundary<AddParticipantInputBoundary>
-        .WithoutOutputBoundary
+        .WithOutputBoundary<AddParticipantOutputBoundary>
     {
         private readonly IBarbecueRepository _barbecueRepository;
         private readonly IParticipantRepository _participantRepository;
@@ -17,11 +17,11 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
             _participantRepository = participantRepository;
         }
 
-        public override void Execute(AddParticipantInputBoundary inputBoundary)
+        public override AddParticipantOutputBoundary Execute(AddParticipantInputBoundary inputBoundary)
         {
             var barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
 
-            if (barbecue == null) throw new ArgumentException("There is no barbecue signed."); 
+            if (barbecue == null) throw new ArgumentException("There is no barbecue signed.");
 
             var participant = Participant
                 .FactoryMethod(
@@ -30,10 +30,7 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
                     inputBoundary.SuggestionContribution);
 
             _participantRepository.Add(participant);
-
-            barbecue.AddParticipant(participant.Identifier);
-
-
+            return new AddParticipantOutputBoundary { ParticipantIdentifier = participant.Identifier };
         }
     }
 }

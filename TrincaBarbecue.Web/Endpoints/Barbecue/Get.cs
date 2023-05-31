@@ -1,23 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TrincaBarbecue.Web.Controllers;
+using TrincaBarbecue.Application.UseCase.GetByIdBarbecue;
+using TrincaBarbecue.Infrastructure.Http.Controller;
 
 namespace TrincaBarbecue.Web.Endpoints.Barbecue
 {
     public class Get : EndpointBaseSynchronous
-        .WithoutRequest
-        .WithActionResult<GetResult>
+        .WithRequest<Guid>
+        .WithActionResult<GetResponse>
     {
-        private readonly CreateBarbecueController _createBarbecue;
+        private readonly GetbarbecueByIdController _getbarbecueByIdController;
 
-        public Get(CreateBarbecueController createBarbecue)
+        public Get(GetbarbecueByIdController getbarbecueByIdController)
         {
-            _createBarbecue = createBarbecue;
+            _getbarbecueByIdController = getbarbecueByIdController;
         }
 
-        [HttpGet("/Barbecue")]
-        public override ActionResult<GetResult> Handle()
+        [HttpGet("/Barbecue/{identifier:Guid}")]
+        public override ActionResult<GetResponse> Handle([FromRoute] Guid identifier)
         {
-            return Ok(_createBarbecue.Handle("Description", "28/05/2023 14:30:00", "28/05/2023 16:30:00"));
+            var inputBoundary = new GetBarbecueByIdInputBoundary
+            {
+                BarbecueIdentifier = identifier
+            };
+
+            var outputBoundary = _getbarbecueByIdController.Handle(inputBoundary);
+
+            return Ok(new GetResponse
+            {
+                Identifier = outputBoundary.BarbecueIdentifier,
+                Description = outputBoundary.Description
+            });
         }
     }
 }

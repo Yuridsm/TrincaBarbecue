@@ -1,0 +1,30 @@
+﻿using TrincaBarbecue.Application.Repository;
+using TrincaBarbecue.Core.UseCaseContract;
+
+namespace TrincaBarbecue.Application.UseCase.GetByIdBarbecue
+{
+    public class GetBarbecueByIdUseCase : IUseCaseSinchronous
+        .WithInputBoundary<GetBarbecueByIdInputBoundary>
+        .WithOutputBoundary<GetBarbecueByIdOutputBoundary>
+    {
+        private readonly IBarbecueRepository _barbecueRepository;
+
+        public GetBarbecueByIdUseCase(IBarbecueRepository barbecueRepository)
+        {
+            _barbecueRepository = barbecueRepository;
+        }
+
+        public override GetBarbecueByIdOutputBoundary Execute(GetBarbecueByIdInputBoundary inputBoundary)
+        {
+            var existingbarbecue = _barbecueRepository.Find(o => o.Identifier == inputBoundary.BarbecueIdentifier);
+
+            if (existingbarbecue == null) throw new ArgumentException("Barbecue does not exist.");
+
+            return new GetBarbecueByIdOutputBoundary
+            {
+                BarbecueIdentifier = existingbarbecue.Identifier,
+                Description = existingbarbecue.Description
+            };
+        }
+    }
+}

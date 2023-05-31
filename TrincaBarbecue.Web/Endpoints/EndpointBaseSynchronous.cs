@@ -18,7 +18,7 @@ namespace TrincaBarbecue.Web.Endpoints
 
             public abstract class WithActionResult<TResponse> : EndpointBase
             {
-                public abstract TResponse Handle(TRequest request);
+                public abstract ActionResult<TResponse> Handle(TRequest request);
             }
 
             public abstract class WithActionResult : EndpointBase
