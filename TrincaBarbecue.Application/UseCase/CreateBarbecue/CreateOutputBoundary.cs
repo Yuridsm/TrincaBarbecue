@@ -2,18 +2,18 @@
 
 namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
 {
-    public class OutputBoundary : IOutputBoundary
+    public class CreateOutputBoundary : IOutputBoundary
     {
         private Guid Identifier;
 
-        private OutputBoundary(Guid identifier)
+        private CreateOutputBoundary(Guid identifier)
         {
             Identifier = identifier;
         }
 
-        public static OutputBoundary FactoryMethod(Guid identifier)
+        public static CreateOutputBoundary FactoryMethod(Guid identifier)
         {
-            return new OutputBoundary(identifier);
+            return new CreateOutputBoundary(identifier);
         }
 
         public string GetIdentifier()

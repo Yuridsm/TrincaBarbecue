@@ -1,7 +1,7 @@
 using TrincaBarbecue.Application.Repository;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
 using TrincaBarbecue.Web.Controllers;
-using TrincaBarbecue.Infrastructure.Repository;
+using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 
 var builder = WebApplication.CreateBuilder(args);
 

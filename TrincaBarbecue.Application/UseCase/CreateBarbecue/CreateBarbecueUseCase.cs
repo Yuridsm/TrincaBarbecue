@@ -4,7 +4,9 @@ using TrincaBarbecue.Core.UseCaseContract;
 
 namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
 {
-    public class CreateBarbecueUseCase : IUseCase<InputBoundary, OutputBoundary>
+    public class CreateBarbecueUseCase : IUseCaseSinchronous
+        .WithInputBoundary<CreateInputBoundary>
+        .WithOutputBoundary<CreateOutputBoundary>
     {
         private readonly IBarbecueRepository _barbecueRepository;
 
@@ -13,11 +15,11 @@ namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
             _barbecueRepository = barbecueRepository;
         }
 
-        public OutputBoundary Execute(InputBoundary input)
+        public override CreateOutputBoundary Execute(CreateInputBoundary input)
         {
             var entity = Barbecue.FactoryMethod(input.Description, input.AdditionalObservations, input.BeginDate, input.EndDate);
             _barbecueRepository.Add(entity);
-            return OutputBoundary.FactoryMethod(entity.Identifier);
+            return CreateOutputBoundary.FactoryMethod(entity.Identifier);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TrincaBarbecue.Web.Controllers
 
         public string Handle(string description, string beginDateTime, string endDateTime)
         {
-            var inputBoundary = InputBoundary
+            var inputBoundary = CreateInputBoundary
                 .FactoryMethod(description,
                 new List<string>(),
                 DateTime.Parse(beginDateTime),

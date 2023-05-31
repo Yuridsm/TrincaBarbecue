@@ -2,7 +2,7 @@
 
 namespace TrincaBarbecue.Application.UseCase.AddParticipante
 {
-    public class OutputBoundary : IOutputBoundary
+    public class AddParticipantOutputBoundary : IOutputBoundary
     {
         public Guid Identifier { get; set; }
     }
