@@ -44,7 +44,14 @@ namespace TrincaBarbecue.Test.Integration
             var barbecueInput = CreateInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
             var barbecueOutput = barbecueUseCase.Execute(barbecueInput);
 
-            var participantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 100.00f, false, Guid.Parse(barbecueOutput.GetIdentifier()));
+            var items = new List<string>
+            {
+                "Item 01",
+                "Item 02",
+                "Item 03"
+            };
+
+            var participantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 100.00f, false, Guid.Parse(barbecueOutput.GetIdentifier()), items);
 
             var participantOutput = participantUseCase.Execute(participantInput);
 

@@ -23,7 +23,11 @@ namespace TrincaBarbecue.Application.UseCase.GetByIdBarbecue
             return new GetBarbecueByIdOutputBoundary
             {
                 BarbecueIdentifier = existingbarbecue.Identifier,
-                Description = existingbarbecue.Description
+                Description = existingbarbecue.Description,
+                BeginDateTime = existingbarbecue.BeginDate.ToString(),
+                EndDateTime = existingbarbecue.EndDate.ToString(),
+                AdditionalRemarks = existingbarbecue.AdditionalRemarks,
+                Participants = existingbarbecue.Participants
             };
         }
     }

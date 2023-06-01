@@ -9,19 +9,22 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
         public double SuggestionContribution { get; set; } = 0;
         public bool BringDrink { get; set; } = false;
         public Guid BarbecueIdentifier { get; set; }
+        public IEnumerable<string> Items { get; set; }
 
         public AddParticipantInputBoundary(
             string name,
             string username,
             double suggestionContribution,
             bool bringDrink,
-            Guid barbecueIdentifier)
+            Guid barbecueIdentifier,
+            IEnumerable<string> items)
         {
             Name = name;
             Username = username;
             SuggestionContribution = suggestionContribution;
             BringDrink = bringDrink;
             BarbecueIdentifier = barbecueIdentifier;
+            Items = items;
         }
     }
 }

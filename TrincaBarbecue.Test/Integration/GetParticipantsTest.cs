@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using TrincaBarbecue.Application.UseCase.AddParticipante;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
+using TrincaBarbecue.Application.UseCase.GetParticipant;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory.Models;
 
 namespace TrincaBarbecue.Test.Integration
 {
     [TestFixture]
-    public class AddParticipantTest
+    public class GetParticipantsTest
     {
         private Mapper _mapper;
 
@@ -25,18 +25,22 @@ namespace TrincaBarbecue.Test.Integration
         }
 
         [Test]
-        public void ShouldCreateParticipant()
+        public void ShouldGetParticipants()
         {
             // Arrange
             var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
             var participantRepository = new ParticipantRepositoryInMemory(_mapper);
-            var participantUseCase = new AddParticipantUseCase(barbecueRepository, participantRepository);
+
             var barbecueUseCase = new CreateBarbecueUseCase(barbecueRepository);
+            var participantUseCase = new AddParticipantUseCase(barbecueRepository, participantRepository);
+
+            var getParticipantsUseCase = new GetParticipantsUseCase(participantRepository);
+
             var additional = new List<string>
             {
                 "Description 001",
                 "Description 002",
-                "Description 003",
+                "Description 003"
             };
 
             var barbecueInput = CreateInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
@@ -49,14 +53,23 @@ namespace TrincaBarbecue.Test.Integration
                 "Item 03"
             };
 
-            var participantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            var participantInput = new AddParticipantInputBoundary("Iran Melo", "@irandsm", 100.00f, false, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            var participantOutput = participantUseCase.Execute(participantInput);
 
             // Act
-            var outputParticipant = participantUseCase.Execute(participantInput);
-            var oneParticipant = participantRepository.Find(o => o.Identifier == outputParticipant.ParticipantIdentifier);
+            var getParticipants = getParticipantsUseCase.Execute(new GetParticipantsInputBoundary
+            {
+                ParticipantIdentifiers = new List<Guid> { participantOutput.ParticipantIdentifier }
+            });
+
+            var identifiers = getParticipants
+                .Participants
+                .Select(x => x.Identifier)
+                .ToList();
 
             // Assert
-            Assert.That(outputParticipant.ParticipantIdentifier, Is.EqualTo(oneParticipant.Identifier));
+            Assert.IsNotNull(getParticipants);
+            Assert.Contains(participantOutput.ParticipantIdentifier , identifiers);
         }
     }
 }

@@ -33,9 +33,6 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
         {
             BarbecueModel model = _barbecues.FirstOrDefault(m => action(_mapper.Map<Barbecue>(m)));
 
-            PreAssemblyAdditionalRemarks(model);
-            PreAssemblyParticipants(model);
-
             return _mapper.Map<Barbecue>(model);
         }
 

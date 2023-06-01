@@ -29,6 +29,8 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
                     inputBoundary.Username,
                     inputBoundary.SuggestionContribution);
 
+            participant.AddItems(inputBoundary.Items);
+
             _participantRepository.Add(participant);
             return new AddParticipantOutputBoundary { ParticipantIdentifier = participant.Identifier };
         }

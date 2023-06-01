@@ -28,7 +28,11 @@ namespace TrincaBarbecue.Web.Endpoints.Barbecue
             return Ok(new GetResponse
             {
                 Identifier = outputBoundary.BarbecueIdentifier,
-                Description = outputBoundary.Description
+                Description = outputBoundary.Description,
+                BeginDateTime = outputBoundary.BeginDateTime,
+                EndDateTime = outputBoundary.EndDateTime,
+                AdditionalRemarks = outputBoundary.AdditionalRemarks,
+                Participants = outputBoundary.Participants
             });
         }
     }

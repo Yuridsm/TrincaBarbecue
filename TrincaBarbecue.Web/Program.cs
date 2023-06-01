@@ -3,6 +3,7 @@ using TrincaBarbecue.Application.UseCase.AddParticipante;
 using TrincaBarbecue.Application.UseCase.BindParticipant;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
 using TrincaBarbecue.Application.UseCase.GetByIdBarbecue;
+using TrincaBarbecue.Application.UseCase.GetParticipant;
 using TrincaBarbecue.Infrastructure.Http.Controller;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 
@@ -21,6 +22,7 @@ builder.Services.AddScoped<CreateBarbecueUseCase>();
 builder.Services.AddScoped<AddParticipantUseCase>();
 builder.Services.AddScoped<BindParticipantUseCase>();
 builder.Services.AddScoped<GetBarbecueByIdUseCase>();
+builder.Services.AddScoped<GetParticipantsUseCase>();
 
 builder.Services.AddScoped<CreateBarbecueController>();
 builder.Services.AddScoped<AddParticipantController>();
