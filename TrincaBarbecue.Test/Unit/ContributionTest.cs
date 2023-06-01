@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using TrincaBarbecue.Core.DomainException;
+using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.Core.Aggregate.Participant;
 
 namespace TrincaBarbecue.Test.Unit

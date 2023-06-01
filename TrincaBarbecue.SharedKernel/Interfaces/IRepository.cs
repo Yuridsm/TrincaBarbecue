@@ -1,6 +1,4 @@
-﻿using TrincaBarbecue.Core.Aggregate;
-
-namespace TrincaBarbecue.Application.Repository
+﻿namespace TrincaBarbecue.SharedKernel.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : IAggregateRoot
     {

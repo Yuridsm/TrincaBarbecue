@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
 using TrincaBarbecue.Core.Aggregate.Participant;
-using TrincaBarbecue.Core.DomainException;
+using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory.Models;
 

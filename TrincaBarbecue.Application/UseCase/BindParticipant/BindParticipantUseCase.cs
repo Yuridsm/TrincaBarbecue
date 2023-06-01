@@ -1,5 +1,5 @@
 ﻿using TrincaBarbecue.Application.Repository;
-using TrincaBarbecue.Core.UseCaseContract;
+using TrincaBarbecue.SharedKernel.UseCaseContract;
 
 namespace TrincaBarbecue.Application.UseCase.BindParticipant
 {

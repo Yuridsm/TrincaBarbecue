@@ -1,4 +1,4 @@
-﻿using TrincaBarbecue.Core;
+﻿using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Application.UseCase.AddParticipante
 {

@@ -1,4 +1,5 @@
-﻿using TrincaBarbecue.Core.DomainException;
+﻿using TrincaBarbecue.SharedKernel.DomainException;
+using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Core.Aggregate.Barbecue
 {

@@ -1,4 +1,4 @@
-﻿namespace TrincaBarbecue.Core.DomainException
+﻿namespace TrincaBarbecue.SharedKernel.DomainException
 {
     public class DateTimeDoesNotMatchException : Exception
     {

@@ -18,7 +18,7 @@ namespace TrincaBarbecue.Web.Endpoints.Participant
             _bindParticipantController = bindParticipantController;
         }
 
-        [HttpPost("/Participant")]
+        [HttpPost("/Barbecue/Participant")]
         public override ActionResult<AddParticipantInputBoundary> Handle([FromBody] AddParticipantInputBoundary request)
         {
             var output = _addParticipantController.Handle(request);

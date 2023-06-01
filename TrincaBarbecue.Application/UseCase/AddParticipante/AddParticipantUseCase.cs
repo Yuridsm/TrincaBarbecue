@@ -1,6 +1,6 @@
 ﻿using TrincaBarbecue.Application.Repository;
 using TrincaBarbecue.Core.Aggregate.Participant;
-using TrincaBarbecue.Core.UseCaseContract;
+using TrincaBarbecue.SharedKernel.UseCaseContract;
 
 namespace TrincaBarbecue.Application.UseCase.AddParticipante
 {

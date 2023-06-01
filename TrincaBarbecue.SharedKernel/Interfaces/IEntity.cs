@@ -1,4 +1,4 @@
-﻿namespace TrincaBarbecue.Core.Aggregate
+﻿namespace TrincaBarbecue.SharedKernel.Interfaces
 {
     public interface IEntity<TId>
     {

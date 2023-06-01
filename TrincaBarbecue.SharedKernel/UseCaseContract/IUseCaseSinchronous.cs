@@ -1,4 +1,6 @@
-﻿namespace TrincaBarbecue.Core.UseCaseContract
+﻿using TrincaBarbecue.SharedKernel.Interfaces;
+
+namespace TrincaBarbecue.SharedKernel.UseCaseContract
 {
     public static class IUseCaseSinchronous
     {

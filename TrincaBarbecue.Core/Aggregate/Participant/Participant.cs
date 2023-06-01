@@ -1,4 +1,6 @@
-﻿namespace TrincaBarbecue.Core.Aggregate.Participant
+﻿using TrincaBarbecue.SharedKernel.Interfaces;
+
+namespace TrincaBarbecue.Core.Aggregate.Participant
 {
     public class Participant : IEntity<Guid>, IAggregateRoot
     {
