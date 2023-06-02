@@ -104,5 +104,24 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
             if (_items.ContainsKey(model.Identifier))
                 model.Items = _items[model.Identifier];
         }
+
+        public IEnumerable<Participant>? GetAll()
+        {
+            if (_participants == null) return Enumerable.Empty<Participant>();
+
+            var participants = _participants.FindAll(o => o.Identifier != Guid.Empty);
+
+            if (!participants.Any()) return Enumerable.Empty<Participant>();
+
+            var output = new List<Participant>();
+
+            foreach(var participant in participants)
+            {
+                PreAssemblyItems(participant);
+                output.Add(_mapper.Map<Participant>(participant));
+            }
+
+            return output;
+        }
     }
 }

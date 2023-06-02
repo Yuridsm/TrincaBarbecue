@@ -36,7 +36,7 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory.Models
                 })
                 .ForMember(destination => destination.Items, map =>
                 {
-                    map.MapFrom(src => src.Items.ToList());
+                    map.MapFrom(src => src.Items);
                 });
 
             CreateMap<ParticipantModel, Participant>()

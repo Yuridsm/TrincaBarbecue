@@ -3,5 +3,8 @@ using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Application.Repository
 {
-    public interface IBarbecueRepository : IRepository<Barbecue> { }
+    public interface IBarbecueRepository : IRepository<Barbecue>
+    {
+        IEnumerable<Barbecue> GetByIdentifiers(IEnumerable<Guid> identifier);
+    }
 }

@@ -18,6 +18,10 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory.Models
         public BarbecueModelMapperProfile()
         {
             CreateMap<Barbecue, BarbecueModel>()
+                .ForMember(destination => destination.Identifier, map =>
+                {
+                    map.MapFrom(src => src.Identifier);
+                })
                 .ForMember(destination => destination.BeginDate, map =>
                 {
                     map.MapFrom(src => src.BeginDate);

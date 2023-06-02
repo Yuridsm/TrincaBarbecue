@@ -1,14 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
-using TrincaBarbecue.Application.Repository;
+using System.Runtime.CompilerServices;
 using TrincaBarbecue.Application.UseCase.AddParticipante;
 using TrincaBarbecue.Application.UseCase.BindParticipant;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
 using TrincaBarbecue.Application.UseCase.GetByIdBarbecue;
 using TrincaBarbecue.Application.UseCase.GetParticipant;
+using TrincaBarbecue.Application.UseCase.ListBarbecues;
+using TrincaBarbecue.CLI.CommandLine;
 using TrincaBarbecue.CommandLine;
+using TrincaBarbecue.Infrastructure.DependencyInjector;
 using TrincaBarbecue.Infrastructure.Http.Controller;
-using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 
 namespace TrincaBarbecue.CLI;
 
@@ -16,30 +18,43 @@ class Program
 {
     static async Task<int> Main(string[] args)
     {
-        var serviceProvider = ConfigureServices();
-        var start = serviceProvider.GetService<ListBarbecueCLI>();
+        var rootCommand = new RootCommand("Trinca Command-Line Interface");
+        var service = ConfigureServices();
 
-        var rootCommand = start.Run();
+        var createTrincaCommand = service.GetService<CreateBarbecueCLI>();
+        var listTrincaCommand = service.GetService<ListBarbecueCLI>();
 
+        var barbecue = new BarbecueCommand();
+        barbecue.SetCommand(createTrincaCommand.Build());
+        barbecue.SetCommand(listTrincaCommand.Build());
+
+        var trinca = new TrincaCommand();
+        trinca.SetCommand(barbecue.Build());
+
+        rootCommand.AddCommand(trinca.Build());
         return await rootCommand.InvokeAsync(args);
     }
 
     public static IServiceProvider ConfigureServices()
     {
-        var serviceProvider = new ServiceCollection()
-            .AddSingleton<IBarbecueRepository, BarbecueRepositoryInMemory>()
-            .AddSingleton<IParticipantRepository, ParticipantRepositoryInMemory>()
-            .AddScoped<CreateBarbecueUseCase>()
-            .AddScoped<AddParticipantUseCase>()
-            .AddScoped<BindParticipantUseCase>()
-            .AddScoped<GetBarbecueByIdUseCase>()
-            .AddScoped<GetParticipantsUseCase>()
-            .AddScoped<CreateBarbecueController>()
-            .AddScoped<AddParticipantController>()
-            .AddScoped<BindParticipantTobarbecueController>()
-            .AddScoped<GetbarbecueByIdController>()
-            .AddTransient<CreateBarbecueCLI>()
-            .AddTransient<ListBarbecueCLI>()
+        var serviceProvider = ServiceCollectionFactoryMethod.services
+            .AddInfrastructureInMemory()
+            
+            .AddSingleton<CreateBarbecueUseCase>()
+            .AddSingleton<AddParticipantUseCase>()
+            .AddSingleton<BindParticipantUseCase>()
+            .AddSingleton<GetBarbecueByIdUseCase>()
+            .AddSingleton<GetParticipantsUseCase>()
+            .AddSingleton<ListBarbecuesUseCase>()
+
+            .AddSingleton<CreateBarbecueController>()
+            .AddSingleton<AddParticipantController>()
+            .AddSingleton<BindParticipantTobarbecueController>()
+            .AddSingleton<GetbarbecueByIdController>()
+            .AddSingleton<ListBarbecuesController>()
+
+            .AddSingleton<CreateBarbecueCLI>()
+            .AddSingleton<ListBarbecueCLI>()
             .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return serviceProvider.BuildServiceProvider();

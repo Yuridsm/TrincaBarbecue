@@ -43,6 +43,41 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
             return _mapper.Map<Barbecue>(model);
         }
 
+        public IEnumerable<Barbecue> GetAll()
+        {
+            if (_barbecues == null) return Enumerable.Empty<Barbecue>();
+
+            var barbecues = _barbecues.FindAll(o => o.Identifier != Guid.Empty);
+
+            if (!barbecues.Any()) return Enumerable.Empty<Barbecue>();
+
+            var output = new List<Barbecue>();
+
+            foreach (var barbecue in barbecues)
+            {
+                PreAssemblyAdditionalRemarks(barbecue);
+                PreAssemblyParticipants(barbecue);
+                output.Add(_mapper.Map<Barbecue>(barbecue));
+            }
+
+            return output;
+        }
+
+        public IEnumerable<Barbecue> GetByIdentifiers(IEnumerable<Guid> identifier)
+        {
+            List<BarbecueModel> models = _barbecues.FindAll(o => identifier.Contains(o.Identifier));
+            var result = new List<Barbecue>();
+
+            foreach (BarbecueModel model in models)
+            {
+                PreAssemblyAdditionalRemarks(model);
+                PreAssemblyParticipants(model);
+                result.Add(_mapper.Map<Barbecue>(model));
+            }
+
+            return result.AsEnumerable();
+        }
+
         public void Update(Barbecue entity)
         {
             var model = _barbecues.FirstOrDefault(o => o.Identifier == entity.Identifier);
@@ -93,7 +128,7 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
                     .AddRange(model.Participants);
 
                 _participants[model.Identifier] = elements;
-            } 
+            }
             else if (model.Participants.Any())
             {
                 _participants.Add(model.Identifier, model.Participants);
@@ -104,18 +139,31 @@ namespace TrincaBarbecue.Infrastructure.RepositoryInMemory
         {
             if (model == null) return;
 
-            if (_additionalRemarks.Any() && _additionalRemarks.ContainsKey(model.Identifier))
-                foreach (KeyValuePair<Guid, IEnumerable<string>> remark in _additionalRemarks)
-                    model.AdditionalRemarks.Add(remark.Value.ToString());
+            if (!_additionalRemarks.Any() || !_additionalRemarks.ContainsKey(model.Identifier))
+                return;
+
+            IEnumerable<string> remarks = _additionalRemarks[model.Identifier];
+
+            foreach (string remark in remarks)
+            {
+                if (model.AdditionalRemarks.Contains(remark)) continue;
+                model.AdditionalRemarks.Add(remark);
+            }
         }
 
         private void PreAssemblyParticipants(BarbecueModel model)
         {
             if (model == null) return;
 
-            if (_participants.Any() && _participants.ContainsKey(model.Identifier))
-                foreach (KeyValuePair<Guid, IEnumerable<string>> participant in _participants)
-                    model.Participants.Add(participant.Value.ToString());
+            if (!_participants.Any() || !_participants.ContainsKey(model.Identifier)) return;
+
+            IEnumerable<string> participants = _participants[model.Identifier];
+
+            foreach (string participant in participants)
+            {
+                if (model.Participants.Contains(participant)) continue;
+                model.Participants.Add(participant);
+            }
         }
     }
 }

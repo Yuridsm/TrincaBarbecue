@@ -5,45 +5,61 @@ namespace TrincaBarbecue.CommandLine
 {
     public class ListBarbecueCLI
     {
-        private readonly CreateBarbecueController _createBarbecueController;
+        private readonly ListBarbecuesController _listBarbecuesController;
+        private Command _command = new Command("list", "List Resouces");
 
-        public ListBarbecueCLI(CreateBarbecueController createBarbecueController)
+        public ListBarbecueCLI(ListBarbecuesController listBarbecuesController)
         {
-            _createBarbecueController = createBarbecueController;
+            _listBarbecuesController = listBarbecuesController;
         }
 
-        public RootCommand Run()
+        public void SetCommand(Command command)
         {
-            var rootCommand = new RootCommand("Trinca Command-Line Interface");
+            _command.AddCommand(command);
+        }
 
-            #region Commands
-            var trinca = new Command("trinca", "Trinca CLI");
-            var barbecueCommand = new Command("barbecue", "Barbecue Resouce");
-            var listBarbecueCommand = new Command("list", "Barbecue Resouce");
-
-            barbecueCommand.AddCommand(listBarbecueCommand);
-            trinca.AddCommand(barbecueCommand);
-            rootCommand.AddCommand(trinca);
-            #endregion
-
-            #region Handlers
-            listBarbecueCommand.SetHandler(() =>
+        public Command Build()
+        {
+            _command.SetHandler(() =>
             {
                 Handle();
             });
-            #endregion
-
-            return rootCommand;
+            return _command;
         }
 
         public void Handle()
         {
             Console.WriteLine("Teste executado com sucesso");
-            //Console.WriteLine($"Create barbecue with Identifier    {output.GetIdentifier()}:");
-            //Console.WriteLine($"   Description:                    {description}");
-            //Console.WriteLine($"   Begin DateTime:                 {begin}");
-            //Console.WriteLine($"   End DateTime:                   {end}");
-            //Console.WriteLine($"   Additional Remarks:             {remark}");
+            var output = _listBarbecuesController.Handle();
+
+            foreach (var item in output.Barbecues)
+            {
+                Console.WriteLine($"Create barbecue with Identifier    {item.barbecueIdentifier}:");
+                Console.WriteLine($"   Description:                    {item.Description}");
+                Console.WriteLine($"   Begin DateTime:                 {item.BeginDate}");
+                Console.WriteLine($"   End DateTime:                   {item.EndDate}");
+
+                foreach (var remark in item.AdditionalRemarks)
+                {
+                    Console.WriteLine($"   Additional Remarks:             {remark}");
+                }
+
+                foreach (var participant in item.Participants)
+                {
+                    Console.WriteLine($"    - Identifier:             {participant.Identifier}");
+                    Console.WriteLine($"    - Name:             {participant.Name}");
+                    Console.WriteLine($"    - Username:             {participant.Username}");
+                    Console.WriteLine($"    - Contribution Value:             {participant.ContributionValue}");
+                    Console.WriteLine($"    - Bring Drink:             {participant.BringDrink}");
+                    
+
+                    foreach(var value in participant.Items)
+                    {
+                        Console.WriteLine($"     - Item:             {value}");
+                    }
+                }
+            }
+
         }
     }
 }
