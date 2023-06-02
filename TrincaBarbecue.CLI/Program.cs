@@ -1,4 +1,14 @@
-﻿using System.CommandLine;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.CommandLine;
+using TrincaBarbecue.Application.Repository;
+using TrincaBarbecue.Application.UseCase.AddParticipante;
+using TrincaBarbecue.Application.UseCase.BindParticipant;
+using TrincaBarbecue.Application.UseCase.CreateBarbecue;
+using TrincaBarbecue.Application.UseCase.GetByIdBarbecue;
+using TrincaBarbecue.Application.UseCase.GetParticipant;
+using TrincaBarbecue.CommandLine;
+using TrincaBarbecue.Infrastructure.Http.Controller;
+using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 
 namespace TrincaBarbecue.CLI;
 
@@ -6,58 +16,32 @@ class Program
 {
     static async Task<int> Main(string[] args)
     {
-        var rootCommand = new RootCommand("Trinca Command-Line Interface");
+        var serviceProvider = ConfigureServices();
+        var start = serviceProvider.GetService<ListBarbecueCLI>();
 
-        #region Options
-        var descriptionOption = new Option<string>(
-            name: "--description",
-            description: "Add description to resource like Barbecue");
-
-        var beginOption = new Option<string>(
-            name: "--begin",
-            description: "Add begin Date time to resource like Barbecue. Ex.: 12/01/2024 13:00:00 -3:00");
-
-        var endOption = new Option<string>(
-            name: "--end",
-            description: "Add end Date time to resource like Barbecue. Ex.: 12/01/2024 14:30:00 -3:00");
-
-        var remarkOption = new Option<string>(
-            name: "--remark",
-            description: "Add additional remarks to resource like Barbecue. Use ; for multiples. Ex.: 'Bring drink;Have fun!'");
-        #endregion
-
-
-        #region Commands
-        var barbecueCommand = new Command("barbecue", "Barbecue Resouce");
-
-        var createBarbecueCommand = new Command("create", "Create a new barbecue");
-
-        createBarbecueCommand.AddOption(descriptionOption);
-        createBarbecueCommand.AddOption(beginOption);
-        createBarbecueCommand.AddOption(endOption);
-        createBarbecueCommand.AddOption(remarkOption);
-
-        barbecueCommand.AddCommand(createBarbecueCommand);
-        
-        rootCommand.AddCommand(barbecueCommand);
-        #endregion
-
-        #region Handlers
-        createBarbecueCommand.SetHandler((name, begin, end, remark) =>
-        {
-            createBarbecueHandler(name, begin, end, remark);
-        }, descriptionOption, beginOption, endOption, remarkOption);
-        #endregion
+        var rootCommand = start.Run();
 
         return await rootCommand.InvokeAsync(args);
     }
 
-    public static void createBarbecueHandler(string description, string begin, string end, string remark)
+    public static IServiceProvider ConfigureServices()
     {
-        Console.WriteLine($"Create barbecue with:");
-        Console.WriteLine($"   Description:             {description}");
-        Console.WriteLine($"   Begin DateTime:          {begin}");
-        Console.WriteLine($"   End DateTime:            {end}");
-        Console.WriteLine($"   Additional Remarks:      {remark}");
+        var serviceProvider = new ServiceCollection()
+            .AddSingleton<IBarbecueRepository, BarbecueRepositoryInMemory>()
+            .AddSingleton<IParticipantRepository, ParticipantRepositoryInMemory>()
+            .AddScoped<CreateBarbecueUseCase>()
+            .AddScoped<AddParticipantUseCase>()
+            .AddScoped<BindParticipantUseCase>()
+            .AddScoped<GetBarbecueByIdUseCase>()
+            .AddScoped<GetParticipantsUseCase>()
+            .AddScoped<CreateBarbecueController>()
+            .AddScoped<AddParticipantController>()
+            .AddScoped<BindParticipantTobarbecueController>()
+            .AddScoped<GetbarbecueByIdController>()
+            .AddTransient<CreateBarbecueCLI>()
+            .AddTransient<ListBarbecueCLI>()
+            .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        return serviceProvider.BuildServiceProvider();
     }
 }
