@@ -1,5 +1,9 @@
 # TrincaBarbecue
 
+<div>
+    <img src="./Docs/TrincaCLI.gif">
+</div>
+
 ## Descrição do Projeto
 
 O `TrincaBarbecue` é um projeto que visa facilitar a organização de churrascos entre amigos, permitindo o registro de informações importantes, como data, descrição e observações adicionais. Além disso, o sistema permite a inclusão e remoção de participantes, com a opção de especificar o valor de contribuição de cada um.
