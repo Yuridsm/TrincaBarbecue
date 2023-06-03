@@ -5,6 +5,10 @@ using TrincaBarbecue.Core.Aggregate.Participant;
 using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory.Models;
+using TrincaBarbecue.Infrastructure.DistributedCache;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TrincaBarbecue.Test.Integration
 {
@@ -12,10 +16,24 @@ namespace TrincaBarbecue.Test.Integration
     public class CreateBarbecueTest
     {
         private Mapper _mapper;
+        private IDistributedCache _cache;
+        private CachedRepository<Barbecue> _distributedCache = new CachedRepository<Barbecue>();
 
         [SetUp]
         public void SetUp()
         {
+            // Distributed Cache
+            var services = new ServiceCollection();
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "localhost:6379";
+                options.InstanceName = "redisinstance";
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            _cache = serviceProvider.GetRequiredService<IDistributedCache>();
+
+            // Mapping
             var mapperConfig = new MapperConfiguration(config =>
             {
                 config.AddProfile<BarbecueModelMapperProfile>();
@@ -24,11 +42,39 @@ namespace TrincaBarbecue.Test.Integration
         }
 
         [Test]
+        public void ShouldAddEntityInDistributedCache()
+        {
+            // Arrange
+            var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
+            var distributedCache = new CachedRepository<Barbecue>();
+
+            var createBarbecue = new CreateBarbecueUseCase(barbecueRepository)
+                .SetDistributedCache(distributedCache);
+
+            var additional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
+
+            var input = CreateInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
+
+            // Act
+            var output = createBarbecue.Execute(input);
+
+            // Assert
+            Assert.IsNotNull(output);
+        }
+
+        [Test]
         public void ShouldCreateBarbecue()
         {
             // Arrange
             var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
-            var barbecue = new CreateBarbecueUseCase(barbecueRepository);
+            var barbecue = new CreateBarbecueUseCase(barbecueRepository)
+                .SetDistributedCache(_distributedCache);
+
             var additional = new List<string>
             {
                 "Description 001",

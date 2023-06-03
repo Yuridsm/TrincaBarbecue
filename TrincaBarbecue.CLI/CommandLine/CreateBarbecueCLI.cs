@@ -1,5 +1,7 @@
 ﻿using System.CommandLine;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
+using TrincaBarbecue.Infrastructure.DistributedCache;
 using TrincaBarbecue.Infrastructure.Http.Controller;
 
 namespace TrincaBarbecue.CommandLine
@@ -52,6 +54,9 @@ namespace TrincaBarbecue.CommandLine
                 new List<string> { remark },
                 DateTime.Parse(begin),
                 DateTime.Parse(end));
+
+            _createBarbecueController
+                .SetDistributedCache(new CachedRepository<Barbecue>());
 
             var output = _createBarbecueController.Handle(input);
 

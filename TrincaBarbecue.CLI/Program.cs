@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
-using System.Runtime.CompilerServices;
 using TrincaBarbecue.Application.UseCase.AddParticipante;
 using TrincaBarbecue.Application.UseCase.BindParticipant;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;

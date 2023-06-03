@@ -1,4 +1,6 @@
 ﻿using System.CommandLine;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
+using TrincaBarbecue.Infrastructure.DistributedCache;
 using TrincaBarbecue.Infrastructure.Http.Controller;
 
 namespace TrincaBarbecue.CommandLine
@@ -29,12 +31,13 @@ namespace TrincaBarbecue.CommandLine
 
         public void Handle()
         {
-            Console.WriteLine("Teste executado com sucesso");
-            var output = _listBarbecuesController.Handle();
+            var output = _listBarbecuesController
+                .SetDistributedCache(new CachedRepository<Barbecue>())
+                .Handle();
 
             foreach (var item in output.Barbecues)
             {
-                Console.WriteLine($"Create barbecue with Identifier    {item.barbecueIdentifier}:");
+                Console.WriteLine($"\nCreate barbecue with Identifier    {item.barbecueIdentifier}:");
                 Console.WriteLine($"   Description:                    {item.Description}");
                 Console.WriteLine($"   Begin DateTime:                 {item.BeginDate}");
                 Console.WriteLine($"   End DateTime:                   {item.EndDate}");
@@ -59,7 +62,6 @@ namespace TrincaBarbecue.CommandLine
                     }
                 }
             }
-
         }
     }
 }

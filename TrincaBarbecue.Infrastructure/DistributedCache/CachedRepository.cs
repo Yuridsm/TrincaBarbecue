@@ -1,58 +1,68 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
+﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
 using StackExchange.Redis;
 using System.Text.Json;
 using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Infrastructure.DistributedCache
 {
-    public class CachedRepository<TEntity> : ICachedRepository<TEntity>
+    public class CachedRepository<TEntity> : ICachedRepository<TEntity>, IDisposable
         where TEntity : IEntity<Guid>, IAggregateRoot
     {
-        private readonly IDistributedCache _distributedCache;
+        private readonly IDatabase _distributedCache;
+        private readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost:6379");
 
-        public CachedRepository(IDistributedCache distributedCache)
+        public CachedRepository()
         {
-            _distributedCache = distributedCache;
+            _distributedCache = redis.GetDatabase();
         }
 
-        public TEntity Get(string key)
+        public TEntity? Get(string key)
         {
-            var output = _distributedCache.Get(key);
-            return JsonSerializer.Deserialize<TEntity>(output);
+            var output = _distributedCache.ListRange(key, 0, -1);
+
+            if (output.Length == 0) return default(TEntity);
+
+            return JsonSerializer.Deserialize<TEntity>(output[0]);
         }
 
         public void Set(string key, TEntity value)
         {
             var input = JsonSerializer.Serialize(value);
-            _distributedCache.SetString(key, input);
+            _distributedCache.ListRightPush(key, input);
         }
 
         IEnumerable<TEntity> ICachedRepository<TEntity>.GetAll()
         {
-            var redis = ConnectionMultiplexer.Connect("localhost");
+            var redis = ConnectionMultiplexer.Connect("localhost:6379");
             ICollection<TEntity> entities = new List<TEntity>();
 
-            var distributedCache = new RedisCache(new RedisCacheOptions
-            {
-                Configuration = "localhost:6379",
-                InstanceName = "redisinstance"
-            });
-
-            var server = redis.GetServer("localhost", 6379);
-            var keys = server.Keys();
+            RedisKey[] keys = redis
+                .GetServer("localhost:6379")
+                .Keys(pattern: "*")
+                .ToArray();
 
             foreach (var key in keys)
             {
-                var value = distributedCache.Get(key);
+                if (_distributedCache.KeyType(key) == RedisType.List)
+                {
+                    RedisValue[] values = _distributedCache.ListRange(key);
 
-                var serializedValue = JsonSerializer.Deserialize<TEntity>(value);
-                entities.Add(serializedValue);
+                    foreach (RedisValue value in values)
+                    {
+                        var serializedValue = JsonSerializer.Deserialize<TEntity>(value);
+                        entities.Add(serializedValue);
+                    }
+                }
             }
 
             redis.Close();
 
             return entities;
+        }
+
+        public void Dispose()
+        {
+            redis.Close();
         }
     }
 }

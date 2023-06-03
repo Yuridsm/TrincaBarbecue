@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
+using TrincaBarbecue.Infrastructure.DistributedCache;
 using TrincaBarbecue.Infrastructure.Http.Controller;
 
 namespace TrincaBarbecue.Web.Endpoints.Barbecue
@@ -25,7 +26,12 @@ namespace TrincaBarbecue.Web.Endpoints.Barbecue
                     DateTime.Parse(input.BeginDate),
                     DateTime.Parse(input.EndDate));
 
-            return Ok(_createBarbecue.Handle(inputBoundary).GetIdentifier());
+            var output = _createBarbecue
+                .SetDistributedCache(new CachedRepository<Core.Aggregate.Barbecue.Barbecue>())
+                .Handle(inputBoundary)
+                .GetIdentifier();
+
+            return Ok(output);
         }
     }
 }

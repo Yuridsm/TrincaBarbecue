@@ -1,4 +1,5 @@
-﻿using TrincaBarbecue.SharedKernel.DomainException;
+﻿using System.Text.Json.Serialization;
+using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Core.Aggregate.Barbecue
@@ -22,6 +23,18 @@ namespace TrincaBarbecue.Core.Aggregate.Barbecue
             BeginDate = beginDate;
             EndDate = endDate;
             Identifier = Guid.NewGuid();
+        }
+
+        // Used for Assembly Instance
+        [JsonConstructor]
+        public Barbecue(Guid identifier, string description, List<string> additionalRemarks, DateTime beginDate, DateTime endDate, List<Guid> participants)
+        {
+            Identifier = identifier;
+            Description = description;
+            AdditionalRemarks = additionalRemarks;
+            BeginDate = beginDate;
+            EndDate = endDate;
+            Participants = participants;
         }
 
         public static Barbecue FactoryMethod(string description, List<string> additionalRemarks, DateTime beginDate, DateTime endDate)
