@@ -29,11 +29,12 @@ namespace TrincaBarbecue.Application.UseCase.ListBarbecues
         public override ListBarbecuesOutputBoundary Execute()
         {
             var participantsModel = new List<ParticipantModel>();
+            var barbecues = new List<Barbecue>();
 
-            if (_cachedRepository == null) return null;
-
-            //var barbecues = _barbecueRepository.GetAll().AsEnumerable();
-            var barbecues = _cachedRepository.GetAll().AsEnumerable();
+            if (_cachedRepository == null) 
+                barbecues.AddRange(_barbecueRepository.GetAll().AsEnumerable());
+            else
+                barbecues.AddRange(_cachedRepository.GetAll().AsEnumerable());
 
             if (!barbecues.Any()) return null;
 
