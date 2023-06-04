@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using TrincaBarbecue.Core.Aggregate.Barbecue;
 using TrincaBarbecue.Infrastructure.DistributedCache;
 using TrincaBarbecue.Infrastructure.Http.Controller;
 
@@ -37,29 +36,31 @@ namespace TrincaBarbecue.CommandLine
 
             foreach (var item in output.Barbecues)
             {
-                Console.WriteLine($"\nCreate barbecue with Identifier    {item.barbecueIdentifier}:");
-                Console.WriteLine($"   Description:                    {item.Description}");
-                Console.WriteLine($"   Begin DateTime:                 {item.BeginDate}");
-                Console.WriteLine($"   End DateTime:                   {item.EndDate}");
+                Console.WriteLine($"\nCreate barbecue with Identifier      {item.barbecueIdentifier}:");
+                Console.WriteLine($"   Description:                      {item.Description}");
+                Console.WriteLine($"   Begin DateTime:                   {item.BeginDate}");
+                Console.WriteLine($"   End DateTime:                     {item.EndDate}");
 
                 foreach (var remark in item.AdditionalRemarks)
                 {
-                    Console.WriteLine($"   Additional Remarks:             {remark}");
+                    Console.WriteLine($"   Additional Remarks:               {remark}");
                 }
 
+                Console.WriteLine("\n");
                 foreach (var participant in item.Participants)
                 {
-                    Console.WriteLine($"    - Identifier:             {participant.Identifier}");
-                    Console.WriteLine($"    - Name:             {participant.Name}");
-                    Console.WriteLine($"    - Username:             {participant.Username}");
-                    Console.WriteLine($"    - Contribution Value:             {participant.ContributionValue}");
-                    Console.WriteLine($"    - Bring Drink:             {participant.BringDrink}");
+                    Console.WriteLine($"    - Identifier:                    {participant.Identifier}");
+                    Console.WriteLine($"    - Name:                          {participant.Name}");
+                    Console.WriteLine($"    - Username:                      {participant.Username}");
+                    Console.WriteLine($"    - Contribution Value:            {participant.ContributionValue}");
+                    Console.WriteLine($"    - Bring Drink:                   {participant.BringDrink}");
                     
 
                     foreach(var value in participant.Items)
                     {
-                        Console.WriteLine($"     - Item:             {value}");
+                        Console.WriteLine($"        - Item:                      {value}");
                     }
+                    Console.WriteLine("\n");
                 }
             }
         }

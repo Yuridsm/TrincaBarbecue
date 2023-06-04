@@ -1,5 +1,6 @@
 ﻿using TrincaBarbecue.Application.Repository;
 using TrincaBarbecue.Core.Aggregate.Barbecue;
+using TrincaBarbecue.Core.Aggregate.Participant;
 using TrincaBarbecue.SharedKernel.Interfaces;
 using TrincaBarbecue.SharedKernel.UseCaseContract;
 
@@ -28,17 +29,22 @@ namespace TrincaBarbecue.Application.UseCase.ListBarbecues
 
         public override ListBarbecuesOutputBoundary Execute()
         {
+            var participants = new List<Participant>();
             var participantsModel = new List<ParticipantModel>();
             var barbecues = new List<Barbecue>();
 
-            if (_cachedRepository == null) 
+
+            if (_cachedRepository == null)
+            {
                 barbecues.AddRange(_barbecueRepository.GetAll().AsEnumerable());
+                if (!barbecues.Any()) return null;
+                participants.AddRange(_participantRepository.GetAll().AsEnumerable());
+            }
             else
+            {
                 barbecues.AddRange(_cachedRepository.GetAll<Barbecue>().AsEnumerable());
-
-            if (!barbecues.Any()) return null;
-
-            var participants = _participantRepository.GetAll().AsEnumerable();
+                participants.AddRange(_cachedRepository.GetAll<Participant>());
+            }
 
             ListBarbecuesOutputBoundary output = new ListBarbecuesOutputBoundary
             {
@@ -60,7 +66,6 @@ namespace TrincaBarbecue.Application.UseCase.ListBarbecues
                             Name = o.Name.Value,
                             Username = o.Username.Value
                         })
-
                 })
             };
 

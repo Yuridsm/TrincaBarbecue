@@ -27,7 +27,7 @@ namespace TrincaBarbecue.Core.Aggregate.Participant
             Name = name;
             ContributionValue = contributionValue;
             BringDrink = bringDrink;
-            Items = new List<string>();
+            Items = items;
             Username = username;
         }
 

@@ -3,11 +3,8 @@
     "TrincaBarbecue.CLI": {
         "commandName": "Project",
         //"commandLineArgs": "trinca barbecue create --description \"Primeiro Churras da galera!!!!\" --begin \"12/01/2024 13:00:00\" --end \"12/01/2024 17:00:00\" --remark \"Traga seu amigo!!!!!!\""
-        "commandLineArgs": "trinca barbecue list"
-        //"commandLineArgs": [
-        //    "trinca barbecue create --description \"Primeiro Churras da galera!!!!\" --begin \"12/01/2024 13:00:00\" --end \"12/01/2024 17:00:00\" --remark \"Traga seu amigo!!!!!!\"",
-        //    "trinca barbecue list"
-        //]
+        //"commandLineArgs": "trinca barbecue list",
+        "commandLineArgs": "trinca barbecue participant create --name 'Yuri Melo' --contribution 100.0 --bring-drink true --username yuridsm --items 'Item 001;Item 002;Item 003'",
     }
   }
 }

@@ -21,11 +21,6 @@ namespace TrincaBarbecue.CommandLine
             _createBarbecueController = createBarbecueController;
         }
 
-        public void SetCommand(Command command)
-        {
-            _command = command;
-        }
-
         public void SetOption(Option option)
         {
             _command.AddOption(option);

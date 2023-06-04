@@ -20,12 +20,17 @@ class Program
         var rootCommand = new RootCommand("Trinca Command-Line Interface");
         var service = ConfigureServices();
 
+        var participantCommand = new ParticipantCommand();
+        var createParticipantCommand = new CreateParticipantCLI();
         var createTrincaCommand = service.GetService<CreateBarbecueCLI>();
         var listTrincaCommand = service.GetService<ListBarbecueCLI>();
 
         var barbecue = new BarbecueCommand();
         barbecue.SetCommand(createTrincaCommand.Build());
         barbecue.SetCommand(listTrincaCommand.Build());
+
+        participantCommand.SetCommand();
+        barbecue.SetCommand(participantCommand.Build());
 
         var trinca = new TrincaCommand();
         trinca.SetCommand(barbecue.Build());
