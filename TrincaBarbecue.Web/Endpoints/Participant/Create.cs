@@ -8,7 +8,7 @@ namespace TrincaBarbecue.Web.Endpoints.Participant
 {
     public class Create : EndpointBaseSynchronous
         .WithRequest<AddParticipantInputBoundary>
-        .WithActionResult<AddParticipantInputBoundary>
+        .WithActionResult<AddParticipantOutputBoundary>
     {
         private readonly AddParticipantController _addParticipantController;
         private readonly BindParticipantTobarbecueController _bindParticipantController;
@@ -20,7 +20,7 @@ namespace TrincaBarbecue.Web.Endpoints.Participant
         }
 
         [HttpPost("/Barbecue/Participant")]
-        public override ActionResult<AddParticipantInputBoundary> Handle([FromBody] AddParticipantInputBoundary request)
+        public override ActionResult<AddParticipantOutputBoundary> Handle([FromBody] AddParticipantInputBoundary request)
         {
             var output = _addParticipantController
                 .SetDistributedCache(new CachedRepository())

@@ -25,10 +25,10 @@ namespace TrincaBarbecue.Web
             services.AddSingleton<GetBarbecueByIdUseCase>();
             services.AddSingleton<GetParticipantsUseCase>();
 
-            services.AddSingleton<CreateBarbecueController>();
-            services.AddSingleton<AddParticipantController>();
-            services.AddSingleton<BindParticipantTobarbecueController>();
-            services.AddSingleton<GetbarbecueByIdController>();
+            services.AddTransient<CreateBarbecueController>();
+            services.AddTransient<AddParticipantController>();
+            services.AddTransient<BindParticipantTobarbecueController>();
+            services.AddTransient<GetbarbecueByIdController>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

@@ -1,6 +1,8 @@
 ﻿using System.CommandLine;
-using TrincaBarbecue.Application.UseCase.CreateBarbecue;
+using TrincaBarbecue.Application.UseCase.AddParticipante;
+using TrincaBarbecue.Application.UseCase.BindParticipant;
 using TrincaBarbecue.Infrastructure.DistributedCache;
+using TrincaBarbecue.Infrastructure.Http.Controller;
 
 namespace TrincaBarbecue.CLI.CommandLine
 {
@@ -8,11 +10,24 @@ namespace TrincaBarbecue.CLI.CommandLine
     {
         private Command _command = new Command("create", "Create a new participand");
 
+        private readonly Option<string> _bind = new Option<string>("--bind", "Bind a Participant to one Barbecue");
         private readonly Option<string> _name = new Option<string>("--name", "Add name to participant");
         private readonly Option<string> _contribution = new Option<string>("--contribution", "Participant contribution value");
-        private readonly Option<string> _bringDrink = new Option<string>("--bring-drink", "Whether participant will come drinks, so mark with true, otherwise, false");
+        private readonly Option<bool> _bringDrink = new Option<bool>("--bring-drink", "Whether participant will come drinks, so mark with true, otherwise, false");
         private readonly Option<string> _username = new Option<string>("--username", "Participant username: Ex.: yuridsm");
         private readonly Option<string> _addItems = new Option<string>("--add-items", "Add participant's item suck as 'item 01;item 02, item 03'. Use semicolon for separating items");
+
+        private AddParticipantController _addParticipantController;
+        private BindParticipantTobarbecueController _bindParticipantController;
+
+        public CreateParticipantCLI(
+            AddParticipantController addParticipantController,
+            BindParticipantTobarbecueController bindParticipantController
+            )
+        {
+            _addParticipantController = addParticipantController;
+            _bindParticipantController = bindParticipantController;
+        }
 
         public void SetOption(Option option)
         {
@@ -21,31 +36,47 @@ namespace TrincaBarbecue.CLI.CommandLine
 
         public Command Build()
         {
+            SetOption(_bind);
             SetOption(_name);
             SetOption(_contribution);
             SetOption(_bringDrink);
             SetOption(_username);
             SetOption(_addItems);
 
-            _command.SetHandler((name, contribution, bringDrink, username, addItems) =>
+            _command.SetHandler((bind, name, contribution, bringDrink, username, addItems) =>
             {
-                createParticipantHandler(name, contribution, bringDrink, username, addItems);
-            }, _name, _contribution, _bringDrink, _username, _addItems);
+                CreateParticipantHandler(bind, name, contribution, bringDrink, username, addItems);
+            }, _bind, _name, _contribution, _bringDrink, _username, _addItems);
             return _command;
         }
-        private void createParticipantHandler(string name, string contribution, string bringDrink, string username, string addItems)
+
+        private AddParticipantOutputBoundary CreateParticipantHandler(string bind, string name, string contribution, bool bringDrink, string username, string addItems)
         {
+            var input = new AddParticipantInputBoundary(
+                name, 
+                $"@{username}", 
+                Convert.ToDouble(contribution), 
+                bringDrink, 
+                Guid.Parse(bind), 
+                addItems.Split(';').AsEnumerable());
 
-            var input = CreateInputBoundary.FactoryMethod
-                (description = description,
-                new List<string> { remark },
-                DateTime.Parse(begin),
-            DateTime.Parse(end));
+            var output = _addParticipantController
+                .SetDistributedCache(new CachedRepository())
+                .Handle(input);
 
-            _createBarbecueController
-                .SetDistributedCache(new CachedRepository());
+            _bindParticipantController
+                .SetDistributedCache(new CachedRepository())
+                .Handle(new BindParticipantInputBoundary
+                {
+                    BarbecueIdentifier = input.BarbecueIdentifier,
+                    ParticipantIdentifier = output.ParticipantIdentifier,
+                });
+            Console.WriteLine($"Participant has successfully binded to Berbecue identified by {Guid.Parse(bind)}");
 
-            var output = _createBarbecueController.Handle(input);
+            return new AddParticipantOutputBoundary
+            {
+                ParticipantIdentifier = Guid.NewGuid()
+            };
         }
     }
 }

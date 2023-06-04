@@ -1,6 +1,5 @@
 ﻿using System.CommandLine;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
-using TrincaBarbecue.Core.Aggregate.Barbecue;
 using TrincaBarbecue.Infrastructure.DistributedCache;
 using TrincaBarbecue.Infrastructure.Http.Controller;
 
