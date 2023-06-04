@@ -18,12 +18,19 @@ O TrincaBarbecue oferece recursos para visualizar os detalhes de cada churrasco,
 - Incluir e remover participantes, especificando o valor de contribuição de cada um.
 - Permitir que os usuários sugiram um valor de contribuição, com ou sem a inclusão de bebidas.
 - Visualizar os detalhes de cada churrasco, incluindo o número total de participantes e o valor arrecadado.
+- Dirija a aplicação por meio de uma `REST API` ou através de uma `Command-Line interface` CLI
 
 ## Tecnologias Utilizadas
 
 - Linguagem de programação: Ecossistema `.NET 6` com linguagem sendo `C#`
 - Banco de dados: `InMemory`
 - Frameworks de Teste de Unidade e de Integração: `NUnit`
+
+## Arquitetura e Padrões usados
+- `Clean Architecture`
+- `Hexagonal Architecture`
+- `Test-Driven Development`
+- `Domain-Driven Design`
 
 ## Instruções de Instalação e Uso
 

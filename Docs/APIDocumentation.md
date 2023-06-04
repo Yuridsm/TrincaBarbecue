@@ -46,7 +46,7 @@ bbb0b41d-ef32-4c20-a7e3-57b2cf29d24b
     "Cheguem cedo pra ajudar",
     "Os vegetarianos estão todos convidados rs",
     "Estudante não paga meia kkkk",
-    "Bah, eu nunca tomei chumarrão, então levem um pra mim."
+    "Bah, eu nunca tomei chimarrão, então levem um pra mim."
   ],
   "participants": [
     "4465e282-7af2-4b87-bbc1-4ac5201d7722"
@@ -81,4 +81,3 @@ bbb0b41d-ef32-4c20-a7e3-57b2cf29d24b
 }
 ```
 ---
-
