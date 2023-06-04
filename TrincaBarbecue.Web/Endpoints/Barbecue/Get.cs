@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrincaBarbecue.Application.UseCase.GetByIdBarbecue;
+using TrincaBarbecue.Infrastructure.DistributedCache;
 using TrincaBarbecue.Infrastructure.Http.Controller;
 
 namespace TrincaBarbecue.Web.Endpoints.Barbecue
@@ -23,7 +24,9 @@ namespace TrincaBarbecue.Web.Endpoints.Barbecue
                 BarbecueIdentifier = identifier
             };
 
-            var outputBoundary = _getbarbecueByIdController.Handle(inputBoundary);
+            var outputBoundary = _getbarbecueByIdController
+                .SetDistributedCache(new CachedRepository())
+                .Handle(inputBoundary);
 
             return Ok(new GetResponse
             {

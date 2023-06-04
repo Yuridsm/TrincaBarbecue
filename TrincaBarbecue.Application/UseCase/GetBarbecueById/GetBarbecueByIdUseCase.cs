@@ -17,21 +17,46 @@ namespace TrincaBarbecue.Application.UseCase.GetByIdBarbecue
             _barbecueRepository = barbecueRepository;
         }
 
+        public GetBarbecueByIdUseCase SetDistributedCache(ICachedRepository cachedRepository)
+        {
+            _cachedRepository = cachedRepository;
+            return this;
+        }
+
         public override GetBarbecueByIdOutputBoundary Execute(GetBarbecueByIdInputBoundary inputBoundary)
         {
-            var existingbarbecue = _barbecueRepository.Find(o => o.Identifier == inputBoundary.BarbecueIdentifier);
-
-            if (existingbarbecue == null) throw new ArgumentException("Barbecue does not exist.");
-
-            return new GetBarbecueByIdOutputBoundary
+            if (_cachedRepository != null)
             {
-                BarbecueIdentifier = existingbarbecue.Identifier,
-                Description = existingbarbecue.Description,
-                BeginDateTime = existingbarbecue.BeginDate.ToString(),
-                EndDateTime = existingbarbecue.EndDate.ToString(),
-                AdditionalRemarks = existingbarbecue.AdditionalRemarks,
-                Participants = existingbarbecue.Participants
-            };
+                var existingbarbecue = _cachedRepository.Get<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
+
+                if (existingbarbecue == null) throw new ArgumentException("Barbecue does not exist.");
+
+                return new GetBarbecueByIdOutputBoundary
+                {
+                    BarbecueIdentifier = existingbarbecue.Identifier,
+                    Description = existingbarbecue.Description,
+                    BeginDateTime = existingbarbecue.BeginDate.ToString(),
+                    EndDateTime = existingbarbecue.EndDate.ToString(),
+                    AdditionalRemarks = existingbarbecue.AdditionalRemarks,
+                    Participants = existingbarbecue.Participants
+                };
+            }
+            else
+            {
+                var existingbarbecue = _barbecueRepository.Find(o => o.Identifier == inputBoundary.BarbecueIdentifier);
+
+                if (existingbarbecue == null) throw new ArgumentException("Barbecue does not exist.");
+
+                return new GetBarbecueByIdOutputBoundary
+                {
+                    BarbecueIdentifier = existingbarbecue.Identifier,
+                    Description = existingbarbecue.Description,
+                    BeginDateTime = existingbarbecue.BeginDate.ToString(),
+                    EndDateTime = existingbarbecue.EndDate.ToString(),
+                    AdditionalRemarks = existingbarbecue.AdditionalRemarks,
+                    Participants = existingbarbecue.Participants
+                };
+            }
         }
     }
 }

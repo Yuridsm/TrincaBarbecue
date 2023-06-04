@@ -1,4 +1,5 @@
 ﻿using TrincaBarbecue.Application.UseCase.AddParticipante;
+using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Infrastructure.Http.Controller
 {
@@ -11,9 +12,18 @@ namespace TrincaBarbecue.Infrastructure.Http.Controller
             _addParticipantUseCase = addParticipantUseCase;
         }
 
+        public AddParticipantController SetDistributedCache(ICachedRepository cachedRepository)
+        {
+            _addParticipantUseCase
+                .SetDistributedCache(cachedRepository);
+
+            return this;
+        }
+
         public AddParticipantOutputBoundary Handle(AddParticipantInputBoundary input)
         {
-            return _addParticipantUseCase.Execute(input);
+            return _addParticipantUseCase
+                .Execute(input);
         }
     }
 }

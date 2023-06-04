@@ -1,5 +1,8 @@
 ﻿using TrincaBarbecue.Application.UseCase.GetByIdBarbecue;
 using TrincaBarbecue.Application.UseCase.GetParticipant;
+using TrincaBarbecue.Infrastructure.DistributedCache;
+using TrincaBarbecue.Infrastructure.Http.Response;
+using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Infrastructure.Http.Controller
 {
@@ -17,20 +20,48 @@ namespace TrincaBarbecue.Infrastructure.Http.Controller
             _getParticipantsUseCase = getParticipantsUseCase;
         }
 
-        public GetBarbecueByIdOutputBoundary Handle(GetBarbecueByIdInputBoundary input)
+        public GetbarbecueByIdController SetDistributedCache(ICachedRepository cachedRepository)
         {
-            var barbecue = _getBarbecueByIdUseCase.Execute(input);
+            _getBarbecueByIdUseCase.SetDistributedCache(cachedRepository);
+            _getParticipantsUseCase.SetDistributedCache(cachedRepository);
+
+            return this;
+        }
+
+        public GetBarbecueByIdResponse Handle(GetBarbecueByIdInputBoundary input)
+        {
+            var barbecue = _getBarbecueByIdUseCase
+                .SetDistributedCache(new CachedRepository())
+                .Execute(input);
 
             if (barbecue == null) throw new ArgumentNullException("There is no barbecue.");
 
-            var result = _getParticipantsUseCase.Execute(new GetParticipantsInputBoundary
+            var result = _getParticipantsUseCase
+                .SetDistributedCache(new CachedRepository())
+                .Execute(new GetParticipantsInputBoundary
+                {
+                    ParticipantIdentifiers = barbecue.Participants
+                });
+
+            var response = new GetBarbecueByIdResponse()
             {
-                ParticipantIdentifiers = barbecue.Participants
-            });
+                AdditionalRemarks = barbecue.AdditionalRemarks,
+                BarbecueIdentifier = barbecue.BarbecueIdentifier,
+                BeginDateTime = barbecue.BeginDateTime,
+                Description = barbecue.Description,
+                EndDateTime = barbecue.EndDateTime
+            };
 
-            barbecue.Participants = result.Participants.Select(o => o.Identifier);
+            if (result == null) return response;
 
-            return barbecue;
+            var participants = new List<ParticipantOutputBoundary>();
+
+            foreach (var participant in result.Participants)
+                participants.Add(participant);
+
+            response.Participants = participants;
+
+            return response;
         }
     }
 }

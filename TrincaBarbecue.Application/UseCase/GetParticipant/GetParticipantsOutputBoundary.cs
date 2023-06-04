@@ -4,10 +4,10 @@ namespace TrincaBarbecue.Application.UseCase.GetParticipant
 {
     public class GetParticipantsOutputBoundary : IOutputBoundary
     {
-        public IEnumerable<Participant> Participants { get; set; }
+        public IEnumerable<ParticipantOutputBoundary> Participants { get; set; }
     }
 
-    public class Participant
+    public class ParticipantOutputBoundary
     {
         public Guid Identifier { get; set; }
         public string Name { get; set; }

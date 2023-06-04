@@ -15,7 +15,7 @@
     "Cheguem cedo pra ajudar",
     "Os vegetarianos estão todos convidados rs",
     "Estudante não paga meia kkkk",
-    "Bah, eu nunca tomei chumarrão, então levem um pra mim."
+    "Bah, eu nunca tomei chimarrão, então levem um pra mim."
   ]
 }
 ```
