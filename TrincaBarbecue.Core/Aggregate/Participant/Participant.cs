@@ -1,4 +1,5 @@
-﻿using TrincaBarbecue.SharedKernel.Interfaces;
+﻿using System.Text.Json.Serialization;
+using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Core.Aggregate.Participant
 {
@@ -16,6 +17,17 @@ namespace TrincaBarbecue.Core.Aggregate.Participant
             Identifier = Guid.NewGuid();
             Name = name;
             ContributionValue = contribution;
+            BringDrink = bringDrink;
+            Items = new List<string>();
+            Username = username;
+        }
+
+        [JsonConstructor]
+        public Participant(Guid identifer, Name name, Contribution contributionValue, bool bringDrink, List<string> items, Username username)
+        {
+            Identifier = identifer;
+            Name = name;
+            ContributionValue = contributionValue;
             BringDrink = bringDrink;
             Items = new List<string>();
             Username = username;

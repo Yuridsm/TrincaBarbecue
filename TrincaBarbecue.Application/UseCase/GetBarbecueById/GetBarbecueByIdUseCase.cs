@@ -1,4 +1,6 @@
 ﻿using TrincaBarbecue.Application.Repository;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
+using TrincaBarbecue.SharedKernel.Interfaces;
 using TrincaBarbecue.SharedKernel.UseCaseContract;
 
 namespace TrincaBarbecue.Application.UseCase.GetByIdBarbecue
@@ -8,6 +10,7 @@ namespace TrincaBarbecue.Application.UseCase.GetByIdBarbecue
         .WithOutputBoundary<GetBarbecueByIdOutputBoundary>
     {
         private readonly IBarbecueRepository _barbecueRepository;
+        private ICachedRepository _cachedRepository;
 
         public GetBarbecueByIdUseCase(IBarbecueRepository barbecueRepository)
         {

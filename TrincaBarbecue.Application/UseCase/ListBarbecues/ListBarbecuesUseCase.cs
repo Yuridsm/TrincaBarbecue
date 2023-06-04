@@ -12,7 +12,7 @@ namespace TrincaBarbecue.Application.UseCase.ListBarbecues
 
         private readonly IBarbecueRepository _barbecueRepository;
         private readonly IParticipantRepository _participantRepository;
-        private ICachedRepository<Barbecue> _cachedRepository;
+        private ICachedRepository _cachedRepository;
 
         public ListBarbecuesUseCase(IBarbecueRepository barbecueRepository, IParticipantRepository participantRepository)
         {
@@ -20,7 +20,7 @@ namespace TrincaBarbecue.Application.UseCase.ListBarbecues
             _participantRepository = participantRepository;
         }
 
-        public ListBarbecuesUseCase SetDistributedCache(ICachedRepository<Barbecue> cachedRepository)
+        public ListBarbecuesUseCase SetDistributedCache(ICachedRepository cachedRepository)
         {
             _cachedRepository = cachedRepository;
             return this;
@@ -34,7 +34,7 @@ namespace TrincaBarbecue.Application.UseCase.ListBarbecues
             if (_cachedRepository == null) 
                 barbecues.AddRange(_barbecueRepository.GetAll().AsEnumerable());
             else
-                barbecues.AddRange(_cachedRepository.GetAll().AsEnumerable());
+                barbecues.AddRange(_cachedRepository.GetAll<Barbecue>().AsEnumerable());
 
             if (!barbecues.Any()) return null;
 

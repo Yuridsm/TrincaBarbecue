@@ -1,4 +1,5 @@
 ﻿using TrincaBarbecue.Application.Repository;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
 using TrincaBarbecue.Core.Aggregate.Participant;
 using TrincaBarbecue.SharedKernel.Interfaces;
 using TrincaBarbecue.SharedKernel.UseCaseContract;
@@ -11,7 +12,7 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
     {
         private readonly IBarbecueRepository _barbecueRepository;
         private readonly IParticipantRepository _participantRepository;
-        private ICachedRepository<Participant> _cachedRepository;
+        private ICachedRepository _cachedRepository;
 
         public AddParticipantUseCase(IBarbecueRepository barbecueRepository, IParticipantRepository participantRepository)
         {
@@ -19,7 +20,7 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
             _participantRepository = participantRepository;
         }
 
-        public AddParticipantUseCase SetDistributedCache(ICachedRepository<Participant> cachedRepository)
+        public AddParticipantUseCase SetDistributedCache(ICachedRepository cachedRepository)
         {
             _cachedRepository = cachedRepository;
             return this;
@@ -27,7 +28,12 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
 
         public override AddParticipantOutputBoundary Execute(AddParticipantInputBoundary inputBoundary)
         {
-            var barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
+            Barbecue barbecue = default(Barbecue);
+
+            if (_cachedRepository == null)
+                barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
+            else
+                barbecue = _cachedRepository.Get<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
 
             if (barbecue == null) throw new ArgumentException("There is no barbecue signed.");
 
@@ -37,11 +43,17 @@ namespace TrincaBarbecue.Application.UseCase.AddParticipante
                     inputBoundary.Username,
                     inputBoundary.SuggestionContribution);
 
+            // In Memory in one Process
             participant.AddItems(inputBoundary.Items);
-
             _participantRepository.Add(participant);
 
-            if (_cachedRepository != null) _cachedRepository.Set(inputBoundary.BarbecueIdentifier.ToString(), participant);
+            // In Distributed Cache
+            if (_cachedRepository != null)
+            { 
+                //_cachedRepository.DeleteList<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
+                //_cachedRepository.Set(inputBoundary.BarbecueIdentifier.ToString(), barbecue);
+                _cachedRepository.Set<Participant>(participant.Identifier.ToString(), participant);
+            }
 
             return new AddParticipantOutputBoundary { ParticipantIdentifier = participant.Identifier };
         }

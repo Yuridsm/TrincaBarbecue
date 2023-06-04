@@ -32,7 +32,7 @@ namespace TrincaBarbecue.CommandLine
         public void Handle()
         {
             var output = _listBarbecuesController
-                .SetDistributedCache(new CachedRepository<Barbecue>())
+                .SetDistributedCache(new CachedRepository())
                 .Handle();
 
             foreach (var item in output.Barbecues)

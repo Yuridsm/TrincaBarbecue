@@ -27,7 +27,7 @@ namespace TrincaBarbecue.Web.Endpoints.Barbecue
                     DateTime.Parse(input.EndDate));
 
             var output = _createBarbecue
-                .SetDistributedCache(new CachedRepository<Core.Aggregate.Barbecue.Barbecue>())
+                .SetDistributedCache(new CachedRepository())
                 .Handle(inputBoundary)
                 .GetIdentifier();
 

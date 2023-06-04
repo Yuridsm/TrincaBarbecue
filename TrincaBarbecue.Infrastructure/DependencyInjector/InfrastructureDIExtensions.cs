@@ -11,7 +11,7 @@ namespace TrincaBarbecue.Infrastructure.DependencyInjector
         public static IServiceCollection AddInfrastructureInMemory(this IServiceCollection services)
         {
             services
-                .AddScoped(typeof(ICachedRepository<>), typeof(CachedRepository<>))
+                .AddScoped<ICachedRepository, CachedRepository>()
                 .AddSingleton<IBarbecueRepository, BarbecueRepositoryInMemory>()
                 .AddSingleton<IParticipantRepository, ParticipantRepositoryInMemory>()
                 .AddStackExchangeRedisCache(cache =>

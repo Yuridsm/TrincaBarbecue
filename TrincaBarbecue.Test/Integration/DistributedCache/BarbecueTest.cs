@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using TrincaBarbecue.Application.UseCase.AddParticipante;
+using TrincaBarbecue.Application.UseCase.BindParticipant;
 using TrincaBarbecue.Application.UseCase.CreateBarbecue;
 using TrincaBarbecue.Core.Aggregate.Barbecue;
 using TrincaBarbecue.Infrastructure.DistributedCache;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory.Models;
+using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Test.Integration.DistributedCache
 {
@@ -14,23 +15,12 @@ namespace TrincaBarbecue.Test.Integration.DistributedCache
     public class BarbecueTest
     {
         private Mapper _mapper;
-        private IDistributedCache _cache;
-        private CachedRepository<Barbecue> _distributedCache = new CachedRepository<Barbecue>();
+        private ICachedRepository _distributedCache = new CachedRepository();
+        private ICollection<Guid> _identifiersToDeleteAfterTest = new List<Guid>();
 
         [SetUp]
         public void SetUp()
         {
-            // Distributed Cache
-            var services = new ServiceCollection();
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = "localhost:6379";
-                options.InstanceName = "redisinstance";
-            });
-
-            var serviceProvider = services.BuildServiceProvider();
-            _cache = serviceProvider.GetRequiredService<IDistributedCache>();
-
             var mapperConfig = new MapperConfiguration(config =>
             {
                 config.AddProfile<ParticipantModelMapperProfile>();
@@ -39,12 +29,23 @@ namespace TrincaBarbecue.Test.Integration.DistributedCache
             _mapper = new Mapper(mapperConfig);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            ICachedRepository cache = new CachedRepository();
+            
+            foreach(var key in _identifiersToDeleteAfterTest)
+            {
+                cache.DeleteList<Barbecue>(key.ToString());
+            }
+        }
+
         [Test]
         public void ShouldCreateBarbecue()
         {
             // Arrange
             var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
-            var distributedCache = new CachedRepository<Barbecue>();
+            var distributedCache = new CachedRepository();
 
             var createBarbecue = new CreateBarbecueUseCase(barbecueRepository)
                 .SetDistributedCache(distributedCache);
@@ -63,6 +64,135 @@ namespace TrincaBarbecue.Test.Integration.DistributedCache
 
             // Assert
             Assert.IsNotNull(output);
+            _identifiersToDeleteAfterTest.Add(Guid.Parse(output.GetIdentifier()));
+        }
+
+        [Test]
+        public void ShouldAddParticipantsToBarbecue()
+        {
+            // Arrange
+            var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
+            var participantRepository = new ParticipantRepositoryInMemory(_mapper);
+            var participantUseCase = new AddParticipantUseCase(barbecueRepository, participantRepository);
+            var barbecueUseCase = new CreateBarbecueUseCase(barbecueRepository);
+            var additional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
+
+            var barbecueInput = CreateInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
+            var barbecueOutput = barbecueUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(barbecueInput);
+
+            var items = new List<string>
+            {
+                "Item 01",
+                "Item 02",
+                "Item 03"
+            };
+
+            var yuriParticipantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            var igorParticipantInput = new AddParticipantInputBoundary("Igor Melo", "@igordsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            var iranParticipantInput = new AddParticipantInputBoundary("Iran Melo", "@irandsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+
+            // Act
+            var yuriOutputParticipant = participantUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(yuriParticipantInput);
+
+            var igorOutputParticipant = participantUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(igorParticipantInput);
+
+            var iranOutputParticipant = participantUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(iranParticipantInput);
+
+            var yuriParticipant = participantRepository.Find(o => o.Identifier == yuriOutputParticipant.ParticipantIdentifier);
+            var igorParticipant = participantRepository.Find(o => o.Identifier == igorOutputParticipant.ParticipantIdentifier);
+            var iranParticipant = participantRepository.Find(o => o.Identifier == iranOutputParticipant.ParticipantIdentifier);
+
+            // Assert
+            Assert.That(yuriOutputParticipant.ParticipantIdentifier, Is.EqualTo(yuriParticipant.Identifier));
+            Assert.That(igorOutputParticipant.ParticipantIdentifier, Is.EqualTo(igorParticipant.Identifier));
+            Assert.That(iranOutputParticipant.ParticipantIdentifier, Is.EqualTo(iranParticipant.Identifier));
+            
+            _identifiersToDeleteAfterTest.Add(Guid.Parse(barbecueOutput.GetIdentifier()));
+            _identifiersToDeleteAfterTest.Add(yuriOutputParticipant.ParticipantIdentifier);
+            _identifiersToDeleteAfterTest.Add(igorOutputParticipant.ParticipantIdentifier);
+            _identifiersToDeleteAfterTest.Add(iranOutputParticipant.ParticipantIdentifier);
+        }
+
+        [Test]
+        public void ShouldBindParticipantsToBarbecue()
+        {
+            // Arrange
+            var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
+            var participantRepository = new ParticipantRepositoryInMemory(_mapper);
+            var participantUseCase = new AddParticipantUseCase(barbecueRepository, participantRepository);
+            var barbecueUseCase = new CreateBarbecueUseCase(barbecueRepository);
+            var bindParticipant = new BindParticipantUseCase(barbecueRepository, participantRepository);
+
+            var additional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
+
+            var barbecueInput = CreateInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
+            var barbecueOutput = barbecueUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(barbecueInput);
+
+            var items = new List<string>
+            {
+                "Item 01",
+                "Item 02",
+                "Item 03"
+            };
+
+            var yuriParticipantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            //var igorParticipantInput = new AddParticipantInputBoundary("Igor Melo", "@igordsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            //var iranParticipantInput = new AddParticipantInputBoundary("Iran Melo", "@irandsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+
+            // Act
+            var yuriOutputParticipant = participantUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(yuriParticipantInput);
+
+            bindParticipant
+                .SetDistributedCache(_distributedCache)
+                .Execute(new BindParticipantInputBoundary
+                {
+                    BarbecueIdentifier = Guid.Parse(barbecueOutput.GetIdentifier()),
+                    ParticipantIdentifier = yuriOutputParticipant.ParticipantIdentifier
+                });
+
+            //var igorOutputParticipant = participantUseCase
+            //    .SetDistributedCache(_distributedCache)
+            //    .Execute(igorParticipantInput);
+
+            //var iranOutputParticipant = participantUseCase
+            //    .SetDistributedCache(_distributedCache)
+            //    .Execute(iranParticipantInput);
+
+            var yuriParticipant = participantRepository.Find(o => o.Identifier == yuriOutputParticipant.ParticipantIdentifier);
+            //var igorParticipant = participantRepository.Find(o => o.Identifier == igorOutputParticipant.ParticipantIdentifier);
+            //var iranParticipant = participantRepository.Find(o => o.Identifier == iranOutputParticipant.ParticipantIdentifier);
+
+            // Assert
+            Assert.That(yuriOutputParticipant.ParticipantIdentifier, Is.EqualTo(yuriParticipant.Identifier));
+            //Assert.That(igorOutputParticipant.ParticipantIdentifier, Is.EqualTo(igorParticipant.Identifier));
+            //Assert.That(iranOutputParticipant.ParticipantIdentifier, Is.EqualTo(iranParticipant.Identifier));
+
+            _identifiersToDeleteAfterTest.Add(Guid.Parse(barbecueOutput.GetIdentifier()));
+            _identifiersToDeleteAfterTest.Add(yuriOutputParticipant.ParticipantIdentifier);
+            //_identifiersToDeleteAfterTest.Add(igorOutputParticipant.ParticipantIdentifier);
+            //_identifiersToDeleteAfterTest.Add(iranOutputParticipant.ParticipantIdentifier);
         }
 
     }

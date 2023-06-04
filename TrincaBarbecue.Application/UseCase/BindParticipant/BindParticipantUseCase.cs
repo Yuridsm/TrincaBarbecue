@@ -1,4 +1,7 @@
 ﻿using TrincaBarbecue.Application.Repository;
+using TrincaBarbecue.Core.Aggregate.Barbecue;
+using TrincaBarbecue.Core.Aggregate.Participant;
+using TrincaBarbecue.SharedKernel.Interfaces;
 using TrincaBarbecue.SharedKernel.UseCaseContract;
 
 namespace TrincaBarbecue.Application.UseCase.BindParticipant
@@ -9,6 +12,7 @@ namespace TrincaBarbecue.Application.UseCase.BindParticipant
     {
         private readonly IBarbecueRepository _barbecueRepository;
         private readonly IParticipantRepository _participantRepository;
+        private ICachedRepository _cachedRepository;
 
         public BindParticipantUseCase(IBarbecueRepository barbecueRepository, IParticipantRepository participantRepository)
         {
@@ -16,23 +20,49 @@ namespace TrincaBarbecue.Application.UseCase.BindParticipant
             _participantRepository = participantRepository;
         }
 
+        public BindParticipantUseCase SetDistributedCache(ICachedRepository cachedRepository)
+        {
+            _cachedRepository = cachedRepository;
+            return this;
+        }
+
         public override void Execute(BindParticipantInputBoundary inputBoundary)
         {
             if (inputBoundary == null) throw new ArgumentNullException("Input can not be empty.");
 
-            var barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
+            if (_cachedRepository != null)
+            {
+                var barbecue = _cachedRepository.Get<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
 
-            if (barbecue == null) throw new ArgumentNullException("Barbecue does not exist.");
+                if (barbecue == null) throw new ArgumentException("Barbecue does not exist.");
 
-            if (barbecue.Participants.Contains(inputBoundary.ParticipantIdentifier)) return;
+                if (barbecue.Participants.Contains(inputBoundary.ParticipantIdentifier)) return;
 
-            var participant = _participantRepository.Get(inputBoundary.ParticipantIdentifier);
+                var participant = _cachedRepository.Get<Participant>(inputBoundary.ParticipantIdentifier.ToString());
 
-            if (participant == null) throw new ArgumentNullException("Participant does not exist.");
+                if (participant == null) throw new ArgumentNullException("Participant does not exist.");
 
-            barbecue.AddParticipant(inputBoundary.ParticipantIdentifier);
+                barbecue.AddParticipant(inputBoundary.ParticipantIdentifier);
 
-            _barbecueRepository.Update(barbecue);
+                _cachedRepository.DeleteList<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
+                _cachedRepository.Set<Barbecue>(inputBoundary.BarbecueIdentifier.ToString(), barbecue);
+            }
+            else
+            {
+                var barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
+
+                if (barbecue == null) throw new ArgumentNullException("Barbecue does not exist.");
+
+                if (barbecue.Participants.Contains(inputBoundary.ParticipantIdentifier)) return;
+
+                var participant = _participantRepository.Get(inputBoundary.ParticipantIdentifier);
+
+                if (participant == null) throw new ArgumentNullException("Participant does not exist.");
+
+                barbecue.AddParticipant(inputBoundary.ParticipantIdentifier);
+
+                _barbecueRepository.Update(barbecue);
+            }
         }
     }
 }

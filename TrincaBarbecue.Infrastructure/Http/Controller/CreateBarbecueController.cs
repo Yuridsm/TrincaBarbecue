@@ -1,6 +1,5 @@
 ﻿using TrincaBarbecue.Application.UseCase.CreateBarbecue;
-using TrincaBarbecue.Core.Aggregate.Barbecue;
-using TrincaBarbecue.Infrastructure.DistributedCache;
+using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Infrastructure.Http.Controller
 {
@@ -13,7 +12,7 @@ namespace TrincaBarbecue.Infrastructure.Http.Controller
             _createBarbecueUseCase = createBarbecueUseCase;
         }
 
-        public CreateBarbecueController SetDistributedCache(CachedRepository<Barbecue> cachedRepository)
+        public CreateBarbecueController SetDistributedCache(ICachedRepository cachedRepository)
         {
             _createBarbecueUseCase
                 .SetDistributedCache(cachedRepository);

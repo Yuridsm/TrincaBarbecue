@@ -1,4 +1,5 @@
-﻿using TrincaBarbecue.SharedKernel.DomainException;
+﻿using System.Text.Json.Serialization;
+using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Core.Aggregate.Participant

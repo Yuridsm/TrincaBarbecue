@@ -56,7 +56,7 @@ namespace TrincaBarbecue.CommandLine
                 DateTime.Parse(end));
 
             _createBarbecueController
-                .SetDistributedCache(new CachedRepository<Barbecue>());
+                .SetDistributedCache(new CachedRepository());
 
             var output = _createBarbecueController.Handle(input);
 

@@ -1,12 +1,10 @@
-﻿using Microsoft.Extensions.Caching.StackExchangeRedis;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using System.Text.Json;
 using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Infrastructure.DistributedCache
 {
-    public class CachedRepository<TEntity> : ICachedRepository<TEntity>, IDisposable
-        where TEntity : IEntity<Guid>, IAggregateRoot
+    public class CachedRepository : ICachedRepository, IDisposable
     {
         private readonly IDatabase _distributedCache;
         private readonly ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost:6379");
@@ -16,7 +14,7 @@ namespace TrincaBarbecue.Infrastructure.DistributedCache
             _distributedCache = redis.GetDatabase();
         }
 
-        public TEntity? Get(string key)
+        public TEntity? Get<TEntity>(string key) where TEntity : IEntity<Guid>, IAggregateRoot
         {
             var output = _distributedCache.ListRange(key, 0, -1);
 
@@ -25,13 +23,23 @@ namespace TrincaBarbecue.Infrastructure.DistributedCache
             return JsonSerializer.Deserialize<TEntity>(output[0]);
         }
 
-        public void Set(string key, TEntity value)
+        public long Delete<TEntity>(string key, string value) where TEntity : IEntity<Guid>, IAggregateRoot
+        {
+            return _distributedCache.ListRemove(key, value);
+        }
+
+        public bool DeleteList<TEntity>(string key) where TEntity : IEntity<Guid>, IAggregateRoot
+        {
+            return _distributedCache.KeyDelete(key);
+        }
+
+        public void Set<TEntity>(string key, TEntity value) where TEntity : IEntity<Guid>, IAggregateRoot
         {
             var input = JsonSerializer.Serialize(value);
             _distributedCache.ListRightPush(key, input);
         }
 
-        IEnumerable<TEntity> ICachedRepository<TEntity>.GetAll()
+        public IEnumerable<TEntity> GetAll<TEntity>() where TEntity : IEntity<Guid>, IAggregateRoot
         {
             var redis = ConnectionMultiplexer.Connect("localhost:6379");
             ICollection<TEntity> entities = new List<TEntity>();

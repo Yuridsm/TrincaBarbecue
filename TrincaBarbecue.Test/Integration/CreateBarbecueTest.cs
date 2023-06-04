@@ -6,7 +6,6 @@ using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory;
 using TrincaBarbecue.Infrastructure.RepositoryInMemory.Models;
 using TrincaBarbecue.Infrastructure.DistributedCache;
-using TrincaBarbecue.Core.Aggregate.Barbecue;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,7 +16,7 @@ namespace TrincaBarbecue.Test.Integration
     {
         private Mapper _mapper;
         private IDistributedCache _cache;
-        private CachedRepository<Barbecue> _distributedCache = new CachedRepository<Barbecue>();
+        private CachedRepository _distributedCache = new CachedRepository();
 
         [SetUp]
         public void SetUp()
@@ -46,7 +45,7 @@ namespace TrincaBarbecue.Test.Integration
         {
             // Arrange
             var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
-            var distributedCache = new CachedRepository<Barbecue>();
+            var distributedCache = new CachedRepository();
 
             var createBarbecue = new CreateBarbecueUseCase(barbecueRepository)
                 .SetDistributedCache(distributedCache);

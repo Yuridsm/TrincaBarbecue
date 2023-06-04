@@ -10,14 +10,14 @@ namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
         .WithOutputBoundary<CreateOutputBoundary>
     {
         private readonly IBarbecueRepository _barbecueRepository;
-        private ICachedRepository<Barbecue> _cachedRepository;
+        private ICachedRepository _cachedRepository;
 
         public CreateBarbecueUseCase(IBarbecueRepository barbecueRepository)
         {
             _barbecueRepository = barbecueRepository;
         }
 
-        public CreateBarbecueUseCase SetDistributedCache(ICachedRepository<Barbecue> cachedRepository)
+        public CreateBarbecueUseCase SetDistributedCache(ICachedRepository cachedRepository)
         {
             _cachedRepository = cachedRepository;
             return this;
@@ -29,7 +29,7 @@ namespace TrincaBarbecue.Application.UseCase.CreateBarbecue
             
             _barbecueRepository.Add(entity);
 
-            if (_cachedRepository != null) _cachedRepository.Set(entity.Identifier.ToString(), entity);
+            if (_cachedRepository != null) _cachedRepository.Set<Barbecue>(entity.Identifier.ToString(), entity);
 
             return CreateOutputBoundary.FactoryMethod(entity.Identifier);
         }
