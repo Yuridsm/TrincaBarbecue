@@ -1,5 +1,7 @@
 ﻿using StackExchange.Redis;
 using System.Text.Json;
+using TrincaBarbecue.Core.Aggregate.Participant;
+using TrincaBarbecue.Infrastructure.JsonConverters;
 using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Infrastructure.DistributedCache
@@ -20,7 +22,18 @@ namespace TrincaBarbecue.Infrastructure.DistributedCache
 
             if (output.Length == 0) return default(TEntity);
 
-            return JsonSerializer.Deserialize<TEntity>(output[0]);
+            if (typeof(TEntity) == typeof(Participant))
+            {
+                var options = new JsonSerializerOptions();
+
+                options.Converters.Add(new ParticipantConverter());
+
+                return JsonSerializer.Deserialize<TEntity>(output[0], options);
+            }
+            else
+            {
+                return JsonSerializer.Deserialize<TEntity>(output[0]);
+            }
         }
 
         public long Delete<TEntity>(string key, string value) where TEntity : IEntity<Guid>, IAggregateRoot

@@ -156,8 +156,8 @@ namespace TrincaBarbecue.Test.Integration.DistributedCache
             };
 
             var yuriParticipantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
-            //var igorParticipantInput = new AddParticipantInputBoundary("Igor Melo", "@igordsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
-            //var iranParticipantInput = new AddParticipantInputBoundary("Iran Melo", "@irandsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            var igorParticipantInput = new AddParticipantInputBoundary("Igor Melo", "@igordsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+            var iranParticipantInput = new AddParticipantInputBoundary("Iran Melo", "@irandsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
 
             // Act
             var yuriOutputParticipant = participantUseCase
@@ -172,27 +172,27 @@ namespace TrincaBarbecue.Test.Integration.DistributedCache
                     ParticipantIdentifier = yuriOutputParticipant.ParticipantIdentifier
                 });
 
-            //var igorOutputParticipant = participantUseCase
-            //    .SetDistributedCache(_distributedCache)
-            //    .Execute(igorParticipantInput);
+            var igorOutputParticipant = participantUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(igorParticipantInput);
 
-            //var iranOutputParticipant = participantUseCase
-            //    .SetDistributedCache(_distributedCache)
-            //    .Execute(iranParticipantInput);
+            var iranOutputParticipant = participantUseCase
+                .SetDistributedCache(_distributedCache)
+                .Execute(iranParticipantInput);
 
             var yuriParticipant = participantRepository.Find(o => o.Identifier == yuriOutputParticipant.ParticipantIdentifier);
-            //var igorParticipant = participantRepository.Find(o => o.Identifier == igorOutputParticipant.ParticipantIdentifier);
-            //var iranParticipant = participantRepository.Find(o => o.Identifier == iranOutputParticipant.ParticipantIdentifier);
+            var igorParticipant = participantRepository.Find(o => o.Identifier == igorOutputParticipant.ParticipantIdentifier);
+            var iranParticipant = participantRepository.Find(o => o.Identifier == iranOutputParticipant.ParticipantIdentifier);
 
             // Assert
             Assert.That(yuriOutputParticipant.ParticipantIdentifier, Is.EqualTo(yuriParticipant.Identifier));
-            //Assert.That(igorOutputParticipant.ParticipantIdentifier, Is.EqualTo(igorParticipant.Identifier));
-            //Assert.That(iranOutputParticipant.ParticipantIdentifier, Is.EqualTo(iranParticipant.Identifier));
+            Assert.That(igorOutputParticipant.ParticipantIdentifier, Is.EqualTo(igorParticipant.Identifier));
+            Assert.That(iranOutputParticipant.ParticipantIdentifier, Is.EqualTo(iranParticipant.Identifier));
 
             _identifiersToDeleteAfterTest.Add(Guid.Parse(barbecueOutput.GetIdentifier()));
             _identifiersToDeleteAfterTest.Add(yuriOutputParticipant.ParticipantIdentifier);
-            //_identifiersToDeleteAfterTest.Add(igorOutputParticipant.ParticipantIdentifier);
-            //_identifiersToDeleteAfterTest.Add(iranOutputParticipant.ParticipantIdentifier);
+            _identifiersToDeleteAfterTest.Add(igorOutputParticipant.ParticipantIdentifier);
+            _identifiersToDeleteAfterTest.Add(iranOutputParticipant.ParticipantIdentifier);
         }
 
     }

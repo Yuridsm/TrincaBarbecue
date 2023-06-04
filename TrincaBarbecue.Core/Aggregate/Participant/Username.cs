@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using TrincaBarbecue.SharedKernel.DomainException;
+﻿using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.SharedKernel.Interfaces;
 
 namespace TrincaBarbecue.Core.Aggregate.Participant
@@ -8,11 +7,11 @@ namespace TrincaBarbecue.Core.Aggregate.Participant
     {
         public string Value { get; private set; }
 
-        public Username(string username)
+        public Username(string value)
         {
-            if (!Validate(username)) throw new InvalidUsernameException("username");
+            if (!Validate(value)) throw new InvalidUsernameException("username");
 
-            Value = username;
+            Value = value;
         }
 
         public static bool Validate(string username)

@@ -8,11 +8,11 @@ namespace TrincaBarbecue.Core.Aggregate.Participant
     {
         public string Value { get; private set; } = string.Empty;
 
-        public Name(string name)
+        public Name(string value)
         {
-            if (!Validate(name)) throw new NameInvalidException("Invalid name. Possibly caracter non ASCII");
+            if (!Validate(value)) throw new NameInvalidException("Invalid name. Possibly caracter non ASCII");
 
-            Value = name;
+            Value = value;
         }
 
         public static bool Validate(string name)

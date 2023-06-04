@@ -26,32 +26,38 @@ namespace TrincaBarbecue.Infrastructure.JsonConverters
                 {
                     string propertyName = reader.GetString();
 
-                    reader.Read();
-
-                    switch (propertyName)
+                    if (propertyName == "Identifier")
                     {
-                        case "Identifier":
-                            identifier = reader.GetGuid();
-                            break;
-                        case "Name":
-                            name = JsonSerializer.Deserialize<Name>(ref reader, options);
-                            break;
-                        case "ContributionValue":
-                            contributionValue = JsonSerializer.Deserialize<Contribution>(ref reader, options);
-                            break;
-                        case "BringDrink":
-                            bringDrink = reader.GetBoolean();
-                            break;
-                        case "Items":
-                            items = JsonSerializer.Deserialize<List<string>>(ref reader, options);
-                            break;
-                        case "Username":
-                            username = JsonSerializer.Deserialize<Username>(ref reader, options);
-                            break;
+                        reader.Read();
+                        identifier = reader.GetGuid();
+                    }
+                    else if (propertyName == "Name")
+                    {
+                        reader.Read();
+                        name = JsonSerializer.Deserialize<Name>(ref reader, options);
+                    }
+                    else if (propertyName == "ContributionValue")
+                    {
+                        reader.Read();
+                        contributionValue = JsonSerializer.Deserialize<Contribution>(ref reader, options);
+                    }
+                    else if (propertyName == "BringDrink")
+                    {
+                        reader.Read();
+                        bringDrink = reader.GetBoolean();
+                    }
+                    else if (propertyName == "Items")
+                    {
+                        reader.Read();
+                        items = JsonSerializer.Deserialize<List<string>>(ref reader, options);
+                    }
+                    else if (propertyName == "Username")
+                    {
+                        reader.Read();
+                        username = JsonSerializer.Deserialize<Username>(ref reader, options);
                     }
                 }
             }
-
             return new Participant(identifier, name, contributionValue, bringDrink, items, username);
         }
 
