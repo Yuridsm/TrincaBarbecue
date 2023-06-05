@@ -1,4 +1,5 @@
-# Documentação da Aplicação CLI para Gerenciamento de Churrasco
+# Documentação da Aplicação CLI para Gerenciamento de Churrasco da `Trinca`
+
 ## Descrição
 Esta aplicação CLI (Interface de Linha de Comando) foi desenvolvida para gerenciar churrascos. Ela permite criar eventos de churrasco, listar os churrascos existentes e adicionar participantes aos eventos, incluindo suas contribuições, bebidas e itens adicionais que irão trazer.
 
