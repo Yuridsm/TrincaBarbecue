@@ -38,12 +38,12 @@ dotnet run trinca barbecue participant create --bind "1f54424b-d028-4d98-8b5c-c7
 Descrição:
 Este comando adiciona um novo participante ao evento de churrasco com os seguintes detalhes:
 
-- ID do evento (--bind): O identificador único do evento de churrasco ao qual o participante será adicionado.
-- Nome (--name): O nome do participante.
-- Contribuição (--contribution): O valor da contribuição do participante para o churrasco.
-- Trazer bebida (--bring-drink): Indica se o participante irá trazer uma bebida (true/false).
-- Nome de usuário (--username): O nome de usuário do participante.
-- Itens adicionais (--add-items): Itens adicionais que o participante irá trazer separados por ponto e vírgula.
+- `--bind`: O identificador único do evento de churrasco ao qual o participante será adicionado.
+- `--name`: O nome do participante.
+- `--contribution`: O valor da contribuição do participante para o churrasco.
+- `--bring-drink`: Indica se o participante irá trazer uma bebida (true/false).
+- `--username`: O nome de usuário do participante.
+- `--add-items`: Itens adicionais que o participante irá trazer separados por ponto e vírgula.
 
 ## Fluxo de Uso Comum
 
