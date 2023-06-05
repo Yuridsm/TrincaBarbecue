@@ -27,7 +27,8 @@ Este comando cria um novo evento de churrasco com os seguintes detalhes:
 - Data e hora de início: A data e hora de início do churrasco no formato "dd/mm/yyyy hh:mm:ss".
 - Data e hora de término: A data e hora de término do churrasco no formato "dd/mm/yyyy hh:mm:ss".
 - Observações: Observações adicionais sobre o evento.
-- Adicionar um Participante ao Evento de Churrasco
+
+### Adicionar um Participante ao Evento de Churrasco
 Comando:
 
 ```powershell
