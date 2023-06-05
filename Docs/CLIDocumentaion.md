@@ -32,13 +32,14 @@ Este comando cria um novo evento de churrasco com os seguintes detalhes:
 Comando:
 
 ```powershell
-dotnet run trinca barbecue participant create --bind "1f54424b-d028-4d98-8b5c-c7e6e47b1ba7" --name "Thamirys Melo" --contribution 245,95 --bring-drink false --username thams --add-items "Item 001;Item 002;Item 003;brinds para o pessoal"
+dotnet run trinca barbecue participant create --bind "your-barbecue-event-identifier-here" --name "Thamirys Melo" --contribution 245,95 --bring-drink false --username thams --add-items "Item 001;Item 002;Item 003;brinds para o pessoal"
 ```
 
 Descrição:
 Este comando adiciona um novo participante ao evento de churrasco com os seguintes detalhes:
 
 - `--bind`: O identificador único do evento de churrasco ao qual o participante será adicionado.
+    - Por exemplo: `dotnet run trinca barbecue participant create --bind "1f54424b-d028-4d98-8b5c-c7e6e47b1ba7" ...`
 - `--name`: O nome do participante.
 - `--contribution`: O valor da contribuição do participante para o churrasco.
 - `--bring-drink`: Indica se o participante irá trazer uma bebida (true/false).
@@ -53,7 +54,7 @@ dotnet run trinca barbecue create --description "Primeiro Churras da galera!!!!"
 
 
 ```powershell
-dotnet run trinca barbecue participant create --bind "1f54424b-d028-4d98-8b5c-c7e6e47b1ba7" --name "Thamirys Melo" --contribution 245,95 --bring-drink false --username thams --add-items "Item 001;Item 002;Item 003;brinds para o pessoal"
+dotnet run trinca barbecue participant create --bind "your-barbecue-event-identifier-here" --name "Yuri Melo" --contribution 245,95 --bring-drink false --username yuridsm --add-items "Item 001;Item 002;Item 003;brinds para o pessoal"
 ```
 
 ```powershell
