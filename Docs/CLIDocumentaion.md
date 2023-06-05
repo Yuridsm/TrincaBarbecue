@@ -32,7 +32,7 @@ Este comando cria um novo evento de churrasco com os seguintes detalhes:
 Comando:
 
 ```powershell
-dotnet run trinca barbecue participant create --bind "your-barbecue-event-identifier-here" --name "Thamirys Melo" --contribution 245,95 --bring-drink false --username thams --add-items "Item 001;Item 002;Item 003;brinds para o pessoal"
+dotnet run trinca barbecue participant create --bind "your-barbecue-event-identifier-here" --name "Yuri Melo" --contribution 245,95 --bring-drink false --username yuridsm --add-items "Item 001;Item 002;Item 003;brinds para o pessoal"
 ```
 
 Descrição:
