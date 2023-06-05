@@ -78,7 +78,7 @@ namespace TrincaBarbecue.Test.Unit
                 .Build();
 
             // Act
-            barbecue.Reschedule(DateTime.Parse("27/12/2023 13:00:00 -3:00"), DateTime.Parse("27/12/2023 13:00:00 -3:00"));
+            barbecue.Reschedule(DateTime.Parse("27/12/2023 13:00:00 -3:00"), DateTime.Parse("27/12/2023 13:30:00 -3:00"));
 
             // Assert
             Assert.That(barbecue.ParticipantsQuantity() == 1);

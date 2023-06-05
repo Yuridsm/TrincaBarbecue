@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using TrincaBarbecue.Core.Specification;
 using TrincaBarbecue.SharedKernel.DomainException;
 using TrincaBarbecue.SharedKernel.Interfaces;
 
@@ -15,14 +16,18 @@ namespace TrincaBarbecue.Core.Aggregate.Barbecue
 
         private Barbecue(string description, List<string> additionalRemarks, DateTime beginDate, DateTime endDate)
         {
-            if (string.IsNullOrEmpty(description)) throw new ArgumentNullException("You must give a description");
-            if (beginDate > endDate) throw new DateTimeDoesNotMatchException("You must give valid date");
+            var descriptionSpecification = new BarbecueDescriptionSpecification();
+            var dateSpecification = new InvariantDateSpecification();
 
             Description = description;
             AdditionalRemarks = additionalRemarks;
             BeginDate = beginDate;
             EndDate = endDate;
             Identifier = Guid.NewGuid();
+
+            if (!descriptionSpecification.IsSatisfied(this)) throw new DateTimeDoesNotMatchException("You must give a description");
+            if (!dateSpecification.IsSatisfied(this)) throw new DateTimeDoesNotMatchException("You must give valid date");
+
         }
 
         // Used for Assembly Instance
@@ -47,6 +52,9 @@ namespace TrincaBarbecue.Core.Aggregate.Barbecue
         {
             BeginDate = begin; 
             EndDate = end;
+
+            var spec = new InvariantDateSpecification();
+            if (!spec.IsSatisfied(this)) throw new DateTimeDoesNotMatchException("You must give valid date");
         }
 
         public Barbecue AddParticipant(Guid identifier)
