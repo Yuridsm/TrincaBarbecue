@@ -2,18 +2,18 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using SummitPro.Application.Command;
-using SummitPro.Application.Handler;
+using SummitPro.Application.Command.Handler;
+using SummitPro.Application.UseCase.CreateComponent;
 using System.Reflection;
 
-namespace SummitPro.Test.Unit
+namespace SummitPro.Test.Integration
 {
     public class ComponentTest
     {
-
         private IMediator _mediator;
 
         [SetUp]
-        public void SetUp() 
+        public void SetUp()
         {
             var services = new ServiceCollection();
             var assembly = Assembly.GetAssembly(typeof(CreateComponentHandler));
@@ -27,16 +27,16 @@ namespace SummitPro.Test.Unit
         public async Task ShouldMediateCommandAndHandler()
         {
             // Arrange
-            var component = new CreateComponentCommand
+            var input = new CreateComponentInputBoundary
             {
-                Name = "My Custom Component",
-                Description = "Description"
+                Name = "Hydra Componente",
+                Description = "Description of Component",
             };
 
-            var componentId = await _mediator.Send(component);
+            var useCase = new CreateComponentUseCase(_mediator);
 
-            // Act & Assert
-            Assert.That(componentId, Is.InstanceOf<Guid>());
+            // Act
+            Assert.DoesNotThrow(() => useCase.Execute(input));
         }
     }
 }
