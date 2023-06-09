@@ -3,5 +3,5 @@ using SummitPro.Application.UseCase.CreateComponent;
 
 namespace SummitPro.Application.Query
 {
-    public record ListComponenteQuery() : IRequest<CreateComponentOutputBoundary>;
+    public record ListComponenteQuery() : IRequest<IEnumerable<CreateComponentOutputBoundary>>;
 }

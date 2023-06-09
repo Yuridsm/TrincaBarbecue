@@ -15,15 +15,22 @@ namespace SummitPro.Application.Query.Handler
         public Task<IEnumerable<CreateComponentOutputBoundary>> Handle(ListComponenteQuery request, CancellationToken cancellationToken)
         {
             var output = _gateway.GetAll();
+            var tokens = new Dictionary<string, string>();
 
-            var foo = from item in output
+            foreach (var token in output)
+            {
+                var proprieties = token.Split(';');
+                tokens.Add(proprieties[0], proprieties[1]);
+            }
+
+            var result = from item in tokens
                       select new CreateComponentOutputBoundary
                       {
-                          Name = "Something...",
-                          Description = item
+                          Name = item.Key,
+                          Description = item.Value
                       };
 
-            return Task.FromResult(foo);
+            return Task.FromResult(result);
         }
     }
 }

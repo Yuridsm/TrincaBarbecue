@@ -1,16 +1,25 @@
 ﻿using MediatR;
+using SummitPro.SharedKernel.Messaging;
 
 namespace SummitPro.Application.Command.Handler
 {
-    public class CreateComponentHandler : IRequestHandler<CreateComponentCommand>
+    public class CreateComponentHandler : ICommandHandler<CreateComponentCommand, Unit>
     {
-        public async Task Handle(CreateComponentCommand request, CancellationToken cancellationToken)
-        {
-            var id = await Task.FromResult(Guid.NewGuid());
+        private readonly IGateway<string> _gateway;
 
-            Console.WriteLine($"The component has successfully created! - {id}");
+        public CreateComponentHandler(IGateway<string> gateway)
+        {
+            _gateway = gateway;
+        }
+
+        public async Task<Unit> Handle(CreateComponentCommand request, CancellationToken cancellationToken)
+        {
+            _gateway.Insert($"{request.input.Name};{request.input.Description}");
+
             Console.WriteLine($"Name - {request.input.Name}");
             Console.WriteLine($"Description - {request.input.Description}");
+
+            return Unit.Value;
         }
     }
 }

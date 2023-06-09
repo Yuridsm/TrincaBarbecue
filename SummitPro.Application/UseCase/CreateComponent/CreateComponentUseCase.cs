@@ -26,7 +26,7 @@ namespace SummitPro.Application.UseCase.CreateComponent
 
             var output = await _mediator.Send(createQuery);
 
-            return output;
+            return output.First(o => o.Name == input.Name);
         }
     }
 }
