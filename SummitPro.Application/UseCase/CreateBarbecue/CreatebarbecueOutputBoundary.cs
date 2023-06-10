@@ -2,11 +2,11 @@
 
 namespace SummitPro.Application.UseCase.CreateBarbecue
 {
-    public class CreatebarbecueOutputBoundary : IOutputBoundary
+    public class CreateBarbecueOutputBoundary : IOutputBoundary
     {
         public Guid BarbecueIdentifier { get; set; }
 
-        public CreatebarbecueOutputBoundary(Guid barbecueIdentifier)
+        public CreateBarbecueOutputBoundary(Guid barbecueIdentifier)
         {
             BarbecueIdentifier = barbecueIdentifier;
         }

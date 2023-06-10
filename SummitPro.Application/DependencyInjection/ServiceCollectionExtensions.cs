@@ -6,8 +6,7 @@ namespace SummitPro.Application.DependencyInjection
     {
         public static IServiceCollection AddMediator(this IServiceCollection services)
         {
-            services
-                .AddMediatR(o => o.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
+            services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
 
             return services;
         }

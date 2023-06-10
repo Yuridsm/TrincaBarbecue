@@ -20,7 +20,7 @@ namespace SummitPro.Infrastructure.Http.Controller
             return this;
         }
 
-        public async Task<CreatebarbecueOutputBoundary> Handle(CreateBarbecueInputBoundary input)
+        public async Task<CreateBarbecueOutputBoundary> Handle(CreateBarbecueInputBoundary input)
         {
             var output = await _createBarbecueUseCase.Execute(input);
 

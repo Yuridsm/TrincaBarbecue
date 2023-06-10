@@ -42,12 +42,13 @@ namespace SummitPro.CLI.CommandLine
 
         private async Task createBarbecueHandler(string description, string begin, string end, string remark)
         {
-
-            var input = CreateBarbecueInputBoundary.FactoryMethod
-                (description = description,
-                new List<string> { remark },
-                DateTime.Parse(begin),
-                DateTime.Parse(end));
+            var input = new CreateBarbecueInputBoundary
+            {
+                Description = description,
+                BeginDate = DateTime.Parse(begin),
+                EndDate = DateTime.Parse(end),
+                AdditionalObservations = new List<string> { remark }
+            };
 
             _createBarbecueController
                 .SetDistributedCache(new CachedRepository());

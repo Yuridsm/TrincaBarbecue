@@ -9,7 +9,7 @@ namespace SummitPro.Application.UseCase.CreateBarbecue
 {
     public class CreateBarbecueUseCase : IUseCaseAsynchronous
         .WithInputBoundary<CreateBarbecueInputBoundary>
-        .WithOutputBoundary<CreatebarbecueOutputBoundary>
+        .WithOutputBoundary<CreateBarbecueOutputBoundary>
     {
         private ICachedRepository _cachedRepository;
         private readonly IMediator _mediator;
@@ -25,7 +25,7 @@ namespace SummitPro.Application.UseCase.CreateBarbecue
             return this;
         }
 
-        public override async Task<CreatebarbecueOutputBoundary> Execute(CreateBarbecueInputBoundary input)
+        public override async Task<CreateBarbecueOutputBoundary> Execute(CreateBarbecueInputBoundary input)
         {
             var entity = Barbecue.FactoryMethod(input.Description, input.AdditionalObservations, input.BeginDate, input.EndDate);
 
@@ -44,7 +44,7 @@ namespace SummitPro.Application.UseCase.CreateBarbecue
 
             if (_cachedRepository != null) _cachedRepository.Set(entity.Identifier.ToString(), entity);
 
-            return new CreatebarbecueOutputBoundary(entity.Identifier);
+            return new CreateBarbecueOutputBoundary(entity.Identifier);
         }
     }
 }

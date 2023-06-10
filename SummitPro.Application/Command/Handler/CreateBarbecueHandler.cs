@@ -11,9 +11,7 @@ namespace SummitPro.Application.Command.Handler
 
         public CreateBarbecueHandler(IBarbecueRepository barbecueRepository)
         {
-            Console.WriteLine($"I am in {nameof(CreateBarbecueCommand)} with {_barbecueRepository}");
             _barbecueRepository = barbecueRepository;
-            Console.WriteLine($"I am in {nameof(CreateBarbecueCommand)} with {_barbecueRepository}");
         }
 
         public Task<Unit> Handle(CreateBarbecueCommand request, CancellationToken cancellationToken)

@@ -19,12 +19,13 @@ namespace SummitPro.Web.Endpoints.Barbecue
         [HttpPost("/Barbecue")]
         public override async Task<ActionResult<string>> Handle([FromBody] CreateRequest input)
         {
-            var inputBoundary = CreateBarbecueInputBoundary
-                .FactoryMethod(
-                    input.Description,
-                    input.AdditionalObservations,
-                    DateTime.Parse(input.BeginDate),
-                    DateTime.Parse(input.EndDate));
+            var inputBoundary = new CreateBarbecueInputBoundary
+            {
+                Description = input.Description,
+                BeginDate = DateTime.Parse(input.BeginDate),
+                EndDate = DateTime.Parse(input.EndDate),
+                AdditionalObservations = input.AdditionalObservations
+            };
 
             var output = await _createBarbecue
                 .SetDistributedCache(new CachedRepository())
