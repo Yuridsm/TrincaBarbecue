@@ -30,7 +30,7 @@ namespace SummitPro.Application.UseCase.CreateBarbecue
 
             var createBarbecueCommand = new CreateBarbecueCommand(entity);
 
-            await _mediator.Send(createBarbecueCommand);
+            var foo = await _mediator.Send(createBarbecueCommand);
 
             if (_cachedRepository != null) _cachedRepository.Set(entity.Identifier.ToString(), entity);
 

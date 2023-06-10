@@ -1,12 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System.Reflection;
 
 using SummitPro.Application;
-using SummitPro.Application.Command.Handler;
 using SummitPro.Application.UseCase.CreateComponent;
 using SummitPro.Infrastructure;
+using SummitPro.Application.DependencyInjection;
 
 namespace SummitPro.Test.Integration
 {
@@ -18,8 +17,7 @@ namespace SummitPro.Test.Integration
         public void SetUp()
         {
             var services = new ServiceCollection();
-            var assembly = Assembly.GetAssembly(typeof(CreateComponentHandler));
-            services.AddMediatR(o => o.RegisterServicesFromAssembly(assembly));
+            services.AddMediator();
 
             services.AddSingleton<IGateway<string>, Gateway>();
 

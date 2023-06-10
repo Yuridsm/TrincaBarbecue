@@ -16,6 +16,7 @@ using System.Reflection;
 using SummitPro.Application.Query;
 using SummitPro.Application.Repository;
 using SummitPro.Infrastructure.DependencyInjector;
+using SummitPro.Application.DependencyInjection;
 
 namespace SummitPro.Test.Integration
 {
@@ -32,7 +33,9 @@ namespace SummitPro.Test.Integration
 
             services.AddSingleton<IGateway<string>, Gateway>();
             services.AddSingleton<IBarbecueRepository, BarbecueRepositoryInMemory>();
-            services.AddApplicationConfiguration();
+            services.AddMediator();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddInfrastructureInMemory();
 
             // Distributed Cache
             services.AddStackExchangeRedisCache(options =>
@@ -65,11 +68,13 @@ namespace SummitPro.Test.Integration
 
             // Act
             var output = await createBarbecue.Execute(input);
-            var query = _mediator.Send(new GetBarbecueByIdQuery(Guid.Parse(output.GetIdentifier())));
+            var query = await _mediator.Send(new GetBarbecueByIdQuery(Guid.Parse(output.GetIdentifier())));
 
             // Assert
             Assert.IsNotNull(query);
             Assert.IsNotNull(output);
+            Assert.That(output.GetIdentifier(), Is.EqualTo(query.Id.ToString()));
+            Assert.That(input.Description, Is.EqualTo(query.Description));
         }
 
         //[Test]
