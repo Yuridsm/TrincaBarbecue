@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using SummitPro.Application.UseCase.CreateComponent;
+using SummitPro.Application.OutputBoundary;
 
 namespace SummitPro.Application.Query.Handler
 {
-    public class ListComponentHandler : IRequestHandler<ListComponenteQuery, IEnumerable<CreateComponentOutputBoundary>>
+    public class ListComponentHandler : IRequestHandler<ListComponenteQuery, IEnumerable<CreateComponentQueryModel>>
     {
         private readonly IGateway<string> _gateway;
 
@@ -12,7 +12,7 @@ namespace SummitPro.Application.Query.Handler
             _gateway = gateway;
         }
 
-        public Task<IEnumerable<CreateComponentOutputBoundary>> Handle(ListComponenteQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<CreateComponentQueryModel>> Handle(ListComponenteQuery request, CancellationToken cancellationToken)
         {
             var output = _gateway.GetAll();
             var tokens = new Dictionary<string, string>();
@@ -24,7 +24,7 @@ namespace SummitPro.Application.Query.Handler
             }
 
             var result = from item in tokens
-                      select new CreateComponentOutputBoundary
+                      select new CreateComponentQueryModel
                       {
                           Name = item.Key,
                           Description = item.Value

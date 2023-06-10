@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using SummitPro.Core.Aggregate.Barbecue;
+using SummitPro.Application.CommandModel;
 using SummitPro.SharedKernel.Messaging;
 
 namespace SummitPro.Application.Command
 {
-    public record CreateBarbecueCommand(Barbecue input) : ICommand<Unit>;
+    public record CreateBarbecueCommand(CreateBarbecueCommandModel input) : ICommand<Unit>;
 }

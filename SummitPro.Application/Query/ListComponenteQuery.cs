@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SummitPro.Application.UseCase.CreateComponent;
+using SummitPro.Application.OutputBoundary;
 
 namespace SummitPro.Application.Query
 {
-    public record ListComponenteQuery() : IRequest<IEnumerable<CreateComponentOutputBoundary>>;
+    public record ListComponenteQuery() : IRequest<IEnumerable<CreateComponentQueryModel>>;
 }

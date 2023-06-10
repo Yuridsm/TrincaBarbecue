@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Infrastructure.Http.Controller;
 using SummitPro.Infrastructure.DistributedCache;
+using SummitPro.Application.UseCase.CreateBarbecue;
 
 namespace SummitPro.Web.Endpoints.Barbecue
 {
@@ -19,7 +19,7 @@ namespace SummitPro.Web.Endpoints.Barbecue
         [HttpPost("/Barbecue")]
         public override async Task<ActionResult<string>> Handle([FromBody] CreateRequest input)
         {
-            var inputBoundary = CreateInputBoundary
+            var inputBoundary = CreateBarbecueInputBoundary
                 .FactoryMethod(
                     input.Description,
                     input.AdditionalObservations,
@@ -30,7 +30,7 @@ namespace SummitPro.Web.Endpoints.Barbecue
                 .SetDistributedCache(new CachedRepository())
                 .Handle(inputBoundary);
 
-            return Ok(output.GetIdentifier());
+            return Ok(output.BarbecueIdentifier);
         }
     }
 }

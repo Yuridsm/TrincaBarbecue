@@ -1,8 +1,7 @@
-﻿using SummitPro.SharedKernel.Messaging;
+﻿using SummitPro.Application.OutputBoundary;
+using SummitPro.SharedKernel.Messaging;
 
 namespace SummitPro.Application.Query
 {
-    public record GetBarbecueByIdQuery(Guid barbecueIdentifier) : IQuery<Response>;
-
-    public record Response(Guid Id, string Description);
+    public record GetBarbecueByIdQuery(Guid BarbecueIdentifier) : IQuery<GetBarbecueByIdQueryModel>;
 }

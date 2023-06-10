@@ -1,4 +1,5 @@
-﻿using SummitPro.Application.UseCase.ListBarbecues;
+﻿using SummitPro.Application.OutputBoundary;
+using SummitPro.Application.UseCase.ListBarbecues;
 using SummitPro.SharedKernel.Interfaces;
 
 namespace SummitPro.Infrastructure.Http.Controller
@@ -20,7 +21,7 @@ namespace SummitPro.Infrastructure.Http.Controller
             return this;
         }
 
-        public ListBarbecuesOutputBoundary Handle()
+        public ListBarbecuesQueryModel Handle()
         {
             return _listBarbecuesUseCase.Execute();
         }

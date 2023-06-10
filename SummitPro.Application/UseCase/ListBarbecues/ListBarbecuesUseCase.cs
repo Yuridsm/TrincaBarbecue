@@ -1,4 +1,6 @@
-﻿using SummitPro.Application.Repository;
+﻿using SummitPro.Application.Model;
+using SummitPro.Application.OutputBoundary;
+using SummitPro.Application.Repository;
 using SummitPro.Core.Aggregate.Barbecue;
 using SummitPro.Core.Aggregate.Participant;
 using SummitPro.SharedKernel.Interfaces;
@@ -8,7 +10,7 @@ namespace SummitPro.Application.UseCase.ListBarbecues
 {
     public class ListBarbecuesUseCase : IUseCaseSinchronous
         .WithoutInputBoundary
-        .WithOutputBoundary<ListBarbecuesOutputBoundary>
+        .WithOutputBoundary<ListBarbecuesQueryModel>
     {
 
         private readonly IBarbecueRepository _barbecueRepository;
@@ -27,7 +29,7 @@ namespace SummitPro.Application.UseCase.ListBarbecues
             return this;
         }
 
-        public override ListBarbecuesOutputBoundary Execute()
+        public override ListBarbecuesQueryModel Execute()
         {
             var participants = new List<Participant>();
             var participantsModel = new List<ParticipantModel>();
@@ -46,7 +48,7 @@ namespace SummitPro.Application.UseCase.ListBarbecues
                 participants.AddRange(_cachedRepository.GetAll<Participant>());
             }
 
-            ListBarbecuesOutputBoundary output = new ListBarbecuesOutputBoundary
+            ListBarbecuesQueryModel output = new ListBarbecuesQueryModel
             {
                 Barbecues = barbecues.Select(barbecue => new BarbecueModel
                 {

@@ -1,7 +1,7 @@
-﻿using SummitPro.Application.UseCase.CreateBarbecue;
-using SummitPro.Infrastructure.Http.Controller;
+﻿using SummitPro.Infrastructure.Http.Controller;
 using System.CommandLine;
 using SummitPro.Infrastructure.DistributedCache;
+using SummitPro.Application.UseCase.CreateBarbecue;
 
 namespace SummitPro.CLI.CommandLine
 {
@@ -43,7 +43,7 @@ namespace SummitPro.CLI.CommandLine
         private async Task createBarbecueHandler(string description, string begin, string end, string remark)
         {
 
-            var input = CreateInputBoundary.FactoryMethod
+            var input = CreateBarbecueInputBoundary.FactoryMethod
                 (description = description,
                 new List<string> { remark },
                 DateTime.Parse(begin),
@@ -54,7 +54,7 @@ namespace SummitPro.CLI.CommandLine
 
             var output = await _createBarbecueController.Handle(input);
 
-            Console.WriteLine($"Create barbecue with Identifier {output.GetIdentifier()}:");
+            Console.WriteLine($"Create barbecue with Identifier {output.BarbecueIdentifier}:");
             Console.WriteLine($"   Description:             {description}");
             Console.WriteLine($"   Begin DateTime:          {begin}");
             Console.WriteLine($"   End DateTime:            {end}");

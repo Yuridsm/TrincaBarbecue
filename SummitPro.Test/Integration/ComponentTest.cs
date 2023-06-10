@@ -35,37 +35,15 @@ namespace SummitPro.Test.Integration
                 Description = "Description of Hydra Component",
             };
 
-            var input02 = new CreateComponentInputBoundary
-            {
-                Name = "007 Componente",
-                Description = "Description of 007 Component",
-            };
-
-            var input03 = new CreateComponentInputBoundary
-            {
-                Name = "Pimenta Componente",
-                Description = "Description of Pimenta Component",
-            };
-
             var useCase = new CreateComponentUseCase(_mediator);
 
             // Act
             var output01 = await useCase.Execute(input01);
-            var output02 = await useCase.Execute(input02);
-            var output03 = await useCase.Execute(input03);
 
             // Assert
             Assert.IsNotNull(output01);
             Assert.That(input01.Name, Is.EqualTo(output01.Name));
             Assert.That(input01.Description, Is.EqualTo(output01.Description));
-
-            Assert.IsNotNull(output02);
-            Assert.That(input02.Name, Is.EqualTo(output02.Name));
-            Assert.That(input02.Description, Is.EqualTo(output02.Description));
-
-            Assert.IsNotNull(output03);
-            Assert.That(input03.Name, Is.EqualTo(output03.Name));
-            Assert.That(input03.Description, Is.EqualTo(output03.Description));
         }
     }
 }

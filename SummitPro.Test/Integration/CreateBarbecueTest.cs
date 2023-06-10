@@ -64,16 +64,16 @@ namespace SummitPro.Test.Integration
                 "Description 003",
             };
 
-            var input = CreateInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
+            var input = CreateBarbecueInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
 
             // Act
             var output = await createBarbecue.Execute(input);
-            var query = await _mediator.Send(new GetBarbecueByIdQuery(Guid.Parse(output.GetIdentifier())));
+            var query = await _mediator.Send(new GetBarbecueByIdQuery(output.BarbecueIdentifier));
 
             // Assert
             Assert.IsNotNull(query);
             Assert.IsNotNull(output);
-            Assert.That(output.GetIdentifier(), Is.EqualTo(query.Id.ToString()));
+            Assert.That(output.BarbecueIdentifier, Is.EqualTo(query.BarbecueIdentifier));
             Assert.That(input.Description, Is.EqualTo(query.Description));
         }
 
