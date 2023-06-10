@@ -16,6 +16,7 @@ namespace SummitPro.Infrastructure.DependencyInjector
                 .AddSingleton<IBarbecueRepository, BarbecueRepositoryInMemory>()
                 .AddSingleton<IParticipantRepository, ParticipantRepositoryInMemory>()
                 .AddSingleton<IGateway<string>, Gateway>()
+                .AddAutoMapper(typeof(InfrastructureDIExtensions))
                 .AddStackExchangeRedisCache(cache =>
                 {
                     cache.InstanceName = "redisinstance";

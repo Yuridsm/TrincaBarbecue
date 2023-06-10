@@ -5,7 +5,7 @@ using SummitPro.Infrastructure.DistributedCache;
 
 namespace SummitPro.Web.Endpoints.Barbecue
 {
-    public class Create : EndpointBaseSynchronous
+    public class Create : EndpointBaseAssynchronous
         .WithRequest<CreateRequest>
         .WithActionResult<string>
     {
@@ -17,7 +17,7 @@ namespace SummitPro.Web.Endpoints.Barbecue
         }
 
         [HttpPost("/Barbecue")]
-        public override ActionResult<string> Handle([FromBody] CreateRequest input)
+        public override async Task<ActionResult<string>> Handle([FromBody] CreateRequest input)
         {
             var inputBoundary = CreateInputBoundary
                 .FactoryMethod(
@@ -26,12 +26,11 @@ namespace SummitPro.Web.Endpoints.Barbecue
                     DateTime.Parse(input.BeginDate),
                     DateTime.Parse(input.EndDate));
 
-            var output = _createBarbecue
+            var output = await _createBarbecue
                 .SetDistributedCache(new CachedRepository())
-                .Handle(inputBoundary)
-                .GetIdentifier();
+                .Handle(inputBoundary);
 
-            return Ok(output);
+            return Ok(output.GetIdentifier());
         }
     }
 }

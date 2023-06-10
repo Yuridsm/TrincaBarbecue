@@ -40,7 +40,7 @@ namespace SummitPro.CLI.CommandLine
             return _command;
         }
 
-        private void createBarbecueHandler(string description, string begin, string end, string remark)
+        private async Task createBarbecueHandler(string description, string begin, string end, string remark)
         {
 
             var input = CreateInputBoundary.FactoryMethod
@@ -52,7 +52,7 @@ namespace SummitPro.CLI.CommandLine
             _createBarbecueController
                 .SetDistributedCache(new CachedRepository());
 
-            var output = _createBarbecueController.Handle(input);
+            var output = await _createBarbecueController.Handle(input);
 
             Console.WriteLine($"Create barbecue with Identifier {output.GetIdentifier()}:");
             Console.WriteLine($"   Description:             {description}");
