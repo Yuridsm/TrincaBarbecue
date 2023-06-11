@@ -1,4 +1,5 @@
 ﻿using MediatR;
+
 using SummitPro.Application.Command;
 using SummitPro.Application.CommandModel;
 using SummitPro.Application.Interface;
@@ -32,8 +33,6 @@ namespace SummitPro.Application.UseCase.CreateBarbecue
             var createBarbecueCommand = new CreateBarbecueCommand(commandModel);
 
             await _mediator.Send(createBarbecueCommand);
-
-            if (_cachedRepository != null) _cachedRepository.Set(entity.Identifier.ToString(), entity);
 
             return new CreateBarbecueOutputBoundary(entity.Identifier);
         }

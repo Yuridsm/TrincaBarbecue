@@ -8,10 +8,7 @@ namespace SummitPro.Application
     {
         public static void AddUseCase(this IServiceCollection services)
         {
-            services.AddScoped<ICreateBarbecueUseCase>(o =>
-            {
-                return new CreateBarbecueUseCase();
-            });
+            services.AddScoped<ICreateBarbecueUseCase, CreateBarbecueUseCase>();
         }
     }
 }
