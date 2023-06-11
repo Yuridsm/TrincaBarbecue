@@ -18,11 +18,13 @@ namespace SummitPro.Application.Command.Handler
         {
             if (request is null || request.input is null) return Task.FromResult(new Unit());
 
-            var entity = Barbecue.FactoryMethod(
+            var entity = new Barbecue(
+                request.input.BarbecueIdentifier,
                 request.input.Description,
                 request.input.AdditionalObservations,
                 request.input.BeginDate,
-                request.input.EndDate
+                request.input.EndDate,
+                null
                 );
             
             if (request.input.Participants.Any())

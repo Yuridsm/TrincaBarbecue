@@ -2,6 +2,7 @@
 {
     public class CreateBarbecueCommandModel
     {
+        public Guid BarbecueIdentifier { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; } = string.Empty;

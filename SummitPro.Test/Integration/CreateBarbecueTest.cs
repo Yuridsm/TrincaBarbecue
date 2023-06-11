@@ -95,7 +95,7 @@ namespace SummitPro.Test.Integration
             // Arrange
             var createBarbecueUseCase = new CreateBarbecueUseCase(_mediator);
             var updateBarbecueUseCase = new UpdateBarbecueUseCase(_mediator);
-            var getBarbecueByIdUseCase = new GetBarbecueByIdUseCase(_mediator);
+            var getBarbecueByIdUseCase = new GetBarbecueByIdUseCase(_barbecueRepository);
 
             var additional = new List<string>
             {
@@ -114,29 +114,34 @@ namespace SummitPro.Test.Integration
 
             var outputToCreateBarbecue = await createBarbecueUseCase.Execute(inputToCreateBarbecue);
 
-            additional.Add("Description 004");
-            additional.Add("Description 005");
-            additional.Add("Description 006");
+            var otherAdditional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
 
             var inputToUpdateBarbecue = new UpdateBarbecueInputBoundary
             {
                 BarbecueIdentifier = outputToCreateBarbecue.BarbecueIdentifier,
-                AdditionalMarks = additional,
+                AdditionalMarks = otherAdditional,
                 Description = "Other Description",
                 BeginDate = DateTime.Parse("26/06/2025 13:00:00 -3:00"),
                 EndDate = DateTime.Parse("26/06/2025 17:30:00 -3:00"),
             };
             
             // Act
-            UpdateBarbecueOutputBoundary outputToUpdatebarbecue = await updateBarbecueUseCase.Execute(inputToUpdateBarbecue);
+            await updateBarbecueUseCase.Execute(inputToUpdateBarbecue);
             
             GetBarbecueByIdOutputBoundary barbecue = getBarbecueByIdUseCase.Execute(new GetBarbecueByIdInputBoundary
             {
-                BarbecueIdentifier = outputToUpdatebarbecue.BarbecueIdentifier
+                BarbecueIdentifier = outputToCreateBarbecue.BarbecueIdentifier
             });
 
             // Assert
             Assert.That(barbecue.AdditionalRemarks.Count(), Is.EqualTo(6));
+            Assert.That(DateTime.Parse(barbecue.BeginDateTime), Is.EqualTo(inputToUpdateBarbecue.BeginDate));
+            Assert.That(DateTime.Parse(barbecue.EndDateTime), Is.EqualTo(inputToUpdateBarbecue.EndDate));
         }
 
         //[Test]

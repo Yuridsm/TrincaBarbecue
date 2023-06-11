@@ -31,6 +31,7 @@ namespace SummitPro.Application.UseCase.CreateBarbecue
 
             var commandModel = new CreateBarbecueCommandModel
             {
+                BarbecueIdentifier = entity.Identifier,
                 BeginDate = entity.BeginDate,
                 EndDate = entity.EndDate,
                 Description = entity.Description,

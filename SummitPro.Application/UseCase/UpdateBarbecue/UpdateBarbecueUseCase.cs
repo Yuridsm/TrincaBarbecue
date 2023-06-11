@@ -1,11 +1,13 @@
 ﻿using MediatR;
+using SummitPro.Application.Command;
+using SummitPro.Application.CommandModel;
 using SummitPro.SharedKernel.UseCaseContract;
 
 namespace SummitPro.Application.UseCase.UpdateBarbecue
 {
     public class UpdateBarbecueUseCase : IUseCaseAsynchronous
         .WithInputBoundary<UpdateBarbecueInputBoundary>
-        .WithOutputBoundary<UpdateBarbecueOutputBoundary>
+        .WithoutOutputBoundary
     {
         private readonly IMediator _mediator;
 
@@ -14,9 +16,20 @@ namespace SummitPro.Application.UseCase.UpdateBarbecue
             _mediator = mediator;
         }
 
-        public override Task<UpdateBarbecueOutputBoundary> Execute(UpdateBarbecueInputBoundary inputBoundary)
+        public override async Task Execute(UpdateBarbecueInputBoundary inputBoundary)
         {
-            throw new NotImplementedException();
+            var model = new UpdateBarbecueCommandModel
+            {
+                BarbecueIdentifier = inputBoundary.BarbecueIdentifier,
+                AdditionalMarks = inputBoundary.AdditionalMarks,
+                BeginDate = inputBoundary.BeginDate,
+                EndDate = inputBoundary.EndDate,
+                Description = inputBoundary.Description
+            };
+
+            var command = new UpdateBarbecueCommand(model);
+
+            await _mediator.Send(command);
         }
     }
 }

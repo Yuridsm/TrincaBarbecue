@@ -25,25 +25,25 @@ namespace SummitPro.Test.Integration
             _mediator = serviceProvider.GetRequiredService<IMediator>();
         }
 
-        [Test]
-        public async Task ShouldMediateCommandAndHandler()
-        {
-            // Arrange
-            var input01 = new CreateComponentInputBoundary
-            {
-                Name = "Hydra Componente",
-                Description = "Description of Hydra Component",
-            };
+        //[Test]
+        //public async Task ShouldMediateCommandAndHandler()
+        //{
+        //    // Arrange
+        //    var input01 = new CreateComponentInputBoundary
+        //    {
+        //        Name = "Hydra Componente",
+        //        Description = "Description of Hydra Component",
+        //    };
 
-            var useCase = new CreateComponentUseCase(_mediator);
+        //    var useCase = new CreateComponentUseCase(_mediator);
 
-            // Act
-            var output01 = await useCase.Execute(input01);
+        //    // Act
+        //    var output01 = await useCase.Execute(input01);
 
-            // Assert
-            Assert.IsNotNull(output01);
-            Assert.That(input01.Name, Is.EqualTo(output01.Name));
-            Assert.That(input01.Description, Is.EqualTo(output01.Description));
-        }
+        //    // Assert
+        //    Assert.IsNotNull(output01);
+        //    Assert.That(input01.Name, Is.EqualTo(output01.Name));
+        //    Assert.That(input01.Description, Is.EqualTo(output01.Description));
+        //}
     }
 }

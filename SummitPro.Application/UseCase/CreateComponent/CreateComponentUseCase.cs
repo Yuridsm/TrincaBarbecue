@@ -7,7 +7,7 @@ namespace SummitPro.Application.UseCase.CreateComponent
 {
     public class CreateComponentUseCase : IUseCaseAsynchronous
         .WithInputBoundary<CreateComponentInputBoundary>
-        .WithOutputBoundary<CreateComponentOutputBoundary>
+        .WithoutOutputBoundary
     {
         private readonly IMediator _mediator;
 
@@ -16,7 +16,7 @@ namespace SummitPro.Application.UseCase.CreateComponent
             _mediator = mediator;
         }
 
-        public override async Task<CreateComponentOutputBoundary> Execute(CreateComponentInputBoundary input)
+        public override async Task Execute(CreateComponentInputBoundary input)
         {
             var createCommand = new CreateComponentCommand(input);
 
@@ -25,12 +25,6 @@ namespace SummitPro.Application.UseCase.CreateComponent
             var createQuery = new ListComponenteQuery();
 
             var output = await _mediator.Send(createQuery);
-
-            return new CreateComponentOutputBoundary
-            {
-                Name = output.First().Name,
-                Description = output.First().Description
-            };
         }
     }
 }

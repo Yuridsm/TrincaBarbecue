@@ -32,14 +32,15 @@ namespace SummitPro.Core.Aggregate.Barbecue
 
         // Used for Assembly Instance
         [JsonConstructor]
-        public Barbecue(Guid identifier, string description, List<string> additionalRemarks, DateTime beginDate, DateTime endDate, List<Guid> participants)
+        public Barbecue(Guid identifier, string description, List<string> additionalRemarks, DateTime beginDate, DateTime endDate, List<Guid>? participants)
         {
             Identifier = identifier;
             Description = description;
             AdditionalRemarks = additionalRemarks;
             BeginDate = beginDate;
             EndDate = endDate;
-            Participants = participants;
+
+            if (participants is not null) Participants.AddRange(participants);
         }
 
         public static Barbecue FactoryMethod(string description, List<string> additionalRemarks, DateTime beginDate, DateTime endDate)
