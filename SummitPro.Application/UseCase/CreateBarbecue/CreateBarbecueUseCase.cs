@@ -1,28 +1,18 @@
 ﻿using MediatR;
 using SummitPro.Application.Command;
 using SummitPro.Application.CommandModel;
+using SummitPro.Application.Interface;
 using SummitPro.Core.Aggregate.Barbecue;
-using SummitPro.SharedKernel.Interfaces;
-using SummitPro.SharedKernel.UseCaseContract;
 
 namespace SummitPro.Application.UseCase.CreateBarbecue
 {
-    public class CreateBarbecueUseCase : IUseCaseAsynchronous
-        .WithInputBoundary<CreateBarbecueInputBoundary>
-        .WithOutputBoundary<CreateBarbecueOutputBoundary>
+    public class CreateBarbecueUseCase : ICreateBarbecueUseCase
     {
-        private ICachedRepository _cachedRepository;
         private readonly IMediator _mediator;
 
         public CreateBarbecueUseCase(IMediator mediator)
         {
             _mediator = mediator;
-        }
-
-        public CreateBarbecueUseCase SetDistributedCache(ICachedRepository cachedRepository)
-        {
-            _cachedRepository = cachedRepository;
-            return this;
         }
 
         public override async Task<CreateBarbecueOutputBoundary> Execute(CreateBarbecueInputBoundary input)
