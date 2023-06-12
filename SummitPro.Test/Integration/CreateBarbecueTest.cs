@@ -4,14 +4,12 @@ using MediatR;
 
 using SummitPro.Infrastructure.RepositoryInMemory;
 using SummitPro.Application.UseCase.CreateBarbecue;
-using SummitPro.Infrastructure.DistributedCache;
 using SummitPro.Application;
 using SummitPro.Infrastructure;
 using SummitPro.Application.Query;
 using SummitPro.Application.Repository;
 using SummitPro.Infrastructure.DependencyInjector;
 using SummitPro.Application.DependencyInjection;
-using SummitPro.SharedKernel.Interfaces;
 using SummitPro.Application.Interface;
 
 namespace SummitPro.Test.Integration
