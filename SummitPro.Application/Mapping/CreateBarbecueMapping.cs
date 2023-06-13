@@ -1,24 +1,8 @@
 ﻿using AutoMapper;
 using SummitPro.Application.CommandModel;
+using SummitPro.Application.Model;
 using SummitPro.Application.UseCase.CreateBarbecue;
-
-//CreateMap<Barbecue, BarbecueModel>()
-//                .ForMember(destination => destination.Identifier, map =>
-//                {
-//                    map.MapFrom(src => src.Identifier);
-//                })
-//                .ForMember(destination => destination.BeginDate, map =>
-//                {
-//                    map.MapFrom(src => src.BeginDate);
-//                })
-//                .ForMember(destination => destination.EndDate, map =>
-//                {
-//                    map.MapFrom(src => src.EndDate);
-//                })
-//                .ForMember(destination => destination.Participants, map =>
-//                {
-//                    map.MapFrom(src => src.Participants.ConvertAll(item => item.ToString()));
-//                });
+using SummitPro.Core.Aggregate.Barbecue;
 
 namespace SummitPro.Application.Mapping
 {
@@ -26,7 +10,39 @@ namespace SummitPro.Application.Mapping
     {
         public CreateBarbecueProfile()
         {
-            //CreateMap<CreateBarbecueInputBoundary, CreateBarbecueCommandModel>();
+                CreateMap<CreateBarbecueInputBoundary, Barbecue>()
+                .ConstructUsing(src => Barbecue.FactoryMethod(
+                        src.Description,
+                        src.AdditionalObservations,
+                        src.BeginDate,
+                        src.EndDate
+                    ));
+
+            CreateMap<Barbecue, CreateBarbecueCommandModel>()
+                .ForMember(destination => destination.BarbecueIdentifier, map =>
+                {
+                    map.MapFrom(src => src.Identifier);
+                })
+                .ForMember(destination => destination.BeginDate, map =>
+                {
+                    map.MapFrom(src => src.BeginDate);
+                })
+                .ForMember(destination => destination.EndDate, map =>
+                {
+                    map.MapFrom(src => src.EndDate);
+                })
+                .ForMember(destination => destination.Description, map =>
+                {
+                    map.MapFrom(src => src.Description);
+                })
+                .ForMember(destination => destination.Participants, map =>
+                {
+                    map.MapFrom(src => src.Participants);
+                })
+                .ForMember(destination => destination.AdditionalObservations, map =>
+                {
+                    map.MapFrom(src => src.AdditionalRemarks);
+                });
         }
     }
 }

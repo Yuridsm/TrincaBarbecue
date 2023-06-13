@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
 using SummitPro.Application;
-using SummitPro.Application.UseCase.CreateComponent;
 using SummitPro.Infrastructure;
 using SummitPro.Application.DependencyInjection;
 
