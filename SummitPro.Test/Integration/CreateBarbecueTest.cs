@@ -11,6 +11,9 @@ using SummitPro.Application.Repository;
 using SummitPro.Infrastructure.DependencyInjector;
 using SummitPro.Application.DependencyInjection;
 using SummitPro.Application.Interface;
+using SummitPro.SharedKernel.DomainException;
+using SummitPro.Application.UseCase.GetBarbecueById;
+using SummitPro.Application.UseCase.UpdateBarbecue;
 
 namespace SummitPro.Test.Integration
 {
@@ -45,7 +48,7 @@ namespace SummitPro.Test.Integration
         }
 
         [Test]
-        public async Task ShouldCreateBarbecueByUsingDistributedCache()
+        public async Task ShouldCreateBarbecueByUsingRepositoryInMemory()
         {
             // Arrange
             ICreateBarbecueUseCase createBarbecue = _serviceProvider.GetRequiredService<ICreateBarbecueUseCase>();
@@ -77,81 +80,86 @@ namespace SummitPro.Test.Integration
             Assert.That(input.Description, Is.EqualTo(query.Description));
         }
 
-        //[Test]
-        //public async Task ShouldUpdateBarbecue()
-        //{
-        //    // Arrange
-        //    var createBarbecueUseCase = new CreateBarbecueUseCase(_mediator);
-        //    var updateBarbecueUseCase = new UpdateBarbecueUseCase(_mediator);
-        //    var getBarbecueByIdUseCase = new GetBarbecueByIdUseCase(_barbecueRepository);
+        [Test]
+        public async Task ShouldUpdateBarbecue()
+        {
+            // Arrange
+            var createBarbecueUseCase = _serviceProvider.GetRequiredService<ICreateBarbecueUseCase>();
+            var updateBarbecueUseCase = _serviceProvider.GetRequiredService<IUpdateBarbecueUseCase>();
+            var getBarbecueByIdUseCase = _serviceProvider.GetRequiredService<IGetBarbecueByIdUseCase>();
 
-        //    var additional = new List<string>
-        //    {
-        //        "Description 001",
-        //        "Description 002",
-        //        "Description 003",
-        //    };
+            var additional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
 
-        //    var inputToCreateBarbecue = new CreateBarbecueInputBoundary
-        //    {
-        //        Description = "Description 01",
-        //        BeginDate = DateTime.Parse("26/05/2025 01:00:00 -3:00"),
-        //        EndDate = DateTime.Parse("26/05/2025 05:45:00 -3:00"),
-        //        AdditionalObservations = additional
-        //    };
+            var inputToCreateBarbecue = new CreateBarbecueInputBoundary
+            {
+                Description = "Description 01",
+                BeginDate = DateTime.Parse("26/05/2025 01:00:00 -3:00"),
+                EndDate = DateTime.Parse("26/05/2025 05:45:00 -3:00"),
+                AdditionalObservations = additional
+            };
 
-        //    var outputToCreateBarbecue = await createBarbecueUseCase.Execute(inputToCreateBarbecue);
+            var outputToCreateBarbecue = await createBarbecueUseCase.Execute(inputToCreateBarbecue);
 
-        //    var otherAdditional = new List<string>
-        //    {
-        //        "Description 001",
-        //        "Description 002",
-        //        "Description 003",
-        //    };
+            var otherAdditional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
 
-        //    var inputToUpdateBarbecue = new UpdateBarbecueInputBoundary
-        //    {
-        //        BarbecueIdentifier = outputToCreateBarbecue.BarbecueIdentifier,
-        //        AdditionalMarks = otherAdditional,
-        //        Description = "Other Description",
-        //        BeginDate = DateTime.Parse("26/06/2025 13:00:00 -3:00"),
-        //        EndDate = DateTime.Parse("26/06/2025 17:30:00 -3:00"),
-        //    };
+            var inputToUpdateBarbecue = new UpdateBarbecueInputBoundary
+            {
+                BarbecueIdentifier = outputToCreateBarbecue.BarbecueIdentifier,
+                AdditionalMarks = otherAdditional,
+                Description = "Other Description",
+                BeginDate = DateTime.Parse("26/06/2025 13:00:00 -3:00"),
+                EndDate = DateTime.Parse("26/06/2025 17:30:00 -3:00"),
+            };
 
-        //    // Act
-        //    await updateBarbecueUseCase.Execute(inputToUpdateBarbecue);
+            // Act
+            await updateBarbecueUseCase.Execute(inputToUpdateBarbecue);
 
-        //    GetBarbecueByIdOutputBoundary barbecue = getBarbecueByIdUseCase.Execute(new GetBarbecueByIdInputBoundary
-        //    {
-        //        BarbecueIdentifier = outputToCreateBarbecue.BarbecueIdentifier
-        //    });
+            var updatedBarbecue = await getBarbecueByIdUseCase.Execute(new GetBarbecueByIdInputBoundary
+            {
+                BarbecueIdentifier = outputToCreateBarbecue.BarbecueIdentifier
+            });
 
-        //    // Assert
-        //    Assert.That(barbecue.AdditionalRemarks.Count(), Is.EqualTo(6));
-        //    Assert.That(DateTime.Parse(barbecue.BeginDateTime), Is.EqualTo(inputToUpdateBarbecue.BeginDate));
-        //    Assert.That(DateTime.Parse(barbecue.EndDateTime), Is.EqualTo(inputToUpdateBarbecue.EndDate));
-        //}
+            // Assert
+            Assert.That(updatedBarbecue.AdditionalRemarks.Count(), Is.EqualTo(6));
+            Assert.That(DateTime.Parse(updatedBarbecue.BeginDateTime), Is.EqualTo(inputToUpdateBarbecue.BeginDate));
+            Assert.That(DateTime.Parse(updatedBarbecue.EndDateTime), Is.EqualTo(inputToUpdateBarbecue.EndDate));
+        }
 
-        //[Test]
-        //public void ShouldThrowException_WhetherDateTimeDoesNotMatchWithNow()
-        //{
-        //    // Arrange
-        //    var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
-        //    var barbecue = new CreateBarbecueUseCase(barbecueRepository);
-        //    var additional = new List<string>
-        //    {
-        //        "Description 001",
-        //        "Description 002",
-        //        "Description 003",
-        //    };
+        [Test]
+        public void ShouldThrowException_WhetherDateTimeDoesNotMatchWithNow()
+        {
+            // Arrange
+            var barbecue = _serviceProvider.GetRequiredService<ICreateBarbecueUseCase>();
+            var additional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
 
-        //    var input = CreateInputBoundary.FactoryMethod("Trinca Churras", additional, DateTime.Parse("26/05/2025 05:42:00 -3:00"), DateTime.Parse("26/05/2023 05:42:00 -3:00"));
+            var input = new CreateBarbecueInputBoundary
+            {
+                Description = "Our first barbecue",
+                AdditionalObservations = additional,
+                BeginDate = DateTime.Parse("26/05/2025 05:42:00 -3:00"),
+                EndDate = DateTime.Parse("26/05/2023 05:42:00 -3:00")
+            };
 
-        //    // Act & Assert
-        //    Assert.Throws<DateTimeDoesNotMatchException>(() =>
-        //    {
-        //        var identifier = barbecue.Execute(input);
-        //    });
-        //}
+            // Act & Assert
+            Assert.ThrowsAsync<DateTimeDoesNotMatchException>(async () =>
+            {
+                var identifier = await barbecue.Execute(input);
+            });
+        }
     }
 }

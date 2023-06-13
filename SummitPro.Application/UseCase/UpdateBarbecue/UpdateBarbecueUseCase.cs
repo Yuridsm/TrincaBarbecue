@@ -1,13 +1,11 @@
 ﻿using MediatR;
 using SummitPro.Application.Command;
 using SummitPro.Application.CommandModel;
-using SummitPro.SharedKernel.UseCaseContract;
+using SummitPro.Application.Interface;
 
 namespace SummitPro.Application.UseCase.UpdateBarbecue
 {
-    public class UpdateBarbecueUseCase : IUseCaseAsynchronous
-        .WithInputBoundary<UpdateBarbecueInputBoundary>
-        .WithoutOutputBoundary
+    public class UpdateBarbecueUseCase : IUpdateBarbecueUseCase
     {
         private readonly IMediator _mediator;
 

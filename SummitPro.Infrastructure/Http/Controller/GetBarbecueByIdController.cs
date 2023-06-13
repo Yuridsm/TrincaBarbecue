@@ -28,9 +28,9 @@ namespace SummitPro.Infrastructure.Http.Controller
             return this;
         }
 
-        public GetBarbecueByIdResponse Handle(GetBarbecueByIdInputBoundary input)
+        public async Task<GetBarbecueByIdResponse> Handle(GetBarbecueByIdInputBoundary input)
         {
-            var barbecue = _getBarbecueByIdUseCase
+            var barbecue = await _getBarbecueByIdUseCase
                 .SetDistributedCache(new CachedRepository())
                 .Execute(input);
 
