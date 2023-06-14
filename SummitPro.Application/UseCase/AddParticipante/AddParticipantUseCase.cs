@@ -1,61 +1,46 @@
-﻿using SummitPro.Application.Repository;
-using SummitPro.Core.Aggregate.Barbecue;
+﻿using MediatR;
+
+using SummitPro.Application.Command;
+using SummitPro.Application.CommandModel;
+using SummitPro.Application.Interface;
 using SummitPro.Core.Aggregate.Participant;
-using SummitPro.SharedKernel.Interfaces;
-using SummitPro.SharedKernel.UseCaseContract;
 
 namespace SummitPro.Application.UseCase.AddParticipante
 {
-    public class AddParticipantUseCase : IUseCaseSinchronous
-        .WithInputBoundary<AddParticipantInputBoundary>
-        .WithOutputBoundary<AddParticipantOutputBoundary>
+    public class AddParticipantUseCase : IAddParticipantUseCase
     {
-        private readonly IBarbecueRepository _barbecueRepository;
-        private readonly IParticipantRepository _participantRepository;
-        private ICachedRepository _cachedRepository;
+        private readonly IMediator _mediator;
 
-        public AddParticipantUseCase(IBarbecueRepository barbecueRepository, IParticipantRepository participantRepository)
+        public AddParticipantUseCase(IMediator mediator)
         {
-            _barbecueRepository = barbecueRepository;
-            _participantRepository = participantRepository;
-        }
-
-        public AddParticipantUseCase SetDistributedCache(ICachedRepository cachedRepository)
-        {
-            _cachedRepository = cachedRepository;
-            return this;
+            _mediator = mediator;
         }
 
         public override AddParticipantOutputBoundary Execute(AddParticipantInputBoundary inputBoundary)
         {
-            Barbecue barbecue = default;
+            var entity = Participant
+                .FactoryMethod(inputBoundary.Name, inputBoundary.Username, inputBoundary.SuggestionContribution)
+                .AddBringDrink(inputBoundary.BringDrink)
+                .AddItems(inputBoundary.Items);
 
-            if (_cachedRepository == null)
-                barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
-            else
-                barbecue = _cachedRepository.Get<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
-
-            if (barbecue == null) throw new ArgumentException("There is no barbecue signed.");
-
-            var participant = Participant
-                .FactoryMethod(
-                    inputBoundary.Name,
-                    inputBoundary.Username,
-                    inputBoundary.SuggestionContribution);
-
-            // In Memory in one Process
-            participant.AddItems(inputBoundary.Items);
-            _participantRepository.Add(participant);
-
-            // In Distributed Cache
-            if (_cachedRepository != null)
+            var model = new AddParticipantCommandModel
             {
-                //_cachedRepository.DeleteList<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
-                //_cachedRepository.Set(inputBoundary.BarbecueIdentifier.ToString(), barbecue);
-                _cachedRepository.Set(participant.Identifier.ToString(), participant);
-            }
+                Name = entity.Name.Value,
+                Username = entity.Username.Value,
+                SuggestionContribution = entity.ContributionValue.Value,
+                BringDrink = entity.BringDrink,
+                BarbecueIdentifier = inputBoundary.BarbecueIdentifier,
+                Items = entity.Items
+            };
 
-            return new AddParticipantOutputBoundary { ParticipantIdentifier = participant.Identifier };
+            var command = new AddParticipantCommand(model);
+
+            _mediator.Send(command);
+
+            return new AddParticipantOutputBoundary
+            {
+                ParticipantIdentifier = entity.Identifier
+            };
         }
     }
 }

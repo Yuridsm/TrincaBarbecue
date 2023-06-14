@@ -1,68 +1,45 @@
-﻿using SummitPro.Application.Repository;
-using SummitPro.Core.Aggregate.Barbecue;
-using SummitPro.Core.Aggregate.Participant;
-using SummitPro.SharedKernel.Interfaces;
-using SummitPro.SharedKernel.UseCaseContract;
+﻿using MediatR;
+using SummitPro.Application.Interface;
+using SummitPro.Application.Repository;
 
 namespace SummitPro.Application.UseCase.BindParticipant
 {
-    public class BindParticipantUseCase : IUseCaseSinchronous
-        .WithInputBoundary<BindParticipantInputBoundary>
-        .WithoutOutputBoundary
+    public class BindParticipantUseCase : IBindParticipantUseCase
     {
         private readonly IBarbecueRepository _barbecueRepository;
         private readonly IParticipantRepository _participantRepository;
-        private ICachedRepository _cachedRepository;
+        private readonly IMediator _mediator;
 
-        public BindParticipantUseCase(IBarbecueRepository barbecueRepository, IParticipantRepository participantRepository)
+        public BindParticipantUseCase(
+            IBarbecueRepository barbecueRepository, 
+            IParticipantRepository participantRepository,
+            IMediator mediator
+            )
         {
             _barbecueRepository = barbecueRepository;
             _participantRepository = participantRepository;
-        }
-
-        public BindParticipantUseCase SetDistributedCache(ICachedRepository cachedRepository)
-        {
-            _cachedRepository = cachedRepository;
-            return this;
+            _mediator = mediator;
         }
 
         public override void Execute(BindParticipantInputBoundary inputBoundary)
         {
-            if (inputBoundary == null) throw new ArgumentNullException("Input can not be empty.");
+            //if (inputBoundary == null) throw new ArgumentNullException("Input can not be empty.");
 
-            if (_cachedRepository != null)
-            {
-                var barbecue = _cachedRepository.Get<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
+            //var barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
 
-                if (barbecue == null) throw new ArgumentException("Barbecue does not exist.");
+            //if (barbecue == null) throw new ArgumentNullException("Barbecue does not exist.");
 
-                if (barbecue.Participants.Contains(inputBoundary.ParticipantIdentifier)) return;
+            //if (barbecue.Participants.Contains(inputBoundary.ParticipantIdentifier)) return;
 
-                var participant = _cachedRepository.Get<Participant>(inputBoundary.ParticipantIdentifier.ToString());
+            //var participant = _participantRepository.Get(inputBoundary.ParticipantIdentifier);
 
-                if (participant == null) throw new ArgumentNullException("Participant does not exist.");
+            //if (participant == null) throw new ArgumentNullException("Participant does not exist.");
 
-                barbecue.AddParticipant(inputBoundary.ParticipantIdentifier);
+            //barbecue.AddParticipant(inputBoundary.ParticipantIdentifier);
 
-                _cachedRepository.DeleteList<Barbecue>(inputBoundary.BarbecueIdentifier.ToString());
-                _cachedRepository.Set(inputBoundary.BarbecueIdentifier.ToString(), barbecue);
-            }
-            else
-            {
-                var barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
+            //_barbecueRepository.Update(barbecue);
 
-                if (barbecue == null) throw new ArgumentNullException("Barbecue does not exist.");
-
-                if (barbecue.Participants.Contains(inputBoundary.ParticipantIdentifier)) return;
-
-                var participant = _participantRepository.Get(inputBoundary.ParticipantIdentifier);
-
-                if (participant == null) throw new ArgumentNullException("Participant does not exist.");
-
-                barbecue.AddParticipant(inputBoundary.ParticipantIdentifier);
-
-                _barbecueRepository.Update(barbecue);
-            }
+            //_mediator.Send();
         }
     }
 }
