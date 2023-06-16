@@ -1,5 +1,5 @@
 # TrincaBarbecue
-
+[![Sparkline](https://stars.medv.io/ardalis/specification.svg)](https://github.com/Yuridsm/SummitPro)
 <div>
     <img src="./Docs/TrincaCLI.gif">
 </div>
