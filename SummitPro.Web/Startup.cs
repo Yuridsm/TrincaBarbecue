@@ -23,12 +23,12 @@ namespace SummitPro.Web
             services.AddSingleton<AddParticipantUseCase>();
             services.AddSingleton<BindParticipantUseCase>();
             services.AddSingleton<GetBarbecueByIdUseCase>();
-            services.AddSingleton<GetParticipantsUseCase>();
+            //services.AddSingleton<GetParticipantsUseCase>();
 
             services.AddTransient<CreateBarbecueController>();
-            services.AddTransient<AddParticipantController>();
+            //services.AddTransient<AddParticipantController>();
             services.AddTransient<BindParticipantTobarbecueController>();
-            services.AddTransient<GetbarbecueByIdController>();
+            //services.AddTransient<GetbarbecueByIdController>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

@@ -21,16 +21,16 @@ class Program
 
         var participantCommand = new ParticipantCommand();
 
-        var createParticipantCommand = service.GetService<CreateParticipantCLI>();
+        //var createParticipantCommand = service.GetService<CreateParticipantCLI>();
         var createTrincaCommand = service.GetService<CreateBarbecueCLI>();
-        var listTrincaCommand = service.GetService<ListBarbecueCLI>();
+        //var listTrincaCommand = service.GetService<ListBarbecueCLI>();
 
         // Subcommands
-        participantCommand.SetCommand(createParticipantCommand.Build());
+        //participantCommand.SetCommand(createParticipantCommand.Build());
 
         var barbecue = new BarbecueCommand();
         barbecue.SetCommand(createTrincaCommand.Build());
-        barbecue.SetCommand(listTrincaCommand.Build());
+        //barbecue.SetCommand(listTrincaCommand.Build());
         barbecue.SetCommand(participantCommand.Build());
 
         var trinca = new TrincaCommand();
@@ -49,18 +49,18 @@ class Program
             .AddScoped<AddParticipantUseCase>()
             .AddScoped<BindParticipantUseCase>()
             .AddScoped<GetBarbecueByIdUseCase>()
-            .AddScoped<GetParticipantsUseCase>()
+            //.AddScoped<GetParticipantsUseCase>()
             .AddScoped<ListBarbecuesUseCase>()
 
             .AddScoped<CreateBarbecueController>()
-            .AddScoped<AddParticipantController>()
+            //.AddScoped<AddParticipantController>()
             .AddScoped<BindParticipantTobarbecueController>()
-            .AddScoped<GetbarbecueByIdController>()
-            .AddScoped<ListBarbecuesController>()
+            //.AddScoped<GetbarbecueByIdController>()
+            //.AddScoped<ListBarbecuesController>()
 
             .AddScoped<CreateBarbecueCLI>()
-            .AddScoped<ListBarbecueCLI>()
-            .AddScoped<CreateParticipantCLI>()
+            //.AddScoped<ListBarbecueCLI>()
+            //.AddScoped<CreateParticipantCLI>()
             .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return serviceProvider.BuildServiceProvider();

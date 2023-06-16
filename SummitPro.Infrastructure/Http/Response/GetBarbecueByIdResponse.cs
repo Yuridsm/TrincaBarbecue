@@ -1,4 +1,4 @@
-﻿using SummitPro.Application.UseCase.GetParticipant;
+﻿using SummitPro.Application.Model;
 
 namespace SummitPro.Infrastructure.Http.Response
 {
@@ -9,6 +9,6 @@ namespace SummitPro.Infrastructure.Http.Response
         public string BeginDateTime { get; set; } = string.Empty;
         public string EndDateTime { get; set; } = string.Empty;
         public IEnumerable<string> AdditionalRemarks { get; set; }
-        public IEnumerable<ParticipantOutputBoundary> Participants { get; set; }
+        public IEnumerable<ParticipantModel> Participants { get; set; }
     }
 }

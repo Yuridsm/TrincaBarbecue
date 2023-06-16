@@ -41,6 +41,11 @@ namespace SummitPro.Core.Aggregate.Participant
             return new Participant(new Name(name), new Username(username), new Contribution(contributionSugestion), bringDrink);
         }
 
+        public static Participant FactoryMethod(Guid participantIdentifier, string name, double contributionSugestion, string username, List<string> items, bool bringDrink = false)
+        {
+            return new Participant(participantIdentifier, new Name(name), new Contribution(contributionSugestion), bringDrink, items, new Username(username));
+        }
+
         public Participant AddItem(string item)
         {
             Items.Add(item);

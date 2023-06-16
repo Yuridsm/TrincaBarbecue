@@ -1,4 +1,5 @@
 ﻿using MediatR;
+
 using SummitPro.Application.CommandModel;
 using SummitPro.SharedKernel.Messaging;
 

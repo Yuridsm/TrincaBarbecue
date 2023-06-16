@@ -1,63 +1,87 @@
-﻿//using AutoMapper;
-//using NUnit.Framework;
-//using SummitPro.Application.UseCase.CreateBarbecue;
-//using SummitPro.Infrastructure.RepositoryInMemory.Models;
-//using SummitPro.Application.UseCase.AddParticipante;
-//using SummitPro.Infrastructure.RepositoryInMemory;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
-//namespace SummitPro.Test.Integration
-//{
-//    [TestFixture]
-//    public class AddParticipantTest
-//    {
-//        private Mapper _mapper;
+using SummitPro.Application;
+using SummitPro.Application.DependencyInjection;
+using SummitPro.Application.Interface;
+using SummitPro.Application.Query;
+using SummitPro.Application.UseCase.AddParticipante;
+using SummitPro.Application.UseCase.BindParticipant;
+using SummitPro.Application.UseCase.CreateBarbecue;
+using SummitPro.Infrastructure;
+using SummitPro.Infrastructure.DependencyInjector;
 
-//        [SetUp]
-//        public void SetUp()
-//        {
-//            var mapperConfig = new MapperConfiguration(config =>
-//            {
-//                config.AddProfile<ParticipantModelMapperProfile>();
-//                config.AddProfile<BarbecueModelMapperProfile>();
-//            });
-//            _mapper = new Mapper(mapperConfig);
-//        }
+namespace SummitPro.Test.Integration
+{
+    [TestFixture]
+    public class AddParticipantTest
+    {
+        private IMediator _mediator;
+        private ServiceProvider _serviceProvider;
 
-//        [Test]
-//        public void ShouldCreateParticipant()
-//        {
-//            // Arrange
-//            var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
-//            var participantRepository = new ParticipantRepositoryInMemory(_mapper);
-//            var participantUseCase = new AddParticipantUseCase(barbecueRepository, participantRepository);
-//            var barbecueUseCase = new CreateBarbecueUseCase(barbecueRepository);
-//            var additional = new List<string>
-//            {
-//                "Description 001",
-//                "Description 002",
-//                "Description 003",
-//            };
+        [SetUp]
+        public void SetUp()
+        {
+            var services = new ServiceCollection();
 
-//            var barbecueInput = CreateInputBoundary.FactoryMethod("Description 01", additional, DateTime.Parse("26/05/2025 01:00:00 -3:00"), DateTime.Parse("26/05/2025 05:42:00 -3:00"));
-//            var barbecueOutput = barbecueUseCase
-//                .Execute(barbecueInput);
+            services.AddSingleton<IGateway<string>, Gateway>();
+            services.AddMediator();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddInfrastructureInMemory();
+            services.AddUseCase();
+            services.AddLog();
 
-//            var items = new List<string>
-//            {
-//                "Item 01",
-//                "Item 02",
-//                "Item 03"
-//            };
+            _serviceProvider = services.BuildServiceProvider();
+            _mediator = _serviceProvider.GetRequiredService<IMediator>();
+        }
 
-//            var participantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 200.00f, true, Guid.Parse(barbecueOutput.GetIdentifier()), items);
+        [Test]
+        public async Task ShouldBindParticipantTobarbecue()
+        {
+            // Arrange
+            var barbecueUseCase = _serviceProvider.GetRequiredService<ICreateBarbecueUseCase>();
+            var participantUseCase = _serviceProvider.GetRequiredService<IAddParticipantUseCase>();
+            var bindParticipantToBarbecue = _serviceProvider.GetRequiredService<IBindParticipantUseCase>();
 
-//            // Act
-//            var outputParticipant = participantUseCase
-//                .Execute(participantInput);
-//            var oneParticipant = participantRepository.Find(o => o.Identifier == outputParticipant.ParticipantIdentifier);
+            var additional = new List<string>
+            {
+                "Description 001",
+                "Description 002",
+                "Description 003",
+            };
 
-//            // Assert
-//            Assert.That(outputParticipant.ParticipantIdentifier, Is.EqualTo(oneParticipant.Identifier));
-//        }
-//    }
-//}
+            var barbecueInput = new CreateBarbecueInputBoundary
+            {
+                AdditionalObservations = additional,
+                Description = "Description Here",
+                BeginDate = DateTime.Parse("26/05/2025 01:00:00 -3:00"),
+                EndDate = DateTime.Parse("26/05/2025 05:42:00 -3:00")
+            };
+            
+            var barbecueOutput = await barbecueUseCase.Execute(barbecueInput);
+
+            var items = new List<string>
+            {
+                "Item 01",
+                "Item 02",
+                "Item 03"
+            };
+
+            var participantInput = new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 200.00f, true, barbecueOutput.BarbecueIdentifier, items);
+
+            var participantOutput = participantUseCase.Execute(participantInput);
+            // Act
+            await bindParticipantToBarbecue.Execute(new BindParticipantInputBoundary
+            {
+                BarbecueIdentifier = barbecueOutput.BarbecueIdentifier,
+                ParticipantIdentifier = participantOutput.ParticipantIdentifier
+            });
+
+            var query = await _mediator.Send(new GetBarbecueByIdQuery(barbecueOutput.BarbecueIdentifier));
+
+            // Assert
+            Assert.Contains(participantOutput.ParticipantIdentifier, query.Participants.ToList());
+        }
+    }
+}

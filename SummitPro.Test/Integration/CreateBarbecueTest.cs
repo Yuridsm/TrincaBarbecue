@@ -1,19 +1,19 @@
-﻿using NUnit.Framework;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using MediatR;
+using NUnit.Framework;
 
-using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Application;
-using SummitPro.Application.Query;
-using SummitPro.Infrastructure;
-using SummitPro.Application.Repository;
-using SummitPro.Infrastructure.RepositoryInMemory;
-using SummitPro.Infrastructure.DependencyInjector;
 using SummitPro.Application.DependencyInjection;
 using SummitPro.Application.Interface;
-using SummitPro.SharedKernel.DomainException;
+using SummitPro.Application.Query;
+using SummitPro.Application.Repository;
+using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Application.UseCase.GetBarbecueById;
 using SummitPro.Application.UseCase.UpdateBarbecue;
+using SummitPro.Infrastructure;
+using SummitPro.Infrastructure.DependencyInjector;
+using SummitPro.Infrastructure.RepositoryInMemory;
+using SummitPro.SharedKernel.DomainException;
 
 namespace SummitPro.Test.Integration
 {

@@ -25,6 +25,7 @@ namespace SummitPro.Application.UseCase.AddParticipante
 
             var model = new AddParticipantCommandModel
             {
+                ParticipantIdentifier = entity.Identifier,
                 Name = entity.Name.Value,
                 Username = entity.Username.Value,
                 SuggestionContribution = entity.ContributionValue.Value,

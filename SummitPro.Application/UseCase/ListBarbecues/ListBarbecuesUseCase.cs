@@ -1,77 +1,30 @@
-﻿using SummitPro.Application.Model;
+﻿using MediatR;
+
+using SummitPro.Application.Interface;
 using SummitPro.Application.OutputBoundary;
-using SummitPro.Application.Repository;
-using SummitPro.Core.Aggregate.Barbecue;
-using SummitPro.Core.Aggregate.Participant;
-using SummitPro.SharedKernel.Interfaces;
-using SummitPro.SharedKernel.UseCaseContract;
+using SummitPro.Application.Query;
 
 namespace SummitPro.Application.UseCase.ListBarbecues
 {
-    public class ListBarbecuesUseCase : IUseCaseSinchronous
-        .WithoutInputBoundary
-        .WithOutputBoundary<ListBarbecuesQueryModel>
+    public class ListBarbecuesUseCase : IListBarbecuesUseCase
     {
+        private readonly IMediator _mediator;
 
-        private readonly IBarbecueRepository _barbecueRepository;
-        private readonly IParticipantRepository _participantRepository;
-        private ICachedRepository _cachedRepository;
-
-        public ListBarbecuesUseCase(IBarbecueRepository barbecueRepository, IParticipantRepository participantRepository)
+        public ListBarbecuesUseCase(IMediator mediator)
         {
-            _barbecueRepository = barbecueRepository;
-            _participantRepository = participantRepository;
+            _mediator = mediator;
         }
-
-        public ListBarbecuesUseCase SetDistributedCache(ICachedRepository cachedRepository)
+        
+        public override async Task<ListBarbecuesOutputBoundary> Execute()
         {
-            _cachedRepository = cachedRepository;
-            return this;
-        }
+            var query = new ListBarbecueQuery();
 
-        public override ListBarbecuesQueryModel Execute()
-        {
-            var participants = new List<Participant>();
-            var participantsModel = new List<ParticipantModel>();
-            var barbecues = new List<Barbecue>();
+            ListBarbecuesQueryModel queryModel = await _mediator.Send(query);
 
-
-            if (_cachedRepository == null)
+            return new ListBarbecuesOutputBoundary
             {
-                barbecues.AddRange(_barbecueRepository.GetAll().AsEnumerable());
-                if (!barbecues.Any()) return null;
-                participants.AddRange(_participantRepository.GetAll().AsEnumerable());
-            }
-            else
-            {
-                barbecues.AddRange(_cachedRepository.GetAll<Barbecue>().AsEnumerable());
-                participants.AddRange(_cachedRepository.GetAll<Participant>());
-            }
-
-            ListBarbecuesQueryModel output = new ListBarbecuesQueryModel
-            {
-                Barbecues = barbecues.Select(barbecue => new BarbecueModel
-                {
-                    barbecueIdentifier = barbecue.Identifier,
-                    Description = barbecue.Description,
-                    BeginDate = barbecue.BeginDate.ToString(),
-                    EndDate = barbecue.EndDate.ToString(),
-                    AdditionalRemarks = barbecue.AdditionalRemarks,
-                    Participants = participants
-                        .Where(p => barbecue.Participants.Contains(p.Identifier))
-                        .Select(o => new ParticipantModel
-                        {
-                            Identifier = o.Identifier,
-                            BringDrink = o.BringDrink.ToString(),
-                            ContributionValue = o.ContributionValue.Value,
-                            Items = o.Items,
-                            Name = o.Name.Value,
-                            Username = o.Username.Value
-                        })
-                })
+                Barbecues = queryModel.Barbecues
             };
-
-            return output;
         }
     }
 }

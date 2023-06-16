@@ -2,6 +2,7 @@
 {
     public class AddParticipantCommandModel
     {
+        public Guid ParticipantIdentifier { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public double SuggestionContribution { get; set; } = 0;

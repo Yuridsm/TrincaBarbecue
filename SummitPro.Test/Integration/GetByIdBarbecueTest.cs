@@ -32,13 +32,6 @@ namespace SummitPro.Test.Integration
             services.AddInfrastructureInMemory();
             services.AddUseCase();
 
-            // Distributed Cache
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = "localhost:6379";
-                options.InstanceName = "redisinstance";
-            });
-
             _serviceProvider = services.BuildServiceProvider();
             _mediator = _serviceProvider.GetRequiredService<IMediator>();
         }

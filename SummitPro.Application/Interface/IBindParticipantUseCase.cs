@@ -4,7 +4,7 @@ using SummitPro.SharedKernel.UseCaseContract;
 
 namespace SummitPro.Application.Interface
 {
-    public abstract class IBindParticipantUseCase : IUseCaseSinchronous
+    public abstract class IBindParticipantUseCase : IUseCaseAsynchronous
         .WithInputBoundary<BindParticipantInputBoundary>
         .WithoutOutputBoundary
     {

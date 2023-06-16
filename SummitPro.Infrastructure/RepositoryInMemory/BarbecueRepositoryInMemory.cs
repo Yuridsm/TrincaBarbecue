@@ -84,7 +84,7 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
 
             if (model == null) return;
 
-            var identifier = model.Identifier; // Keep the state
+            var identifier = model.Identifier;
 
             model = _mapper.Map<BarbecueModel>(entity);
 

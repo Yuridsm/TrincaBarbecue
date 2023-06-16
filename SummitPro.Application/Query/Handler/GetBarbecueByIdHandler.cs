@@ -26,7 +26,8 @@ namespace SummitPro.Application.Query.Handler
                 BeginDate = output.BeginDate,
                 EndDate = output.EndDate,
                 Description = output.Description,
-                AdditionalRemarks = output.AdditionalRemarks
+                AdditionalRemarks = output.AdditionalRemarks,
+                Participants = output.Participants
             });
         }
     }

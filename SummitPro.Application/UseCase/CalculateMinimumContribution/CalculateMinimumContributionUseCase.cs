@@ -1,32 +1,47 @@
-﻿using SummitPro.Application.Repository;
-using SummitPro.SharedKernel.UseCaseContract;
+﻿using MediatR;
+
+using SummitPro.Application.Interface;
+using SummitPro.Application.Model;
+using SummitPro.Application.Query;
+using SummitPro.Application.Repository;
+using SummitPro.Core.Aggregate.Barbecue;
 
 namespace SummitPro.Application.UseCase.CalculateMinimumContribution
 {
-    public class CalculateMinimumContributionUseCase : IUseCaseSinchronous
-        .WithInputBoundary<CalculateContributionInputBoundary>
-        .WithOutputBoundary<CalculateContributionOutputBoundary>
+    public class CalculateMinimumContributionUseCase : ICalculateMinimumContributionUseCase
     {
+        private readonly IMediator _mediator;
         private readonly IBarbecueRepository _barbecueRepository;
-        private readonly IParticipantRepository _participantRepository;
 
-        public CalculateMinimumContributionUseCase(IBarbecueRepository barbecueRepository, IParticipantRepository participantRepository)
+        public CalculateMinimumContributionUseCase(IMediator mediator, IBarbecueRepository barbecueRepository)
         {
+            _mediator = mediator;
             _barbecueRepository = barbecueRepository;
-            _participantRepository = participantRepository;
         }
 
-        public override CalculateContributionOutputBoundary Execute(CalculateContributionInputBoundary inputBoundary)
+        public override async Task<CalculateContributionOutputBoundary> Execute(CalculateContributionInputBoundary inputBoundary)
         {
-            var barbecue = _barbecueRepository.Get(inputBoundary.BarecueIdentifier);
+            Barbecue? barbecue = _barbecueRepository.Get(inputBoundary.BarecueIdentifier);
 
-            int participantsQuantity = barbecue.ParticipantsQuantity();
+            if (barbecue is null) return null;
+            
+            // Get all Participant from participants id in Barbecue
+            ICollection<ParticipantModel> participants = new List<ParticipantModel>();
+            double contributionValue = 00.00f;
 
-            var participants = _participantRepository.GetByIdentifiers(barbecue.Participants);
 
-            double total = participants.Sum(o => o.ContributionValue.Value) / participantsQuantity;
+            foreach (var item in barbecue.Participants)
+            {
+                var participant = await _mediator.Send(new GetParticipantByIdQuery(item));
+                
+                if (participant is null) continue;
 
-            return new CalculateContributionOutputBoundary(total);
+                contributionValue += participant.model.ContributionValue;
+            }
+
+            double total = contributionValue / barbecue.ParticipantsQuantity();
+
+            return new CalculateContributionOutputBoundary(contributionValue);
         }
     }
 }

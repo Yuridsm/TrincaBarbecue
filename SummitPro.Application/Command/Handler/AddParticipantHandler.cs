@@ -26,9 +26,14 @@ namespace SummitPro.Application.Command.Handler
 
             if (barbecue == null) throw new ArgumentException("There is no barbecue signed.");
 
-            var participant = Participant.FactoryMethod(request.model.Name, request.model.Username, request.model.SuggestionContribution);
-
-            participant.AddItems(request.model.Items);
+            var participant = Participant.FactoryMethod(
+                request.model.ParticipantIdentifier,
+                request.model.Name,
+                request.model.SuggestionContribution,
+                request.model.Username,
+                request.model.Items.ToList(),
+                request.model.BringDrink
+                );
 
             _participantRepository.Add(participant);
 

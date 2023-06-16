@@ -1,73 +1,88 @@
-﻿//using AutoMapper;
-//using NUnit.Framework;
-//using SummitPro.Core.Aggregate.Barbecue;
-//using SummitPro.Core.Aggregate.Participant;
-//using SummitPro.Infrastructure.RepositoryInMemory.Models;
-//using SummitPro.Application.UseCase.CalculateMinimumContribution;
-//using SummitPro.Infrastructure.RepositoryInMemory;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
-//namespace SummitPro.Test.Integration
-//{
-//    public class CalculateMinimumContributionTest
-//    {
-//        private Mapper _mapper;
+using SummitPro.Application.DependencyInjection;
+using SummitPro.Application.Interface;
+using SummitPro.Application.UseCase.AddParticipante;
+using SummitPro.Application.UseCase.BindParticipant;
+using SummitPro.Application.UseCase.CalculateMinimumContribution;
+using SummitPro.Application.UseCase.CreateBarbecue;
+using SummitPro.Infrastructure.DependencyInjector;
 
-//        [SetUp]
-//        public void SetUp()
-//        {
-//            var mapperConfig = new MapperConfiguration(config =>
-//            {
-//                config.AddProfile<BarbecueModelMapperProfile>();
-//                config.AddProfile<ParticipantModelMapperProfile>();
-//            });
-//            _mapper = new Mapper(mapperConfig);
-//        }
+namespace SummitPro.Test.Integration
+{
+    public class CalculateMinimumContributionTest
+    {
+        private ServiceProvider _serviceProvider;
 
-//        [Test]
-//        public void ShouldCalculateMinimumContributionValue()
-//        {
-//            // Arrange
+        [SetUp]
+        public void SetUp()
+        {
+            var services = new ServiceCollection();
 
-//            var barbecueRepository = new BarbecueRepositoryInMemory(_mapper);
-//            var participantRepository = new ParticipantRepositoryInMemory(_mapper);
+            services.AddMediator();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddInfrastructureInMemory();
+            services.AddUseCase();
+            services.AddLog();
 
-//            var add = new List<string>
-//            {
-//                "Chegue no horário",
-//                "Beba conciente",
-//                "Pode dançar a vontade, viu?!"
-//            };
+            _serviceProvider = services.BuildServiceProvider();
+        }
 
-//            var barbecue = Barbecue.FactoryMethod("Friends from Work!", add, DateTime.Parse("23/12/2023 13:00:00 -3:00"), DateTime.Parse("23/12/2023 17:30:00 -3:00"));
+        [Test]
+        public async Task ShouldCalculateMinimumContributionValue()
+        {
+            // Arrange
+            var createBarbecueUSeCase = _serviceProvider.GetRequiredService<ICreateBarbecueUseCase>();
+            var addParticipantUseCase = _serviceProvider.GetRequiredService<IAddParticipantUseCase>();
+            var bindParticipantUseCase = _serviceProvider.GetRequiredService<IBindParticipantUseCase>();
+            var calculateContributionUseCase = _serviceProvider.GetRequiredService<ICalculateMinimumContributionUseCase>();
 
-//            var participant01 = Participant.FactoryMethod("Yuri Melo", "@yuridsm", 100.00f);
-//            var participant02 = Participant.FactoryMethod("Júlio Miguel", "@ojuliomiguel", 100.00f);
-//            var participant03 = Participant.FactoryMethod("Beatriz Nunes", "@beatriz", 100.00f);
+            var add = new List<string>
+            {
+                "Chegue no horário",
+                "Beba conciente",
+                "Pode dançar a vontade, viu?!"
+            };
 
-//            participantRepository.Add(participant01);
-//            participantRepository.Add(participant02);
-//            participantRepository.Add(participant03);
+            var barbecue = await createBarbecueUSeCase.Execute(new CreateBarbecueInputBoundary
+            {
+                AdditionalObservations = add,
+                BeginDate = DateTime.Parse("23/12/2023 13:00:00 -3:00"),
+                EndDate = DateTime.Parse("23/12/2023 17:00:00 -3:00"),
+                Description = "Friends from work!"
+            });
 
-//            barbecue
-//                .AddParticipant(participant01.Identifier)
-//                .AddParticipant(participant02.Identifier)
-//                .AddParticipant(participant03.Identifier)
-//                .AddAdditionalRemark("Mais uma informação importante para o evento.")
-//                .AddDescription("Atualização da descrição do Churras da Trinca!! Não perca!!!")
-//                .Build();
+            var participant01 = addParticipantUseCase.Execute(new AddParticipantInputBoundary("Yuri Melo", "@yuridsm", 100.00f, true, barbecue.BarbecueIdentifier, new List<string>(0)));
+            var participant02 = addParticipantUseCase.Execute(new AddParticipantInputBoundary("Igor Melo", "@igordsm", 100.00f, true, barbecue.BarbecueIdentifier, new List<string>(0)));
+            var participant03 = addParticipantUseCase.Execute(new AddParticipantInputBoundary("iran Melo", "@irandsm", 100.00f, true, barbecue.BarbecueIdentifier, new List<string>(0)));
 
-//            barbecueRepository.Add(barbecue);
+            await bindParticipantUseCase.Execute(new BindParticipantInputBoundary
+            {
+                BarbecueIdentifier = barbecue.BarbecueIdentifier,
+                ParticipantIdentifier = participant01.ParticipantIdentifier
+            });
 
-//            var useCase = new CalculateMinimumContributionUseCase(barbecueRepository, participantRepository);
+            await bindParticipantUseCase.Execute(new BindParticipantInputBoundary
+            {
+                BarbecueIdentifier = barbecue.BarbecueIdentifier,
+                ParticipantIdentifier = participant02.ParticipantIdentifier
+            });
 
-//            // Act
-//            var contribution = useCase.Execute(new CalculateContributionInputBoundary
-//            {
-//                BarecueIdentifier = barbecue.Identifier
-//            });
+            await bindParticipantUseCase.Execute(new BindParticipantInputBoundary
+            {
+                BarbecueIdentifier = barbecue.BarbecueIdentifier,
+                ParticipantIdentifier = participant03.ParticipantIdentifier
+            });
 
-//            // Assert
-//            Assert.That(contribution.Value, Is.EqualTo(100.00d));
-//        }
-//    }
-//}
+            // Act
+            var output = await calculateContributionUseCase.Execute(new CalculateContributionInputBoundary
+            {
+                BarecueIdentifier = barbecue.BarbecueIdentifier
+            });
+
+            // Assert
+            Assert.That(output.Value, Is.EqualTo(300.00d));
+        }
+    }
+}

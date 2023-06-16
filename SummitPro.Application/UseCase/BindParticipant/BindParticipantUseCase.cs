@@ -1,45 +1,32 @@
 ﻿using MediatR;
+
+using SummitPro.Application.Command;
+using SummitPro.Application.CommandModel;
 using SummitPro.Application.Interface;
-using SummitPro.Application.Repository;
+using SummitPro.Application.Query;
 
 namespace SummitPro.Application.UseCase.BindParticipant
 {
     public class BindParticipantUseCase : IBindParticipantUseCase
     {
-        private readonly IBarbecueRepository _barbecueRepository;
-        private readonly IParticipantRepository _participantRepository;
         private readonly IMediator _mediator;
 
-        public BindParticipantUseCase(
-            IBarbecueRepository barbecueRepository, 
-            IParticipantRepository participantRepository,
-            IMediator mediator
-            )
+        public BindParticipantUseCase(IMediator mediator)
         {
-            _barbecueRepository = barbecueRepository;
-            _participantRepository = participantRepository;
             _mediator = mediator;
         }
 
-        public override void Execute(BindParticipantInputBoundary inputBoundary)
+        public override async Task Execute(BindParticipantInputBoundary inputBoundary)
         {
-            //if (inputBoundary == null) throw new ArgumentNullException("Input can not be empty.");
+            var bindParticipantCommandModel = new BindParticipantCommandModel
+            {
+                BarbecueIdentifier = inputBoundary.BarbecueIdentifier,
+                ParticipantIdentifier = inputBoundary.ParticipantIdentifier
+            };
 
-            //var barbecue = _barbecueRepository.Get(inputBoundary.BarbecueIdentifier);
+            var bindParticipantCommand = new BindParticipantCommand(bindParticipantCommandModel);
 
-            //if (barbecue == null) throw new ArgumentNullException("Barbecue does not exist.");
-
-            //if (barbecue.Participants.Contains(inputBoundary.ParticipantIdentifier)) return;
-
-            //var participant = _participantRepository.Get(inputBoundary.ParticipantIdentifier);
-
-            //if (participant == null) throw new ArgumentNullException("Participant does not exist.");
-
-            //barbecue.AddParticipant(inputBoundary.ParticipantIdentifier);
-
-            //_barbecueRepository.Update(barbecue);
-
-            //_mediator.Send();
+            await _mediator.Send(bindParticipantCommand);
         }
     }
 }

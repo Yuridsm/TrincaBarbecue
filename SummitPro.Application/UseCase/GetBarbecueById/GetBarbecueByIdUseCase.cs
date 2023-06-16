@@ -9,14 +9,10 @@ namespace SummitPro.Application.UseCase.GetBarbecueById
 {
     public class GetBarbecueByIdUseCase : IGetBarbecueByIdUseCase
     {
-        private readonly IBarbecueRepository _barbecueRepository;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public GetBarbecueByIdUseCase(IBarbecueRepository barbecueRepository, IMapper mapper, IMediator mediator)
+        public GetBarbecueByIdUseCase(IMediator mediator)
         {
-            _barbecueRepository = barbecueRepository;
-            _mapper = mapper;
             _mediator = mediator;
         }
 
@@ -35,7 +31,7 @@ namespace SummitPro.Application.UseCase.GetBarbecueById
                 BeginDateTime = model.BeginDate.ToString(),
                 EndDateTime = model.EndDate.ToString(),
                 AdditionalRemarks = model.AdditionalRemarks,
-                Participants = model.Participants is not null ? model.Participants.Select(o => o.Identifier) : new List<Guid>(0)
+                Participants = model.Participants is not null ? model.Participants : new List<Guid>(0)
             };
         }
     }
