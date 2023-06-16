@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SummitPro.Application;
+
 using SummitPro.Application.Repository;
 using SummitPro.Infrastructure.DistributedCache;
 using SummitPro.Infrastructure.RepositoryInMemory;
@@ -15,7 +15,6 @@ namespace SummitPro.Infrastructure.DependencyInjector
                 .AddScoped<ICachedRepository, CachedRepository>()
                 .AddSingleton<IBarbecueRepository, BarbecueRepositoryInMemory>()
                 .AddSingleton<IParticipantRepository, ParticipantRepositoryInMemory>()
-                .AddSingleton<IGateway<string>, Gateway>()
                 .AddAutoMapper(typeof(InfrastructureDIExtensions))
                 .AddStackExchangeRedisCache(cache =>
                 {

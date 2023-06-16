@@ -1,16 +1,13 @@
 ﻿using MediatR;
-using NUnit.Framework;
 using Microsoft.Extensions.DependencyInjection;
-
+using NUnit.Framework;
+using SummitPro.Application.DependencyInjection;
+using SummitPro.Application.Interface;
+using SummitPro.Application.Repository;
 using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Application.UseCase.GetBarbecueById;
-using SummitPro.Application.Repository;
-using SummitPro.Application;
-using SummitPro.Infrastructure;
-using SummitPro.Infrastructure.RepositoryInMemory;
-using SummitPro.Application.DependencyInjection;
 using SummitPro.Infrastructure.DependencyInjector;
-using SummitPro.Application.Interface;
+using SummitPro.Infrastructure.RepositoryInMemory;
 
 namespace SummitPro.Test.Integration
 {
@@ -25,7 +22,6 @@ namespace SummitPro.Test.Integration
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton<IGateway<string>, Gateway>();
             services.AddSingleton<IBarbecueRepository, BarbecueRepositoryInMemory>();
             services.AddMediator();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

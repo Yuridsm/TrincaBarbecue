@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using SummitPro.Application.CommandModel;
+
+using SummitPro.Application.Feature.CreateBarbecue;
 using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Application.UseCase.GetBarbecueById;
 using SummitPro.Core.Aggregate.Barbecue;
