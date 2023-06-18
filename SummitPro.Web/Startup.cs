@@ -1,10 +1,9 @@
-﻿using SummitPro.Application.UseCase.CreateBarbecue;
-using SummitPro.Application.UseCase.AddParticipante;
-using SummitPro.Application.UseCase.GetParticipant;
+﻿using SummitPro.Application.UseCase.AddParticipante;
 using SummitPro.Application.UseCase.BindParticipant;
+using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Application.UseCase.GetBarbecueById;
-using SummitPro.Infrastructure.Http.Controller;
 using SummitPro.Infrastructure.DependencyInjector;
+using SummitPro.Infrastructure.Http.Controller;
 
 namespace SummitPro.Web
 {

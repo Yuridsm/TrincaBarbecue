@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SummitPro.Infrastructure.Http.Controller;
-using SummitPro.Infrastructure.DistributedCache;
+
 using SummitPro.Application.UseCase.CreateBarbecue;
+using SummitPro.Infrastructure.DistributedCache;
+using SummitPro.Infrastructure.Http.Controller;
 
 namespace SummitPro.Web.Endpoints.Barbecue
 {
