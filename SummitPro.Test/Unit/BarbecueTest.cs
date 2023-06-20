@@ -28,7 +28,7 @@ namespace SummitPro.Test.Unit
                 .AddParticipant(participant01.Identifier)
                 .AddParticipant(participant02.Identifier)
                 .AddParticipant(participant03.Identifier)
-                .AddAdditionalRemark("Mais uma informação importante para o evento.")
+                .AddAdditionalRemark("More information about th event.")
                 .AddDescription("Atualização da descrição do Churras da Trinca!! Não perca!!!")
                 .Build();
 
