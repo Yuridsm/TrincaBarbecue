@@ -33,7 +33,7 @@ namespace SummitPro.Application.Feature.ListBarbecues
             {
                 Barbecues = barbecues.Select(barbecue => new BarbecueModel
                 {
-                    barbecueIdentifier = barbecue.Identifier,
+                    BarbecueIdentifier = barbecue.Identifier,
                     Description = barbecue.Description,
                     BeginDate = barbecue.BeginDate.ToString(),
                     EndDate = barbecue.EndDate.ToString(),
@@ -48,7 +48,7 @@ namespace SummitPro.Application.Feature.ListBarbecues
                             Items = o.Items,
                             Name = o.Name.Value,
                             Username = o.Username.Value
-                        })
+                        }).ToList()
                 })
             };
 
