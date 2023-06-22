@@ -1,3 +1,6 @@
 .vs
 [Oo]bj
 [Bb]in
+SummitPro.WebUI/.angular
+SummitPro.WebUI/.vscode
+SummitPro.WebUI/node_modules

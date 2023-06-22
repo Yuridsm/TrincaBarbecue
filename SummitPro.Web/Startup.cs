@@ -1,4 +1,6 @@
-﻿using SummitPro.Application.UseCase.AddParticipante;
+using System.Text.Json;
+using SummitPro.Application.DependencyInjection;
+using SummitPro.Application.UseCase.AddParticipante;
 using SummitPro.Application.UseCase.BindParticipant;
 using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Application.UseCase.GetBarbecueById;
@@ -11,8 +13,11 @@ namespace SummitPro.Web
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddControllers();
+            services.AddControllers()
+            .AddJsonOptions(options => {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
+            
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
@@ -22,14 +27,26 @@ namespace SummitPro.Web
             services.AddSingleton<AddParticipantUseCase>();
             services.AddSingleton<BindParticipantUseCase>();
             services.AddSingleton<GetBarbecueByIdUseCase>();
-            //services.AddSingleton<GetParticipantsUseCase>();
 
             services.AddTransient<CreateBarbecueController>();
-            //services.AddTransient<AddParticipantController>();
             services.AddTransient<BindParticipantTobarbecueController>();
-            //services.AddTransient<GetbarbecueByIdController>();
+
+            services.AddMediator();
+            services.AddUseCase();
+            services.AddLog();
+            services.AddApplicationService();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddRazorPages();
+
+            services.AddCors(options => {
+                options.AddPolicy("BarbecueOrigins", policy => {
+                    policy.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,13 +58,16 @@ namespace SummitPro.Web
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("BarbecueOrigins");
+
             app.UseRouting();
 
-            // Outras configurações...
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
         }
     }

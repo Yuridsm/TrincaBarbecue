@@ -1,40 +1,36 @@
-﻿//using Microsoft.AspNetCore.Mvc;
-//using SummitPro.Application.UseCase.AddParticipante;
-//using SummitPro.Infrastructure.Http.Controller;
-//using SummitPro.Application.UseCase.BindParticipant;
-//using SummitPro.Infrastructure.DistributedCache;
+﻿using Microsoft.AspNetCore.Mvc;
+using SummitPro.Application.Interface;
+using SummitPro.Application.UseCase.AddParticipante;
+using SummitPro.Application.UseCase.BindParticipant;
 
-//namespace SummitPro.Web.Endpoints.Participant
-//{
-//    public class Create : EndpointBaseSynchronous
-//        .WithRequest<AddParticipantInputBoundary>
-//        .WithActionResult<AddParticipantOutputBoundary>
-//    {
-//        private readonly AddParticipantController _addParticipantController;
-//        private readonly BindParticipantTobarbecueController _bindParticipantController;
+namespace SummitPro.Web.Endpoints.Participant
+{
+    public class Create : EndpointBaseSynchronous
+        .WithRequest<AddParticipantInputBoundary>
+        .WithActionResult<AddParticipantOutputBoundary>
+    {
+        private readonly IAddParticipantUseCase _addParticipantUseCase;
+        private readonly IBindParticipantUseCase _bindParticipantUseCase;
 
-//        public Create(AddParticipantController addParticipantController, BindParticipantTobarbecueController bindParticipantController)
-//        {
-//            _addParticipantController = addParticipantController;
-//            _bindParticipantController = bindParticipantController;
-//        }
+        public Create(IAddParticipantUseCase addParticipantUseCase, IBindParticipantUseCase bindParticipantUseCase)
+        {
+            _addParticipantUseCase = addParticipantUseCase;
+            _bindParticipantUseCase = bindParticipantUseCase;
+        }
 
-//        [HttpPost("/Barbecue/Participant")]
-//        public override ActionResult<AddParticipantOutputBoundary> Handle([FromBody] AddParticipantInputBoundary request)
-//        {
-//            var output = _addParticipantController
-//                .SetDistributedCache(new CachedRepository())
-//                .Handle(request);
+        [HttpPost("/Barbecue/Participant")]
+        public override ActionResult<AddParticipantOutputBoundary> Handle([FromBody] AddParticipantInputBoundary request)
+        {
+            var output = _addParticipantUseCase.Execute(request);
 
-//            _bindParticipantController
-//                .SetDistributedCache(new CachedRepository())
-//                .Handle(new BindParticipantInputBoundary
-//                {
-//                    BarbecueIdentifier = request.BarbecueIdentifier,
-//                    ParticipantIdentifier = output.ParticipantIdentifier,
-//                });
+            _bindParticipantUseCase
+                .Execute(new BindParticipantInputBoundary
+                {
+                    BarbecueIdentifier = request.BarbecueIdentifier,
+                    ParticipantIdentifier = output.ParticipantIdentifier,
+                });
 
-//            return Ok(output);
-//        }
-//    }
-//}
+            return Ok(output);
+        }
+    }
+}

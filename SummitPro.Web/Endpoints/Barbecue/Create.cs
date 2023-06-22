@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using SummitPro.Application.Interface;
 using SummitPro.Application.UseCase.CreateBarbecue;
-using SummitPro.Infrastructure.DistributedCache;
-using SummitPro.Infrastructure.Http.Controller;
 
 namespace SummitPro.Web.Endpoints.Barbecue
 {
@@ -10,11 +8,11 @@ namespace SummitPro.Web.Endpoints.Barbecue
         .WithRequest<CreateRequest>
         .WithActionResult<string>
     {
-        private readonly CreateBarbecueController _createBarbecue;
+        private readonly ICreateBarbecueUseCase _createBarbecueUseCase;
 
-        public Create(CreateBarbecueController createBarbecue)
+        public Create(ICreateBarbecueUseCase createBarbecueUseCase)
         {
-            _createBarbecue = createBarbecue;
+            _createBarbecueUseCase = createBarbecueUseCase;
         }
 
         [HttpPost("/Barbecue")]
@@ -28,9 +26,8 @@ namespace SummitPro.Web.Endpoints.Barbecue
                 AdditionalObservations = input.AdditionalObservations
             };
 
-            var output = await _createBarbecue
-                .SetDistributedCache(new CachedRepository())
-                .Handle(inputBoundary);
+            var output = await _createBarbecueUseCase
+                .Execute(inputBoundary);
 
             return Ok(output.BarbecueIdentifier);
         }

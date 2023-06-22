@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummitPro.SharedKernel", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummitPro.CLI", "SummitPro.CLI\SummitPro.CLI.csproj", "{F9B4FED5-172B-4A0F-9546-F50B8860D5CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummitPro.CompositionRoot", "SummitPro.CompositionRoot\SummitPro.CompositionRoot.csproj", "{FDE6DBD0-5320-4A7A-9404-9D387830FEED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummitPro.CompositionRoot", "SummitPro.CompositionRoot\SummitPro.CompositionRoot.csproj", "{FDE6DBD0-5320-4A7A-9404-9D387830FEED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
