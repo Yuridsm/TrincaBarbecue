@@ -1,19 +1,15 @@
-.container {
+.main-container {
     display: flex;
     flex-direction: column;
-
+    
     width: min(601px, 100%);
 
-    @media (min-width: 500px) {
-        border-left: 1px solid var(--outline);
-        border-right: 1px solid var(--outline);
-    }
+    background-color: red;
 }
 
-.header {
-    position: sticky;
+/*.header {
+     position: sticky;
     top: 0;
-    background: var(--primary);
 
     display: flex;
     align-items: left;
@@ -34,4 +30,4 @@
             background-color: var(--twitter-light-hover);
         }
     }
-}
+}*/
