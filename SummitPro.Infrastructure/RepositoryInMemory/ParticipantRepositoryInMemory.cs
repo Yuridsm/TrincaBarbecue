@@ -25,7 +25,7 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
             _participants.Add(model);
         }
 
-        public Participant Find(Predicate<Participant> action)
+        public Participant? Find(Predicate<Participant> action)
         {
             ParticipantModel? model = _participants.FirstOrDefault(m => action(_mapper.Map<Participant>(m)));
 
@@ -65,11 +65,12 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
         {
             var participant = _participants.FirstOrDefault(o => o.Identifier == entity.Identifier);
 
-            PreAssemblyItems(participant);
 
             if (participant != null)
             {
-                var identifier = participant.Identifier; // Keep the state
+                PreAssemblyItems(participant);
+
+                var identifier = participant.Identifier;
 
                 participant = _mapper.Map<ParticipantModel>(entity);
 

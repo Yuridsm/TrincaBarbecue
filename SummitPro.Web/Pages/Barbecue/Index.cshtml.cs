@@ -21,6 +21,8 @@ namespace SummitPro.Web.Pages.Barbecue
         {
             var barbecues = _barbecueRepository.GetAll();
 
+            if (barbecues is null) return;
+
             foreach(var item in barbecues)
             {
                 BarbecueViewModels.Add(new BarbecueViewModel

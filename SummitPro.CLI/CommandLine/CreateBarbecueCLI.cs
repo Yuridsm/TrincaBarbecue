@@ -32,9 +32,9 @@ namespace SummitPro.CLI.CommandLine
             SetOption(_endOption);
             SetOption(_remarkOption);
 
-            _command.SetHandler((name, begin, end, remark) =>
+            _command.SetHandler(async (name, begin, end, remark) =>
             {
-                createBarbecueHandler(name, begin, end, remark);
+                await createBarbecueHandler(name, begin, end, remark);
             }, _descriptionOption, _beginOption, _endOption, _remarkOption);
 
             return _command;

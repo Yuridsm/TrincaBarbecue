@@ -23,11 +23,15 @@ namespace SummitPro.Application.Feature.ListBarbecues
             var participants = new List<Participant>();
             var participantsModel = new List<ParticipantModel>();
 
-            barbecues.AddRange(_barbecueRepository.GetAll().AsEnumerable());
+            var allbarbecues = _barbecueRepository.GetAll();
+
+            if (allbarbecues is not null) barbecues.AddRange(allbarbecues.AsEnumerable());
 
             if (!barbecues.Any()) return await Task.FromResult<ListBarbecuesQueryModel?>(null);
 
-            participants.AddRange(_participantRepository.GetAll().AsEnumerable());
+            var allParticipants = _participantRepository.GetAll();
+
+            if (allParticipants is not null) participants.AddRange(allParticipants.AsEnumerable());
 
             ListBarbecuesQueryModel output = new ListBarbecuesQueryModel
             {

@@ -3,7 +3,6 @@ using SummitPro.Application.UseCase.AddParticipante;
 using SummitPro.Application.UseCase.BindParticipant;
 using SummitPro.Application.UseCase.CreateBarbecue;
 using SummitPro.Application.UseCase.GetBarbecueById;
-using SummitPro.Application.UseCase.GetParticipant;
 using SummitPro.Application.UseCase.ListBarbecues;
 using SummitPro.CLI.CommandLine;
 using SummitPro.Infrastructure.DependencyInjector;
@@ -29,7 +28,7 @@ class Program
         //participantCommand.SetCommand(createParticipantCommand.Build());
 
         var barbecue = new BarbecueCommand();
-        barbecue.SetCommand(createTrincaCommand.Build());
+        if (createTrincaCommand is not null) barbecue.SetCommand(createTrincaCommand.Build());
         //barbecue.SetCommand(listTrincaCommand.Build());
         barbecue.SetCommand(participantCommand.Build());
 

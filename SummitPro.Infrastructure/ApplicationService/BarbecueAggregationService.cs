@@ -36,7 +36,7 @@ namespace SummitPro.Infrastructure.ApplicationService
             {
                 var participantModel = new ParticipantModel
                 {
-                    Identifier = participant.Identifier,
+                    Identifier = participant!.Identifier,
                     Name = participant.Name.Value,
                     Username = participant.Username.Value,
                     BringDrink = participant.BringDrink.ToString(),
