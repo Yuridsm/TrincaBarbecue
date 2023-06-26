@@ -8,7 +8,7 @@ namespace SummitPro.Application.Interface
         .WithoutInputBoundary
         .WithOutputBondary<ListBarbecuesOutputBoundary>
     {
-        protected ICachedRepository _cachedRepository;
+        protected ICachedRepository _cachedRepository = null!;
 
         public IListBarbecuesUseCase SetDistributedCache(ICachedRepository cachedRepository)
         {

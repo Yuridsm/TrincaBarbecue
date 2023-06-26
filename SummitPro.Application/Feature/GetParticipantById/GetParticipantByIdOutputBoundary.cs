@@ -5,6 +5,6 @@ namespace SummitPro.Application.UseCase.GetParticipant
 {
     public class GetParticipantByIdOutputBoundary : IOutputBoundary
     {
-        public ParticipantModel Participant { get; set; }
+        public ParticipantModel Participant { get; set; } = null!;
     }
 }

@@ -8,6 +8,6 @@
         public double SuggestionContribution { get; set; } = 0;
         public bool BringDrink { get; set; } = false;
         public Guid BarbecueIdentifier { get; set; }
-        public IEnumerable<string> Items { get; set; }
+        public IEnumerable<string> Items { get; set; } = Enumerable.Empty<string>();
     }
 }

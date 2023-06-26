@@ -4,6 +4,6 @@ namespace SummitPro.Application.Feature.ListBarbecues
 {
     public class ListBarbecuesQueryModel
     {
-        public IEnumerable<BarbecueModel> Barbecues { get; set; }
+        public IEnumerable<BarbecueModel> Barbecues { get; set; } = Enumerable.Empty<BarbecueModel>();
     }
 }

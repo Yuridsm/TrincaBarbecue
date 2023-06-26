@@ -5,6 +5,6 @@ namespace SummitPro.Application.UseCase.ListBarbecues
 {
     public class ListBarbecuesOutputBoundary : IOutputBoundary
     {
-        public IEnumerable<BarbecueModel> Barbecues { get; set; }
+        public IEnumerable<BarbecueModel> Barbecues { get; set; } = Enumerable.Empty<BarbecueModel>();
     }
 }

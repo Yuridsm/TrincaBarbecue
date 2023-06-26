@@ -12,7 +12,7 @@ namespace SummitPro.Test.Integration
     [TestFixture]
     public class ListBarbecuesTest
     {
-        private ServiceProvider _serviceProvider;
+        private ServiceProvider _serviceProvider = null!;
 
         [SetUp]
         public void SetUp()

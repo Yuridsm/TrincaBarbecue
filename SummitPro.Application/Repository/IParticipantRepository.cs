@@ -5,6 +5,6 @@ namespace SummitPro.Application.Repository
 {
     public interface IParticipantRepository : IRepository<Participant>
     {
-        IEnumerable<Participant> GetByIdentifiers(IEnumerable<Guid> identifier);
+        IEnumerable<Participant?> GetByIdentifiers(IEnumerable<Guid> identifier);
     }
 }

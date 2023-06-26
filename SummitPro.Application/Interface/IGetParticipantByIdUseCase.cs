@@ -8,7 +8,7 @@ namespace SummitPro.Application.Interface
         .WithInputBoundary<GetParticipantByIdInputBoundary>
         .WithOutputBoundary<GetParticipantByIdOutputBoundary>
     {
-        private ICachedRepository _cachedRepository;
+        private ICachedRepository _cachedRepository = null!;
 
         public IGetParticipantByIdUseCase SetDistributedCache(ICachedRepository cachedRepository)
         {

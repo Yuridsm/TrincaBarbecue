@@ -6,7 +6,7 @@ using SummitPro.SharedKernel.Messaging;
 
 namespace SummitPro.Application.Feature.ListBarbecues
 {
-    public class ListBarbecueHandler : IQueryHandler<ListBarbecueQuery, ListBarbecuesQueryModel>
+    public class ListBarbecueHandler : IQueryHandler<ListBarbecueQuery, ListBarbecuesQueryModel?>
     {
         private IBarbecueRepository _barbecueRepository;
         private IParticipantRepository _participantRepository;
@@ -17,7 +17,7 @@ namespace SummitPro.Application.Feature.ListBarbecues
             _participantRepository = participantRepository;
         }
 
-        public Task<ListBarbecuesQueryModel> Handle(ListBarbecueQuery request, CancellationToken cancellationToken)
+        public async Task<ListBarbecuesQueryModel?> Handle(ListBarbecueQuery request, CancellationToken cancellationToken)
         {
             var barbecues = new List<Barbecue>();
             var participants = new List<Participant>();
@@ -25,7 +25,7 @@ namespace SummitPro.Application.Feature.ListBarbecues
 
             barbecues.AddRange(_barbecueRepository.GetAll().AsEnumerable());
 
-            if (!barbecues.Any()) return null;
+            if (!barbecues.Any()) return await Task.FromResult<ListBarbecuesQueryModel?>(null);
 
             participants.AddRange(_participantRepository.GetAll().AsEnumerable());
 
@@ -52,7 +52,7 @@ namespace SummitPro.Application.Feature.ListBarbecues
                 })
             };
 
-            return Task.FromResult(output);
+            return await Task.FromResult(output);
         }
     }
 }

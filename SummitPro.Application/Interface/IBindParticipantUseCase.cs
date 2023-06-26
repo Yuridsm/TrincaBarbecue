@@ -8,7 +8,7 @@ namespace SummitPro.Application.Interface
         .WithInputBoundary<BindParticipantInputBoundary>
         .WithoutOutputBoundary
     {
-        protected ICachedRepository _cachedRepository;
+        protected ICachedRepository _cachedRepository = null!;
 
         public IBindParticipantUseCase SetDistributedCache(ICachedRepository cachedRepository)
         {

@@ -8,7 +8,7 @@ namespace SummitPro.Application.Interface
         .WithInputBoundary<CreateBarbecueInputBoundary>
         .WithOutputBoundary<CreateBarbecueOutputBoundary>
     {
-        protected ICachedRepository _cachedRepository;
+        protected ICachedRepository _cachedRepository = null!;
 
         public ICreateBarbecueUseCase SetDistributedCache(ICachedRepository cachedRepository)
         {

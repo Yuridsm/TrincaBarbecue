@@ -19,9 +19,9 @@ namespace SummitPro.Infrastructure.Http.Controller
             return this;
         }
 
-        public void Handle(BindParticipantInputBoundary input)
+        public async Task Handle(BindParticipantInputBoundary input)
         {
-            _bindParticipantUseCase.Execute(input);
+            await _bindParticipantUseCase.Execute(input);
         }
     }
 }

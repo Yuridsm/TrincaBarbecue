@@ -23,7 +23,7 @@ namespace SummitPro.Application.UseCase.CalculateMinimumContribution
         {
             Barbecue? barbecue = _barbecueRepository.Get(inputBoundary.BarecueIdentifier);
 
-            if (barbecue is null) return null;
+            if (barbecue is null) throw new ArgumentNullException("Barbecue does not exist");
             
             ICollection<ParticipantModel> participants = new List<ParticipantModel>();
             double contributionValue = 00.00f;

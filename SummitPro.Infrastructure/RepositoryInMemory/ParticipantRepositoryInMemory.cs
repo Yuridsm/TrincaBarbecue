@@ -7,8 +7,8 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
 {
     public class ParticipantRepositoryInMemory : IParticipantRepository
     {
-        private List<ParticipantModel> _participants = new List<ParticipantModel>();
-        private Dictionary<Guid, List<string>> _items = new Dictionary<Guid, List<string>>();
+        private List<ParticipantModel> _participants = new();
+        private Dictionary<Guid, List<string>> _items = new();
         private readonly IMapper _mapper;
 
         public ParticipantRepositoryInMemory(IMapper mapper)
@@ -27,7 +27,7 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
 
         public Participant Find(Predicate<Participant> action)
         {
-            ParticipantModel model = _participants.FirstOrDefault(m => action(_mapper.Map<Participant>(m)));
+            ParticipantModel? model = _participants.FirstOrDefault(m => action(_mapper.Map<Participant>(m)));
 
             if (model == null) return null;
 

@@ -14,8 +14,8 @@ namespace SummitPro.Test.Integration
     [TestFixture]
     public class AddParticipantTest
     {
-        private IMediator _mediator;
-        private ServiceProvider _serviceProvider;
+        private IMediator _mediator = null!;
+        private ServiceProvider _serviceProvider = null!;
 
         [SetUp]
         public void SetUp()

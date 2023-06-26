@@ -75,12 +75,12 @@ namespace SummitPro.Infrastructure.DistributedCache
                         options.Converters.Add(new ParticipantConverter());
 
                         var serializedValue = JsonSerializer.Deserialize<TEntity>(value, options);
-                        entities.Add(serializedValue);
+                        entities.Add(serializedValue!);
                     }
                     else
                     {
                         var serializedValue = JsonSerializer.Deserialize<TEntity>(value);
-                        entities.Add(serializedValue);
+                        entities.Add(serializedValue!);
                     }
                 }
             }

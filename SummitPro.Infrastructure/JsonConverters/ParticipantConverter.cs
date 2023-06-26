@@ -9,11 +9,11 @@ namespace SummitPro.Infrastructure.JsonConverters
         public override Participant Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             Guid identifier = Guid.Empty;
-            Name name = null;
-            Contribution contributionValue = null;
+            Name? name = null!;
+            Contribution? contributionValue = null!;
             bool bringDrink = false;
-            List<string> items = null;
-            Username username = null;
+            List<string>? items = new();
+            Username? username = null!;
 
             while (reader.Read())
             {
@@ -24,7 +24,7 @@ namespace SummitPro.Infrastructure.JsonConverters
 
                 if (reader.TokenType == JsonTokenType.PropertyName)
                 {
-                    string propertyName = reader.GetString();
+                    string? propertyName = reader.GetString();
 
                     if (propertyName == "Identifier")
                     {
@@ -58,7 +58,7 @@ namespace SummitPro.Infrastructure.JsonConverters
                     }
                 }
             }
-            return new Participant(identifier, name, contributionValue, bringDrink, items, username);
+            return new Participant(identifier, name!, contributionValue!, bringDrink, items!, username!);
         }
 
         public override void Write(Utf8JsonWriter writer, Participant value, JsonSerializerOptions options)

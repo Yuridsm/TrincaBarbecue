@@ -6,11 +6,11 @@ namespace SummitPro.Infrastructure.RepositoryInMemory.Models
     public class BarbecueModel
     {
         public Guid Identifier { get; set; }
-        public string Description { get; set; }
-        public string BeginDate { get; set; }
-        public string EndDate { get; set; }
-        public List<string> Participants { get; set; }
-        public List<string> AdditionalRemarks { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public string BeginDate { get; set; } = string.Empty;
+        public string EndDate { get; set; } = string.Empty;
+        public List<string> Participants { get; set; } = new();
+        public List<string> AdditionalRemarks { get; set; } = new();
     }
 
     public class BarbecueModelMapperProfile : Profile

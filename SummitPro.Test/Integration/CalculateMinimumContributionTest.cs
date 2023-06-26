@@ -13,7 +13,7 @@ namespace SummitPro.Test.Integration
 {
     public class CalculateMinimumContributionTest
     {
-        private ServiceProvider _serviceProvider;
+        private ServiceProvider _serviceProvider = null!;
 
         [SetUp]
         public void SetUp()

@@ -18,7 +18,7 @@ namespace SummitPro.Web.Endpoints.Barbecue
         [HttpGet("/Barbecue/{identifier:Guid}")]
         public override async Task<ActionResult<BarbecueModel>> Handle([FromRoute] Guid identifier)
         {
-            var outputBoundary = _barbecueAggregationService.Aggregate(identifier);
+            var outputBoundary = await Task.FromResult(_barbecueAggregationService.Aggregate(identifier));
 
             return Ok(outputBoundary);
         }

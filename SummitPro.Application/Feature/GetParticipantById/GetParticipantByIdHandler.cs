@@ -4,7 +4,7 @@ using SummitPro.SharedKernel.Messaging;
 
 namespace SummitPro.Application.Feature.GetParticipantById
 {
-    public class GetParticipantByIdHandler : IQueryHandler<GetParticipantByIdQuery, GetParticipantByIdQueryModel>
+    public class GetParticipantByIdHandler : IQueryHandler<GetParticipantByIdQuery, GetParticipantByIdQueryModel?>
     {
         private readonly IParticipantRepository _participantRepository;
 
@@ -13,11 +13,11 @@ namespace SummitPro.Application.Feature.GetParticipantById
             _participantRepository = participantRepository;
         }
 
-        public Task<GetParticipantByIdQueryModel> Handle(GetParticipantByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetParticipantByIdQueryModel?> Handle(GetParticipantByIdQuery request, CancellationToken cancellationToken)
         {
             var existingParticipants = _participantRepository.Get(request.ParticipantIdentifer);
 
-            if (existingParticipants == null) return Task.FromResult(new GetParticipantByIdQueryModel(null));
+            if (existingParticipants == null) return await Task.FromResult<GetParticipantByIdQueryModel?>(null);
 
             var participantModel = new ParticipantModel
             {
@@ -29,7 +29,7 @@ namespace SummitPro.Application.Feature.GetParticipantById
                 Items = existingParticipants.Items
             };
 
-            return Task.FromResult(new GetParticipantByIdQueryModel(participantModel));
+            return await Task.FromResult(new GetParticipantByIdQueryModel(participantModel));
         }
     }
 }

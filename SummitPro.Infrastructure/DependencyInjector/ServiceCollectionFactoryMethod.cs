@@ -4,7 +4,7 @@ namespace SummitPro.Infrastructure.DependencyInjector
 {
     public static class ServiceCollectionFactoryMethod
     {
-        private static IServiceCollection _service;
+        private static IServiceCollection _service = null!;
 
         public static IServiceCollection services
         {

@@ -10,9 +10,9 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
         private readonly IMapper _mapper;
 
         // It seems like Collection or Table in Relational Database
-        private List<BarbecueModel> _barbecues = new List<BarbecueModel>();
-        private Dictionary<Guid, IEnumerable<string>> _additionalRemarks = new Dictionary<Guid, IEnumerable<string>>();
-        private Dictionary<Guid, IEnumerable<string>> _participants = new Dictionary<Guid, IEnumerable<string>>();
+        private List<BarbecueModel> _barbecues = new();
+        private Dictionary<Guid, IEnumerable<string>> _additionalRemarks = new();
+        private Dictionary<Guid, IEnumerable<string>> _participants = new();
 
         public BarbecueRepositoryInMemory(IMapper mapper)
         {
@@ -29,9 +29,9 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
             _barbecues.Add(model);
         }
 
-        public Barbecue Find(Predicate<Barbecue> action)
+        public Barbecue? Find(Predicate<Barbecue> action)
         {
-            BarbecueModel model = _barbecues.FirstOrDefault(m => action(_mapper.Map<Barbecue>(m)));
+            var model = _barbecues.FirstOrDefault(m => action(_mapper.Map<Barbecue>(m)));
 
             return _mapper.Map<Barbecue>(model);
         }
@@ -43,7 +43,7 @@ namespace SummitPro.Infrastructure.RepositoryInMemory
             return _mapper.Map<Barbecue>(model);
         }
 
-        public IEnumerable<Barbecue> GetAll()
+        public IEnumerable<Barbecue>? GetAll()
         {
             if (_barbecues == null) return Enumerable.Empty<Barbecue>();
 
