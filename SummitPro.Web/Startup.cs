@@ -60,9 +60,10 @@ namespace SummitPro.Web
 
             app.UseCors("BarbecueOrigins");
 
+            app.UseStaticFiles();
+
             app.UseRouting();
 
-            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {

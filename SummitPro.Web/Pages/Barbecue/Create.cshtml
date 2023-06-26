@@ -1,0 +1,36 @@
+﻿@page
+@model SummitPro.Web.Pages.Barbecue.CreateModel
+@{
+	Layout = "_Layout";
+}
+
+<h1>Create New Barbecue</h1>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <label asp-for="Barbecue.Description">Description:</label>
+        <input asp-for="Barbecue.Description" />
+        <span asp-validation-for="Barbecue.Description"></span>
+    </div>
+
+    <div>
+        <label asp-for="Barbecue.BeginDate">Begin Date:</label>
+        <input asp-for="Barbecue.BeginDate" />
+        <span asp-validation-for="Barbecue.BeginDate"></span>
+    </div>
+
+    <div>
+        <label asp-for="Barbecue.EndDateTime">EndDate:</label>
+        <input asp-for="Barbecue.EndDateTime" />
+        <span asp-validation-for="Barbecue.EndDateTime"></span>
+    </div>
+
+    <div>
+        <label asp-for="Barbecue.AdditionalRemarks">Additional Remarks:</label>
+        <textarea rows="12" cols="50" asp-for="Barbecue.AdditionalRemarks"></textarea>
+        <span asp-validation-for="Barbecue.AdditionalRemarks"></span>
+    </div>
+
+    <button type="submit">Create</button>
+</form>

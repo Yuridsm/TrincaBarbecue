@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace SummitPro.Web.Views
@@ -6,6 +7,11 @@ namespace SummitPro.Web.Views
     {
         public void OnGet()
         {
+        }
+
+        public IActionResult OnPost()
+        {
+            return RedirectToPage("/Barbecue/Create");
         }
     }
 }
