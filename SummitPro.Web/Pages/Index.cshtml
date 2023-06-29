@@ -4,18 +4,17 @@
     Layout = "_Layout";
 }
 
-<h1>Welcome to SummitPro</h1>
-
 <section class="container d-flex flex-row justify-content-around">
-    <div class="flex-column justify-content-between">
-        <h1>Welcome to <span>SummitPro</span></h1>
-        <h1>Join to any event around the World</h1>
+    <div class="d-flex col-6 bg-danger flex-column justify-content-center align-content-start">
+        <h3>Welcome to <span class="badge text-bg-primary">SummitPro.</span><br>Join to any event around the World</h3>
         <p>Build a beautiful, modern website with flexible Bootstrap components built from scratch.</p>
+        <div class="d-flex">
+            <button class="btn btn-primary shadow-lg px-5 rounded" type="button">View Events</button>
+        </div>
     </div>
-    <div>
-        <img src="~/image/work_together.svg" alt="Work together" />
+    <div class="d-flex col-6 bg-black">
+        <img src="~/image/work_together.svg" class="img-fluid" alt="Work together" />
     </div>
-
 </section>
 
-<a type="button" class="btn btn-primary" asp-page="/Barbecue/Index">Base class</a>
+@*<a type="button" class="btn btn-primary" asp-page="/Barbecue/Index">Base class</a>*@
