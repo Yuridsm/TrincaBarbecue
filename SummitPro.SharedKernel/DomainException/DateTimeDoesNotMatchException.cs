@@ -1,19 +1,18 @@
-﻿namespace SummitPro.SharedKernel.DomainException
+﻿namespace SummitPro.SharedKernel.DomainException;
+
+public class DateTimeDoesNotMatchException : Exception
 {
-    public class DateTimeDoesNotMatchException : Exception
-    {
-        public DateTimeDoesNotMatchException()
-        {
-        }
+	public DateTimeDoesNotMatchException()
+	{
+	}
 
-        public DateTimeDoesNotMatchException(string message)
-            : base(message)
-        {
-        }
+	public DateTimeDoesNotMatchException(string message)
+		: base(message)
+	{
+	}
 
-        public DateTimeDoesNotMatchException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
-    }
+	public DateTimeDoesNotMatchException(string message, Exception inner)
+		: base(message, inner)
+	{
+	}
 }

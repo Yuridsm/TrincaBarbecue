@@ -1,19 +1,18 @@
-﻿namespace SummitPro.SharedKernel.DomainException
+﻿namespace SummitPro.SharedKernel.DomainException;
+
+public class InvalidUsernameException : Exception
 {
-    public class InvalidUsernameException : Exception
-    {
-        public InvalidUsernameException()
-        {
-        }
+	public InvalidUsernameException()
+	{
+	}
 
-        public InvalidUsernameException(string message)
-            : base(message)
-        {
-        }
+	public InvalidUsernameException(string message)
+		: base(message)
+	{
+	}
 
-        public InvalidUsernameException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
-    }
+	public InvalidUsernameException(string message, Exception inner)
+		: base(message, inner)
+	{
+	}
 }

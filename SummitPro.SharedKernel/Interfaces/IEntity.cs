@@ -1,7 +1,6 @@
-﻿namespace SummitPro.SharedKernel.Interfaces
+﻿namespace SummitPro.SharedKernel.Interfaces;
+
+public interface IEntity<TId>
 {
-    public interface IEntity<TId>
-    {
-        TId Identifier { get; }
-    }
+	TId Identifier { get; }
 }

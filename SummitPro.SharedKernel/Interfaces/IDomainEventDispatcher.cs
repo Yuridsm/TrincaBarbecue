@@ -1,7 +1,6 @@
-﻿namespace SummitPro.SharedKernel.Interfaces
+﻿namespace SummitPro.SharedKernel.Interfaces;
+
+public interface IDomainEventDispatcher
 {
-    public interface IDomainEventDispatcher
-    {
-        Task DispatchAndClearEvents(IEnumerable<EntityBase> entitiesWithEvents);
-    }
+	Task DispatchAndClearEvents(IEnumerable<EntityBase> entitiesWithEvents);
 }

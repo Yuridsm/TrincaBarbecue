@@ -1,6 +1,5 @@
-﻿namespace SummitPro.SharedKernel.Interfaces
+﻿namespace SummitPro.SharedKernel.Interfaces;
+
+public interface IOutputBoundary
 {
-    public interface IOutputBoundary
-    {
-    }
 }
