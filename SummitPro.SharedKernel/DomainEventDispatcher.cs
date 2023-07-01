@@ -1,29 +1,28 @@
 ﻿using MediatR;
 using SummitPro.SharedKernel.Interfaces;
 
-namespace SummitPro.SharedKernel
+namespace SummitPro.SharedKernel;
+
+public class DomainEventDispatcher : IDomainEventDispatcher
 {
-    public class DomainEventDispatcher : IDomainEventDispatcher
-    {
-        private readonly IMediator _mediator;
+	private readonly IMediator _mediator;
 
-        public DomainEventDispatcher(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+	public DomainEventDispatcher(IMediator mediator)
+	{
+		_mediator = mediator;
+	}
 
-        public async Task DispatchAndClearEvents(IEnumerable<EntityBase> entitiesWithEvents)
-        {
-            foreach (var entity in entitiesWithEvents)
-            {
-                var events = entity.DomainEvents.ToArray();
-                entity.ClearDomainEvent();
+	public async Task DispatchAndClearEvents(IEnumerable<EntityBase> entitiesWithEvents)
+	{
+		foreach (var entity in entitiesWithEvents)
+		{
+			var events = entity.DomainEvents.ToArray();
+			entity.ClearDomainEvent();
 
-                foreach (var domainEvent in events)
-                {
-                    await _mediator.Publish(domainEvent);
-                }
-            }
-        }
-    }
+			foreach (var domainEvent in events)
+			{
+				await _mediator.Publish(domainEvent);
+			}
+		}
+	}
 }

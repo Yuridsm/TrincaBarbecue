@@ -1,9 +1,8 @@
 ﻿using MediatR;
 
-namespace SummitPro.SharedKernel
+namespace SummitPro.SharedKernel;
+
+public abstract class DomainEventBase : INotification
 {
-    public abstract class DomainEventBase : INotification
-    {
-        public DateTime DateOccurred { get; protected init; } = DateTime.UtcNow;
-    }
+	public DateTime DateOccurred { get; protected init; } = DateTime.UtcNow;
 }
