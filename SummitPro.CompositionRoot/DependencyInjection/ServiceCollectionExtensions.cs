@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SummitPro.Infrastructure.DependencyInjector;
 
-namespace SummitPro.CompositionRoot.DependencyInjection
+namespace SummitPro.CompositionRoot.DependencyInjection;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
+    public static void AddBasicServices(this IServiceCollection services)
     {
-        public static void AddBasicServices(this IServiceCollection services)
-        {
-            services.AddInfrastructureInMemory();
-        }
+        services.AddInfrastructureInMemory();
     }
 }

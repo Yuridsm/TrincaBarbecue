@@ -1,23 +1,22 @@
 ﻿using SummitPro.SharedKernel.Interfaces;
 using SummitPro.SharedKernel.DomainException;
 
-namespace SummitPro.Core.Aggregate.Participant
+namespace SummitPro.Core.Aggregate.Participant;
+
+public class Contribution : IValueObject
 {
-    public class Contribution : IValueObject
-    {
-        public double Value { get; private set; }
+	public double Value { get; private set; }
 
-        public Contribution(double value)
-        {
-            if (!Validate(value)) throw new InvalidContributionException("Invalid Contribution");
+	public Contribution(double value)
+	{
+		if (!Validate(value)) throw new InvalidContributionException("Invalid Contribution");
 
-            Value = value;
-        }
+		Value = value;
+	}
 
-        public static bool Validate(double value)
-        {
-            if (value < 0) return false;
-            return true;
-        }
-    }
+	public static bool Validate(double value)
+	{
+		if (value < 0) return false;
+		return true;
+	}
 }
