@@ -1,7 +1,6 @@
-﻿namespace SummitPro.SharedKernel.Messaging
+﻿namespace SummitPro.SharedKernel.Messaging;
+
+public interface IIdempotentCommand<out TResponse> : ICommand<TResponse>
 {
-    public interface IIdempotentCommand<out TResponse> : ICommand<TResponse>
-    {
-        Guid RequestId { get; set; }
-    }
+	Guid RequestId { get; set; }
 }

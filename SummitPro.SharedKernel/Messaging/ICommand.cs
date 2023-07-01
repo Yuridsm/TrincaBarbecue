@@ -1,8 +1,7 @@
 ﻿using MediatR;
 
-namespace SummitPro.SharedKernel.Messaging
+namespace SummitPro.SharedKernel.Messaging;
+
+public interface ICommand<out TResponse> : IRequest<TResponse>
 {
-    public interface ICommand<out TResponse> : IRequest<TResponse>
-    {
-    }
 }
