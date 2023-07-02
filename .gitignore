@@ -6,3 +6,5 @@ SummitPro.WebUI/.vscode
 SummitPro.WebUI/node_modules
 SummitPro.Web/node_modules
 SummitPro.Web/wwwroot/js/
+SummitPro.Web/wwwroot/css/
+SummitPro.Web/wwwroot/image/
