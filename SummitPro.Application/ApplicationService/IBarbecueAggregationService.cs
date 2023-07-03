@@ -1,9 +1,8 @@
 ﻿using SummitPro.Application.Model;
 
-namespace SummitPro.Application.ApplicationService
+namespace SummitPro.Application.ApplicationService;
+
+public interface IBarbecueAggregationService
 {
-    public interface IBarbecueAggregationService
-    {
-        BarbecueModel? Aggregate(Guid barbecueIdentifier);
-    }
+	BarbecueModel? Aggregate(Guid barbecueIdentifier);
 }

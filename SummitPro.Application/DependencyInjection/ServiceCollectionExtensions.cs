@@ -11,33 +11,32 @@ using SummitPro.Application.UseCase.GetParticipant;
 using SummitPro.Application.UseCase.ListBarbecues;
 using SummitPro.Application.UseCase.UpdateBarbecue;
 
-namespace SummitPro.Application.DependencyInjection
+namespace SummitPro.Application.DependencyInjection;
+
+public static class ServiceCollectionExtensions
 {
-    public static class ServiceCollectionExtensions
-    {
-        public static void AddMediator(this IServiceCollection services)
-        {
-            services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
-        }
+	public static void AddMediator(this IServiceCollection services)
+	{
+		services.AddMediatR(o => o.RegisterServicesFromAssembly(typeof(ServiceCollectionExtensions).Assembly));
+	}
 
-        public static void AddUseCase(this IServiceCollection services)
-        {
-            services.AddScoped<ICreateBarbecueUseCase, CreateBarbecueUseCase>();
-            services.AddScoped<IGetBarbecueByIdUseCase, GetBarbecueByIdUseCase>();
-            services.AddScoped<IUpdateBarbecueUseCase, UpdateBarbecueUseCase>();
-            services.AddScoped<IAddParticipantUseCase, AddParticipantUseCase>();
-            services.AddScoped<IGetParticipantByIdUseCase, GetParticipantByIdUseCase>();
-            services.AddScoped<IBindParticipantUseCase, BindParticipantUseCase>();
-            services.AddScoped<IListBarbecuesUseCase, ListBarbecuesUseCase>();
-            services.AddScoped<ICalculateMinimumContributionUseCase, CalculateMinimumContributionUseCase>();
-        }
+	public static void AddUseCase(this IServiceCollection services)
+	{
+		services.AddScoped<ICreateBarbecueUseCase, CreateBarbecueUseCase>();
+		services.AddScoped<IGetBarbecueByIdUseCase, GetBarbecueByIdUseCase>();
+		services.AddScoped<IUpdateBarbecueUseCase, UpdateBarbecueUseCase>();
+		services.AddScoped<IAddParticipantUseCase, AddParticipantUseCase>();
+		services.AddScoped<IGetParticipantByIdUseCase, GetParticipantByIdUseCase>();
+		services.AddScoped<IBindParticipantUseCase, BindParticipantUseCase>();
+		services.AddScoped<IListBarbecuesUseCase, ListBarbecuesUseCase>();
+		services.AddScoped<ICalculateMinimumContributionUseCase, CalculateMinimumContributionUseCase>();
+	}
 
-        public static void AddLog(this IServiceCollection services)
-        {
-            services.AddLogging(builder =>
-            {
-                builder.AddConsole();
-            });
-        }
-    }
+	public static void AddLog(this IServiceCollection services)
+	{
+		services.AddLogging(builder =>
+		{
+			builder.AddConsole();
+		});
+	}
 }

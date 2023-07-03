@@ -2,18 +2,17 @@
 using SummitPro.SharedKernel.Interfaces;
 using SummitPro.SharedKernel.UseCaseContract;
 
-namespace SummitPro.Application.Interface
-{
-    public abstract class IListBarbecuesUseCase : IUseCaseAsynchronous
-        .WithoutInputBoundary
-        .WithOutputBondary<ListBarbecuesOutputBoundary>
-    {
-        protected ICachedRepository _cachedRepository = null!;
+namespace SummitPro.Application.Interface;
 
-        public IListBarbecuesUseCase SetDistributedCache(ICachedRepository cachedRepository)
-        {
-            _cachedRepository = cachedRepository;
-            return this;
-        }
-    }
+public abstract class IListBarbecuesUseCase : IUseCaseAsynchronous
+	.WithoutInputBoundary
+	.WithOutputBondary<ListBarbecuesOutputBoundary>
+{
+	protected ICachedRepository _cachedRepository = null!;
+
+	public IListBarbecuesUseCase SetDistributedCache(ICachedRepository cachedRepository)
+	{
+		_cachedRepository = cachedRepository;
+		return this;
+	}
 }

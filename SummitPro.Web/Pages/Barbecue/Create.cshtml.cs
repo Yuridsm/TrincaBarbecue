@@ -27,8 +27,6 @@ public class CreateModel : PageModel
 	{
 		if (!ModelState.IsValid) return Page();
 
-		Console.WriteLine(Barbecue);
-
 		var splittedAdditionalRemarks = Barbecue.AdditionalRemarks[0].Split("\r\n");
 
 		foreach (var remark in splittedAdditionalRemarks)
