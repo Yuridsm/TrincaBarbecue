@@ -8,7 +8,7 @@
 	@Html.AntiForgeryToken()
 	<div class="container d-flex flex-column my-4 align-items-center">
 		<h4>Create New Event</h4>
-		<div class="col-6 mt-3">
+		<div class="col-6 my-3">
 			<label asp-for="Barbecue.Description" class="form-label">Description</label>
 			<input asp-for="Barbecue.Description" type="text" placeholder="Type a Description" class="form-control" required>
 			<div class="valid-feedback">
@@ -17,7 +17,7 @@
 			<span asp-validation-for="Barbecue.Description"></span>
 		</div>
 
-		<div class="col-6 mt-3">
+		<div class="col-6 my-3">
 			<label asp-for="Barbecue.BeginDate" class="form-label">Begin DateTime</label>
 			<input asp-for="Barbecue.BeginDate" class="form-control" required>
 			<div class="valid-feedback">
@@ -26,7 +26,7 @@
 			<span asp-validation-for="Barbecue.BeginDate"></span>
 		</div>
 
-		<div class="col-6 mt-3">
+		<div class="col-6 my-3">
 			<label asp-for="Barbecue.EndDateTime" class="form-label">End DateTime</label>
 			<input asp-for="Barbecue.EndDateTime" class="form-control" required>
 			<div class="valid-feedback">
@@ -35,7 +35,7 @@
 			<span asp-validation-for="Barbecue.EndDateTime"></span>
 		</div>
 
-		<div class="col-6 mt-3">
+		<div class="col-6 my-3">
 			<label asp-for="Barbecue.AdditionalRemarks">Additional Remarks</label>
 			<textarea class="form-control" asp-for="Barbecue.AdditionalRemarks">
 				@string.Join("\n", Model.Barbecue.AdditionalRemarks)
@@ -43,8 +43,13 @@
 			<span asp-validation-for="Barbecue.AdditionalRemarks"></span>
 		</div>
 
-		<div class="col-6 mt-3">
+		<div class="col-6 my-3">
 			<button class="btn btn-primary text-white my-3 shadow-lg rounded" type="submit">Create Event</button>
 		</div>
 	</div>
 </form>
+
+@section Scripts
+{
+	<partial name="_ValidationScriptsPartial"/>
+}
