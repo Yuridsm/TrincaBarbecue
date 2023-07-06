@@ -1,14 +1,11 @@
-﻿import { ISpecification } from "./ISpecification";
+﻿import { AndSpecification } from "./AndSpecification";
+import { ISpecification } from "./ISpecification";
 
 export abstract class AbstractSpecification<T> implements ISpecification<T> {
     abstract isSatisfiedBy(item: T): boolean;
 
-    isSatisfiedBy(element: T): boolean {
-        throw new Error("Method not implemented.");
-    }
-
     and(other: ISpecification<T>): ISpecification<T> {
-        throw new Error("Method not implemented.");
+        return new AndSpecification(this, other);
     }
 
     or(other: ISpecification<T>): ISpecification<T> {

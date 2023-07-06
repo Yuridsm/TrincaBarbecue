@@ -1,1 +1,0 @@
-﻿console.log("This is first web log");
