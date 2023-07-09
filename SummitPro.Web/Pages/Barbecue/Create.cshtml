@@ -2,39 +2,34 @@
 @model SummitPro.Web.Pages.Barbecue.CreateModel
 @{
 	Layout = "_Layout";
+	var beginDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+	var endDateTime = DateTime.Now.AddDays(7).ToString("yyyy-MM-ddTHH:mm");
 }
 
 <form class="row needs-validation" method="post" id="create-barbecue-identifier" novalidate>
 	@Html.AntiForgeryToken()
 	<div class="container d-flex flex-column my-4 align-items-center">
 		<h4>Create New Event</h4>
+
 		<div class="col-6 my-3">
 			<label asp-for="Barbecue.Description" class="form-label">Description</label>
 			<input id="description" asp-for="Barbecue.Description" type="text" placeholder="Type a Description" class="form-control" required>
-			<div class="valid-feedback">
-				Looks good!
-			</div>
-			<span asp-validation-for="Barbecue.Description"></span>
+
+			<span id="description-error-message" class="valid-feedback invalid-feedback" asp-validation-for="Barbecue.Description"></span>
 		</div>
 
 		<div class="col-6 my-3">
 			<label asp-for="Barbecue.BeginDate" class="form-label">Begin DateTime</label>
-			<input id="begin-datetime" asp-for="Barbecue.BeginDate" class="form-control" required>
-			<div class="valid-feedback">
-				Looks good!
-			</div>
-			<span asp-validation-for="Barbecue.BeginDate"></span>
+			<input id="begin-datetime" class="form-control" value="@beginDateTime" asp-for="Barbecue.BeginDate" required>
+
+			<span id="begin-datetime-error-message" class="valid-feedback invalid-feedback" asp-validation-for="Barbecue.BeginDate"></span>
 		</div>
 
-		@* Fazendo alguns teste nesse snippet de código para usar validação com Bootstrap *@
 		<div class="col-6 my-3 has-validation">
 			<label asp-for="Barbecue.EndDateTime" class="form-label">End DateTime</label>
-			<input id="end-datetime" asp-for="Barbecue.EndDateTime" class="form-control" required>
+			<input id="end-datetime" asp-for="Barbecue.EndDateTime" type="datetime-local" class="form-control" value="@endDateTime" required>
 
-			<div class="valid-feedback">Looks good!</div>
-			<div class="invalid-feedback">Please choose a username.</div>
-			
-			<span id="error-end-datetime" asp-validation-for="Barbecue.EndDateTime"></span>
+			<span id="end-datetime-error-message" class="valid-feedback invalid-feedback" asp-validation-for="Barbecue.EndDateTime"></span>
 		</div>
 
 		<div class="col-6 my-3">
@@ -52,6 +47,6 @@
 </form>
 
 @section Scripts
-{
-	<partial name="_ValidationScriptsPartial"/>
+	{
+	<partial name="_ValidationScriptsPartial" />
 }
