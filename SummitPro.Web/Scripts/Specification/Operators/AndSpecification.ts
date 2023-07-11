@@ -1,12 +1,10 @@
-﻿import { AbstractSpecification } from "./AbstractionSpecification";
-import { ISpecification } from "./ISpecification";
+﻿import ISpecification from "../Contracts/ISpecification";
 
-export class AndSpecification<T> extends AbstractSpecification<T> {
+export default class AndSpecification<T> implements ISpecification<T> {
     private left: ISpecification<T>;
     private right: ISpecification<T>;
 
     constructor(left: ISpecification<T>, right: ISpecification<T>) {
-        super();
         this.left = left;
         this.right = right;
     }

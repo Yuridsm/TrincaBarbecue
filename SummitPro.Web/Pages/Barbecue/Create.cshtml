@@ -13,23 +13,23 @@
 
 		<div class="col-6 my-3">
 			<label asp-for="Barbecue.Description" class="form-label">Description</label>
-			<input id="description" asp-for="Barbecue.Description" type="text" placeholder="Type a Description" class="form-control" required>
+			<input id="description" asp-for="Barbecue.Description" type="text" placeholder="Type a Description" class="form-control" autofocus required>
 
-			<span id="description-error-message" class="valid-feedback invalid-feedback" asp-validation-for="Barbecue.Description"></span>
+			<span id="description-error-message" class="text-danger" asp-validation-for="Barbecue.Description"></span>
 		</div>
 
 		<div class="col-6 my-3">
 			<label asp-for="Barbecue.BeginDate" class="form-label">Begin DateTime</label>
 			<input id="begin-datetime" class="form-control" value="@beginDateTime" asp-for="Barbecue.BeginDate" required>
 
-			<span id="begin-datetime-error-message" class="valid-feedback invalid-feedback" asp-validation-for="Barbecue.BeginDate"></span>
+			<span id="begin-datetime-error-message" class="text-danger" asp-validation-for="Barbecue.BeginDate"></span>
 		</div>
 
 		<div class="col-6 my-3 has-validation">
 			<label asp-for="Barbecue.EndDateTime" class="form-label">End DateTime</label>
 			<input id="end-datetime" asp-for="Barbecue.EndDateTime" type="datetime-local" class="form-control" value="@endDateTime" required>
 
-			<span id="end-datetime-error-message" class="valid-feedback invalid-feedback" asp-validation-for="Barbecue.EndDateTime"></span>
+			<span id="end-datetime-error-message" class="text-danger" asp-validation-for="Barbecue.EndDateTime"></span>
 		</div>
 
 		<div class="col-6 my-3">

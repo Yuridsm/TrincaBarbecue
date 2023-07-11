@@ -1,5 +1,5 @@
 ﻿import Barbecue from "../DataModel/Barbecue";
-import { AbstractSpecification } from "./AbstractionSpecification";
+import { AbstractSpecification } from "./Contracts/AbstractionSpecification";
 
 export default class EndDateTimeIsNotNullSpecification extends AbstractSpecification<Barbecue> {
 

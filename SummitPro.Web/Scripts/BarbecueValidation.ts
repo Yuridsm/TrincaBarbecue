@@ -1,42 +1,36 @@
-﻿import Barbecue from "./DataModel/Barbecue";
-import BeginDateGreaterThanEndDateSpecification from "./Specification/BeginDateGreaterThanEndDateSpecification";
-import FieldIsNotNullSpecification from "./Specification/FieldIsNotNullSpecification";
+﻿import FieldIsNotNullSpecification from "./Specification/FieldIsNotNullSpecification";
+import BeginDateTimeInputValidation from "./Validation/BeginDateTimeInputValidation";
+import DescriptionInputValidation from "./Validation/DescriptionInputValidation";
+import EndDateTimeInputValidation from "./Validation/EndDateTimeInputValidation";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('create-barbecue-identifier') as HTMLFormElement;
 
-    form.addEventListener('submit', (event) => {
+    const form = document.getElementById('create-barbecue-identifier') as HTMLFormElement;
+    const description = document.getElementById('description') as HTMLInputElement;
+    const beginDateTime = document.getElementById('begin-datetime') as HTMLInputElement;
+    const endDateTime = document.getElementById('end-datetime') as HTMLInputElement;
+
+    const descriptionInputErrorMessage = document.getElementById('description-error-message') as HTMLInputElement;
+    const beginDateTimeErrorMessage = document.getElementById('begin-datetime-error-message') as HTMLSpanElement;
+    const endDateTimeErrorMessage = document.getElementById('end-datetime-error-message') as HTMLSpanElement;
+
+    DescriptionInputValidation.execute(description, descriptionInputErrorMessage);
+    BeginDateTimeInputValidation.execute(beginDateTime, endDateTime, beginDateTimeErrorMessage, endDateTimeErrorMessage);
+    EndDateTimeInputValidation.execute(beginDateTime, endDateTime, beginDateTimeErrorMessage, endDateTimeErrorMessage);
+
+    form.addEventListener('submit', (event: Event) => {
         event.preventDefault();
 
         const description = document.getElementById('description') as HTMLInputElement;
-        const beginDateTime = document.getElementById('begin-datetime') as HTMLInputElement;
-        const endDateTime = document.getElementById('end-datetime') as HTMLInputElement;
-        const remarks = document.getElementById('additional-remarks') as HTMLTextAreaElement;
+        const descriptionErrorMessage = document.getElementById('description-error-message') as HTMLSpanElement;
 
         const fieldIsNotNullSpecification = new FieldIsNotNullSpecification();
-        const endDateTimeInvariantSpecification = new BeginDateGreaterThanEndDateSpecification();
-
-        const barbecue = new Barbecue(
-            description.value,
-            new Date(beginDateTime.value),
-            new Date(endDateTime.value),
-            remarks.value
-        );
 
         if (!fieldIsNotNullSpecification.isSatisfiedBy(description.value)) {
-            const validationMessage = 'Description is required here.';
-
-            description.setCustomValidity(validationMessage);
-        }
-        else if (!endDateTimeInvariantSpecification.isSatisfiedBy(barbecue)) {
-            const validationMessage = 'End Datetime should greather than Begin Datetime';
-
-            endDateTime.setCustomValidity(validationMessage);
+            descriptionErrorMessage.textContent = 'Description is required';
         }
         else {
-            beginDateTime.setCustomValidity('');
+            descriptionErrorMessage.textContent = '';
         }
     });
 });
-
-

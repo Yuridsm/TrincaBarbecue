@@ -5,8 +5,6 @@ import EndDateTimeIsNotNullSpecification from "../Specification/EndDateTimeIsNot
 
 export default class Barbecue {
     constructor(readonly description: string, readonly beginDateTime: Date, readonly endDateTime: Date, readonly additionalRemarks: string) {
-
-        if (!Barbecue.validate(this)) throw new Error('Invalid Fields');
     }
 
     public static validate(barbecue: Barbecue): boolean {

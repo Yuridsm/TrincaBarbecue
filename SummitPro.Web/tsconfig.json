@@ -4,10 +4,14 @@
         "noEmitOnError": true,
         "removeComments": false,
         "sourceMap": true,
-        "target": "es5",
+        "target": "ES5",
         "module": "CommonJS",
         "moduleResolution": "Node",
-        "outDir": "wwwroot/dist/js"
+        "outDir": "wwwroot/dist/js",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "strictNullChecks": true
     },
     "include": [
         "Scripts/**/*.ts"

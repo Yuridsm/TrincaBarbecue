@@ -1,12 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SummitPro.Web.ViewModel
+﻿namespace SummitPro.Web.ViewModel
 {
     public class BarbecueViewModel
     {
         public Guid BarbecueIdentifier { get; set; }
-
-        [Required]
         public string Description { get; set; } = string.Empty;
         public DateTime BeginDate { get; set; }
         public DateTime EndDateTime { get; set; }
