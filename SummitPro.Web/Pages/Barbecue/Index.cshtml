@@ -6,44 +6,33 @@
 
 <h1>Bem-vindo à Página</h1>
 
-<div class="mdc-touch-target-wrapper">
-    <a href="./Barbecue/Create" class="mdc-button mdc-button--raised mdc-button--icon-leading">
-        <span class="mdc-button__ripple"></span>
-        <span class="mdc-button__touch"></span>
-        <i class="material-icons mdc-button__icon" aria-hidden="true">celebration</i>
-        <span class="mdc-button__label">New Event</span>
-    </a>
-</div>
+<a class="btn btn-primary text-white shadow-lg py-2 px-4 rounded" type="button" asp-page="/Barbecue/Create">New Event</a>
 
 <br />
 <br />
 <br />
 <br />
 
-<div class="mdc-data-table">
-    <div class="mdc-data-table__table-container">
-        <table class="mdc-data-table__table" aria-label="Dessert calories">
-            <thead>
-                <tr class="mdc-data-table__header-row">
-                    <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Identifier</th>
-                    <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Description</th>
-                    <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Begin Date</th>
-                    <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" role="columnheader" scope="col">Participants Quantity</th>
-                </tr>
-            </thead>
-            <tbody class="mdc-data-table__content">
-
-                @foreach (var item in Model.BarbecueViewModels)
-                {
-                    <tr class="mdc-data-table__row">
-                        <th class="mdc-data-table__cell" scope="row">@Html.DisplayFor(o => item.BarbecueIdentifier)</th>
-                        <td class="mdc-data-table__cell">@Html.DisplayFor(o => item.Description)</td>
-                        <td class="mdc-data-table__cell">@Html.DisplayFor(o => item.BeginDate)</td>
-                        <td class="mdc-data-table__cell mdc-data-table__headedr-cell--numeric">123</td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </div>
-</div>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">Identifier</th>
+			<th scope="col">Description</th>
+			<th scope="col">Begin Date</th>
+			<th scope="col">End Date</th>
+			<th scope="col">Participants Quantity</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.BarbecueViewModels)
+		{
+			<tr>
+				<th scope="row">@Html.DisplayFor(o => item.BarbecueIdentifier)</th>
+				<td>@Html.DisplayFor(o => item.Description)</td>
+				<td>@Html.DisplayFor(o => item.BeginDate)</td>
+				<td>@Html.DisplayFor(o => item.EndDateTime)</td>
+				<td>123</td>
+			</tr>
+		}
+	</tbody>
+</table>
