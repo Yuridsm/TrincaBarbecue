@@ -27,19 +27,12 @@ public class CreateModel : PageModel
 	{
 		if (!ModelState.IsValid) return Page();
 
-		var splittedAdditionalRemarks = Barbecue.AdditionalRemarks[0].Split("\r\n");
-
-		foreach (var remark in splittedAdditionalRemarks)
-			Barbecue.AdditionalRemarks.Add(remark);
-
-		Barbecue.AdditionalRemarks.RemoveAt(0);
-
 		var inputBoundary = new CreateBarbecueInputBoundary
 		{
 			Description = Barbecue.Description,
 			BeginDate = Barbecue.BeginDate,
 			EndDate = Barbecue.EndDateTime,
-			AdditionalObservations = Barbecue.AdditionalRemarks
+			AdditionalObservations = Barbecue.SplitAdditionalRemarks()
 		};
 
 		var output = await _createBarbecueUseCase.Execute(inputBoundary);

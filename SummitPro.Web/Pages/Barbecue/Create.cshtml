@@ -34,9 +34,7 @@
 
 		<div class="col-6 my-3">
 			<label asp-for="Barbecue.AdditionalRemarks">Additional Remarks</label>
-			<textarea id="additional-remarks" class="form-control" rows="3" asp-for="Barbecue.AdditionalRemarks">
-				@string.Join("\n", Model.Barbecue.AdditionalRemarks)
-			</textarea>
+			<textarea id="additional-remarks" class="form-control" rows="3" asp-for="Barbecue.AdditionalRemarks">Test</textarea>
 			<span asp-validation-for="Barbecue.AdditionalRemarks"></span>
 		</div>
 

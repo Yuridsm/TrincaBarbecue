@@ -4,7 +4,7 @@
 	Layout = "_Layout";
 }
 
-<h1>Bem-vindo à Página</h1>
+<h1>Bem-vindo à Página Inicial</h1>
 
 <a class="btn btn-primary text-white shadow-lg py-2 px-4 rounded" type="button" asp-page="/Barbecue/Create">New Event</a>
 
@@ -31,7 +31,7 @@
 				<td>@Html.DisplayFor(o => item.Description)</td>
 				<td>@Html.DisplayFor(o => item.BeginDate)</td>
 				<td>@Html.DisplayFor(o => item.EndDateTime)</td>
-				<td>123</td>
+				<td>@Html.DisplayFor(o => item.ParticipantQuantity)</td>
 			</tr>
 		}
 	</tbody>

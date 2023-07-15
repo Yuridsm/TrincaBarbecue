@@ -31,7 +31,8 @@ namespace SummitPro.Web.Pages.Barbecue
                     Description = item.Description,
                     BeginDate = item.BeginDate,
                     EndDateTime = item.EndDate,
-                    AdditionalRemarks = item.AdditionalRemarks
+                    AdditionalRemarks = string.Join("\r\n", item.AdditionalRemarks),
+                    ParticipantQuantity = item.ParticipantsQuantity()
                 });
             }
         }
