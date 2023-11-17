@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SummitPro.Application.DependencyInjection;
 using SummitPro.Application.UseCase.AddParticipante;
 using SummitPro.Application.UseCase.BindParticipant;
 using SummitPro.Application.UseCase.CreateBarbecue;
@@ -57,11 +58,12 @@ class Program
             //.AddScoped<GetbarbecueByIdController>()
             //.AddScoped<ListBarbecuesController>()
 
-            .AddScoped<CreateBarbecueCLI>()
-            //.AddScoped<ListBarbecueCLI>()
-            //.AddScoped<CreateParticipantCLI>()
-            .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            .AddScoped<CreateBarbecueCLI>();
+		    //.AddScoped<ListBarbecueCLI>()
+		    //.AddScoped<CreateParticipantCLI>()
+		    serviceProvider.AddMediator();
 
-        return serviceProvider.BuildServiceProvider();
+
+		return serviceProvider.BuildServiceProvider();
     }
 }

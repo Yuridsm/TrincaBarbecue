@@ -8,11 +8,11 @@ namespace SummitPro.Core.Aggregate.Barbecue;
 public class Barbecue : IEntity<Guid>, IAggregateRoot
 {
 	public Guid Identifier { get; private set; }
-	public string Description { get; private set; } = string.Empty;
+	public string Description { get; private set; }
 	public List<string> AdditionalRemarks { get; private set; } = new List<string>();
 	public DateTime BeginDate { get; private set; }
 	public DateTime EndDate { get; private set; }
-	public List<Guid> Participants { get; private set; } = new List<Guid>();
+	public List<Guid> Participants { get; private set; } = new();
 
 	private Barbecue(string description, List<string> additionalRemarks, DateTime beginDate, DateTime endDate)
 	{

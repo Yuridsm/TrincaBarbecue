@@ -4,7 +4,7 @@ namespace SummitPro.SharedKernel;
 
 public class EntityBase : IEntity<Guid>
 {
-	public Guid Identifier { get; set; }
+	public Guid Identifier { get; protected set; }
 
 	private List<DomainEventBase> _domainEvents = new();
 	public IEnumerable<DomainEventBase> DomainEvents => _domainEvents.AsReadOnly();

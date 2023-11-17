@@ -2,8 +2,9 @@
 
 module.exports = {
     entry: {
+        init: './Scripts/Init.js',
         barbecueValidation: './Scripts/BarbecueValidation.ts',
-        validationBoot: './Scripts/ValidationBoot.ts'
+        participantTableExample: './Scripts/ParticipantTableExample.ts'
     },
     output: {
         filename: '[name].bundle.js',

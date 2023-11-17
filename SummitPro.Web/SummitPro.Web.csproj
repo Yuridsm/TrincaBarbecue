@@ -16,7 +16,9 @@
 
   <ItemGroup>
     <None Remove="Scripts\ClickInputCustomEvent.ts" />
+    <None Remove="Scripts\ParticipantTableExample.ts" />
     <None Remove="Scripts\Validation\BeginDateTimeInputValidation.ts" />
+    <None Remove="Scripts\Validation\IValidateStrategy.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,8 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\ParticipantTableExample.ts" />
     <TypeScriptCompile Include="Scripts\Validation\BeginDateTimeInputValidation.ts" />
     <TypeScriptCompile Include="Scripts\Validation\EndDateTimeInputValidation.ts" />
+    <TypeScriptCompile Include="Scripts\Validation\IValidateStrategy.ts" />
   </ItemGroup>
 
 </Project>

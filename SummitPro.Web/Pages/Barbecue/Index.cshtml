@@ -7,7 +7,7 @@
 <h1>Bem-vindo à Página Inicial</h1>
 
 <a class="btn btn-primary text-white shadow-lg py-2 px-4 rounded" type="button" asp-page="/Barbecue/Create">New Event</a>
-
+<a class="btn btn-primary text-white shadow-lg py-2 px-4 rounded" type="button" asp-page="/Participant/Create">Add Participant to Event</a>
 <br />
 <br />
 <br />
@@ -21,6 +21,7 @@
 			<th scope="col">Begin Date</th>
 			<th scope="col">End Date</th>
 			<th scope="col">Participants Quantity</th>
+			<th scope="col">Action</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -32,6 +33,11 @@
 				<td>@Html.DisplayFor(o => item.BeginDate)</td>
 				<td>@Html.DisplayFor(o => item.EndDateTime)</td>
 				<td>@Html.DisplayFor(o => item.ParticipantQuantity)</td>
+				<td>
+					<button type="button" class="btn btn-primary">
+                        Exibir
+                    </button>
+                </td>
 			</tr>
 		}
 	</tbody>
