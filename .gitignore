@@ -1,5 +1,6 @@
 .vs
 .vscode
+.idea
 [Oo]bj
 [Bb]in
 SummitPro.WebUI/.angular
