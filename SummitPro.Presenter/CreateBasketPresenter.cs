@@ -13,7 +13,7 @@ public class CreateBasketPresenter : ICreateBasketOutputBoundary
 
     public void CreateBasketSucceeded(CreateBasketOutputData createBasketOutputData)
     {
-        var basket = CreateBasketView.Success(SuccessMessageFor(createBasketOutputData), createBasketOutputData.Description);
+        var basket = CreateBasketViewModel.Success(SuccessMessageFor(createBasketOutputData), createBasketOutputData.Description);
 
         _createBasketView.Render(basket);
     }

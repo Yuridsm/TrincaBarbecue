@@ -2,5 +2,5 @@ namespace SummitPro.Presenter;
 
 public interface ICreateBasketView
 {
-    void Render(CreateBasketView view);
+    void Render(CreateBasketViewModel view);
 }
