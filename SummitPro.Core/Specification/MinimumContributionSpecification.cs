@@ -7,6 +7,6 @@ public class MinimumContributionSpecification : AbstractSpecification<Contributi
 {
 	public override bool IsSatisfied(Contribution entity)
 	{
-		return entity.Value >= 99.99d;
+		return entity.Value >= 99.99f;
 	}
 }
